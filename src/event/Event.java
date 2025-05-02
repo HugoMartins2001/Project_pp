@@ -9,22 +9,22 @@ import java.io.IOException;
  */
 public class Event implements IEvent{
     
-    private String Description;
-    private int Minute;
+    private String description;
+    private int minute;
     
-    public Event(String Description, int Minute){
-        this.Description = Description;
-        this.Minute = Minute;
+    public Event(String description, int minute){
+        this.description = description;
+        this.minute = minute;
     }
 
     @Override
     public String getDescription() {
-        return this.Description;
+        return this.description;
     }
 
     @Override
     public int getMinute() {
-        return this.Minute;
+        return this.minute;
     }
 
     @Override

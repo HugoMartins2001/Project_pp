@@ -8,21 +8,18 @@ import java.io.IOException;
  *
  * @author hugol
  */
-public class GoalEvent implements IGoalEvent{
+public class GoalEvent extends Event implements IGoalEvent{
+
+    private IPlayer player;
+
+    public GoalEvent(IPlayer player, String description, int minute) {
+        super(description,minute);
+        this.player = player;
+    }
 
     @Override
     public IPlayer getPlayer() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String getDescription() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public int getMinute() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.player;
     }
 
     @Override
