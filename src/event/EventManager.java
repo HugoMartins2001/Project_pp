@@ -10,7 +10,7 @@ import com.ppstudios.footballmanager.api.contracts.event.IEventManager;
 public class EventManager implements IEventManager {
 
     private static final int MAX_EVENTS = 20;
-    private Event[] events = new Event[MAX_EVENTS];
+    private IEvent[] events = new IEvent[MAX_EVENTS];
     private int eventCount = 0;
 
     @Override
@@ -22,27 +22,29 @@ public class EventManager implements IEventManager {
             throw new IllegalStateException("Event list is full");
         }
         if(findEvent(ievent) == -1){
-            return false;
+            throw new IllegalArgumentException("Event already exists");
         }
         if (eventCount == events.length) {
             expandEvent();
         }
 
-        events(eventCount) = event;
+        events[eventCount] = ievent;
         eventCount++;
-        System.out.println("Event added: " + event);
+        System.out.println("Event added: " + ievent);
     }
 
     private int findEvent(IEvent ievent){
-        for(i = 0 ; i < eventCount; i++){
+        for(int i = 0 ; i < eventCount; i++){
             if(events[i].equals(ievent)){
                 return i;
             }
         }
+
+        return -1;
     }
 
     private void expandEvent(){
-        Event[] newEvents = new Event[events.lenghth * 2];
+        IEvent[] newEvents = new IEvent[events.length * 2];
         for(int i = 0; i < events.length; i++){
             newEvents[i] = events[i];
         }
