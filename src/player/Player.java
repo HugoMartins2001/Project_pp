@@ -1,0 +1,115 @@
+package player;
+
+import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
+import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
+import com.ppstudios.footballmanager.api.contracts.team.IClub;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+
+public class Player implements IPlayer{
+
+    private String name;
+    private LocalDate birthdate;
+    private String nationality;
+    private String basePosition;
+    private String photo;
+    private int number;
+    private int specPassing;
+    private int specShooting;
+    private int specSpeed;
+    private int specStamina;
+    private float weight;
+    private float height;
+    private PlayerPosition position;
+    private PreferredFoot foot;
+    private IClub club;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public LocalDate getBirthDate() {
+        return birthdate;
+    }
+
+    @Override
+    public int getAge() {
+        LocalDate birthdate = getBirthDate();
+        LocalDate todayDate = LocalDate.now();
+        return Period.between(birthdate, todayDate).getYears();
+    }
+
+    @Override
+    public String getNationality() {
+        return nationality;
+    }
+
+    @Override
+    public void setPosition(IPlayerPosition iPlayerPosition) {
+        this.position = (PlayerPosition) iPlayerPosition;
+    }
+
+    @Override
+    public String getPhoto() {
+        return photo;
+    }
+
+    @Override
+    public int getNumber() {
+        return number;
+    }
+
+    @Override
+    public int getShooting() {
+        return specShooting;
+    }
+
+    @Override
+    public int getPassing() {
+        return specPassing;
+    }
+
+    @Override
+    public int getStamina() {
+        return specStamina;
+    }
+
+    @Override
+    public int getSpeed() {
+        return specSpeed;
+    }
+
+    @Override
+    public IPlayerPosition getPosition() {
+        return (IPlayerPosition) position;
+    }
+
+    @Override
+    public float getHeight() {
+        return height;
+    }
+
+    @Override
+    public float getWeight() {
+        return weight;
+    }
+
+    @Override
+    public PreferredFoot getPreferredFoot() {
+        return foot;
+    }
+
+    public IClub getClub() {
+        return club;
+    }
+
+    //TODO: Fazer no final
+    @Override
+    public void exportToJson() throws IOException {
+    }
+}
