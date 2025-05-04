@@ -8,7 +8,6 @@ import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import event.GoalEvent;
 
-import java.awt.color.ICC_ColorSpace;
 import java.io.IOException;
 
 public class Match implements IMatch {
