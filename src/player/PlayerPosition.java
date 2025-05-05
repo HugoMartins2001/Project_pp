@@ -2,9 +2,17 @@ package player;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 
-public class PlayerPosition implements IPlayerPosition {
+public enum PlayerPosition implements IPlayerPosition {
+    GOALKEEPER("Goalkeeper"),
+    DEFENDER("Defender"),
+    MIDFIELDER("Midfielder"),
+    FORWARD("Forward");
 
-    private String description;
+    private final String description;
+
+    PlayerPosition(String description) {
+        this.description = description;
+    }
 
     @Override
     public String getDescription() {
