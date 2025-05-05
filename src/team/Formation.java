@@ -12,8 +12,8 @@ public class Formation implements IFormation {
     //TODO ACABAR PORQUE FUI DORMIR
     @Override
     public int getTacticalAdvantage(IFormation iFormation) {
-        if(iFormation == null){
-            throw new IllegalArgumentException("Formation does not exist");
+        if(this.formation == null && iFormation == null){
+            throw new IllegalArgumentException("Formations does not exist to compare");
         }
         if(this.formation.equals(iFormation)) {
             return 0;
@@ -24,9 +24,5 @@ public class Formation implements IFormation {
     @Override
     public String getDisplayName() {
         return displayName;
-    }
-
-    private String getFormation(){
-        return formation;
     }
 }

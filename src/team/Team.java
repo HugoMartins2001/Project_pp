@@ -11,7 +11,8 @@ import java.io.IOException;
 
 public class Team implements ITeam {
 
-    private static IClub club;
+    private IClub club;
+    private IFormation formation;
     private Player[] team;
     private int teamSize;
 
