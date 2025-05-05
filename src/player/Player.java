@@ -4,6 +4,7 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
+import enums.PlayerPosition;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -111,5 +112,28 @@ public class Player implements IPlayer{
     //TODO: Fazer no final
     @Override
     public void exportToJson() throws IOException {
+
+    }
+
+    @Override
+    public String toString(){
+        String s = "Player: " + "name='" + name + "\n";
+               s += "birthdate=" + birthdate + "\n";
+               s += "Age: " + getAge() + "\n";
+               s += "Nationality" + nationality + "\n";
+               s += "Photo: " + photo + "\n";
+               s += "Number: " + number + "\n";
+               s += "Shooting: " + specShooting + "\n";
+               s += "Passing: " + specPassing + "\n";
+               s += "Stamina: " + specStamina + "\n";
+               s += "Speed: " + specSpeed + "\n";
+               s += "Position: " + position + "\n";
+               s += "Height: " + height + "\n";
+               s += "Weight: " + weight + "\n";
+               s += "Foot: " + foot + "\n";
+               s += "Club: " + club.getName() + "\n";
+               s += "----------------------------------------\n";
+
+        return s;
     }
 }
