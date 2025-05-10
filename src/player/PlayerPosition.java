@@ -1,4 +1,4 @@
-package enums;
+package player;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 

@@ -4,13 +4,12 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
-import enums.PlayerPosition;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class Player implements IPlayer{
+public class Player implements IPlayer, Cloneable {
 
     private String name;
     private LocalDate birthdate;
