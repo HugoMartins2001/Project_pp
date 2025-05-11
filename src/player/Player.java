@@ -29,11 +29,13 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public String getName() {
+
         return name;
     }
 
     @Override
     public LocalDate getBirthDate() {
+
         return birthdate;
     }
 
@@ -46,65 +48,77 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public String getNationality() {
+
         return nationality;
     }
 
     @Override
     public void setPosition(IPlayerPosition iPlayerPosition) {
+
         this.position = (PlayerPosition) iPlayerPosition;
     }
 
     @Override
     public String getPhoto() {
+
         return photo;
     }
 
     @Override
     public int getNumber() {
+
         return number;
     }
 
     @Override
     public int getShooting() {
+
         return specShooting;
     }
 
     @Override
     public int getPassing() {
+
         return specPassing;
     }
 
     @Override
     public int getStamina() {
+
         return specStamina;
     }
 
     @Override
     public int getSpeed() {
+
         return specSpeed;
     }
 
     @Override
     public IPlayerPosition getPosition() {
-        return (IPlayerPosition) position;
+        return position;
     }
 
     @Override
     public float getHeight() {
+
         return height;
     }
 
     @Override
     public float getWeight() {
+
         return weight;
     }
 
     @Override
     public PreferredFoot getPreferredFoot() {
+
         return foot;
     }
 
     public IClub getClub() {
+
         return club;
     }
 
@@ -116,8 +130,8 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public String toString(){
-        String s = "Player: " + "name='" + name + "\n";
-               s += "birthdate=" + birthdate + "\n";
+        String s = "Player: " + "Name='" + name + "\n";
+               s += "Birthdate=" + birthdate + "\n";
                s += "Age: " + getAge() + "\n";
                s += "Nationality" + nationality + "\n";
                s += "Photo: " + photo + "\n";
@@ -134,5 +148,9 @@ public class Player implements IPlayer, Cloneable {
                s += "----------------------------------------\n";
 
         return s;
+    }
+
+    public Player clone() throws CloneNotSupportedException {
+        return (Player) super.clone();
     }
 }
