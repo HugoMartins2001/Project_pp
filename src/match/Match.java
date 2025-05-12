@@ -1,3 +1,12 @@
+/*
+ * Name: <Rúben Tiago Martins Pereira>
+ * Number: <8230162>
+ * Class: <LsircT2>
+ *
+ * Name: <Hugo Leite Martins>
+ * Number: <8230273>
+ * Class: <LsircT2>
+ */
 package match;
 
 import com.ppstudios.footballmanager.api.contracts.data.IExporter;
@@ -25,7 +34,7 @@ public class Match implements IMatch {
     @Override
     public IClub getHomeClub() {
         if (homeClub == null) {
-            throw new IllegalStateException(" Home Club is not inicialized");
+            throw new IllegalStateException("Home Club is not inicialized!");
         }
         return homeClub;
     }
@@ -33,7 +42,7 @@ public class Match implements IMatch {
     @Override
     public IClub getAwayClub() {
         if (awayClub == null) {
-            throw new IllegalStateException(" Away Club is not inicialized");
+            throw new IllegalStateException("Away Club is not inicialized");
         }
         return awayClub;
     }
@@ -47,7 +56,7 @@ public class Match implements IMatch {
     @Override
     public ITeam getHomeTeam() {
         if (homeTeam == null) {
-            throw new IllegalStateException(" Home Team is not inicialized");
+            throw new IllegalStateException("Home Team is not inicialized");
         }
         return homeTeam;
     }
@@ -55,7 +64,7 @@ public class Match implements IMatch {
     @Override
     public ITeam getAwayTeam() {
         if (awayTeam == null) {
-            throw new IllegalStateException(" Away Team is not inicialized");
+            throw new IllegalStateException("Away Team is not inicialized");
         }
         return awayTeam;
     }
@@ -66,8 +75,13 @@ public class Match implements IMatch {
     }
 
     @Override
-    public int getTotalByEvent(Class aClass, IClub iClub) {
-        return 0;
+    public int getTotalByEvent(Class eventClass, IClub team) {
+        if(eventClass == null || team == null) {
+            throw new NullPointerException("Event class or team is not defined!");
+        }
+        for(IEventManager e : events){
+
+        }
     }
 
     @Override
@@ -105,12 +119,13 @@ public class Match implements IMatch {
         }
 
         if (homeGoals > awayGoals) {
-            return homeTeam;
+            winnerTeam = homeTeam;
         } else if (awayGoals > homeGoals) {
-            return awayTeam;
+            winnerTeam = awayTeam;
         } else {
-            return null;
+            winnerTeam = null;
         }
+        return winnerTeam;
     }
 
     @Override
@@ -119,18 +134,17 @@ public class Match implements IMatch {
     }
 
     @Override
-    public void setTeam(ITeam iTeam) {
-        if (iTeam == null) {
-            throw new IllegalArgumentException("Team cannot be null");
+    public void setTeam(ITeam team) {
+        if (team == null) {
+            throw new IllegalArgumentException("Team is not selected!");
         }
         if (isPlayed) {
-            throw new IllegalStateException("Cannot set team - match already played");
+            throw new IllegalStateException("Cannot set a team because match was already played!");
         }
-
-        if(homeClub.equals(iTeam.getClub())) {
-            homeTeam = iTeam;
-        } else if(awayClub.equals(iTeam.getClub())) {
-            awayTeam = iTeam;
+        if(homeClub.equals(team.getClub())) {
+            homeTeam = team;
+        } else if(awayClub.equals(team.getClub())) {
+            awayTeam = team;
         } else {
             throw new IllegalStateException("The club does not belong to the match");
         }
