@@ -31,24 +31,24 @@ public class League implements ILeague {
     }
 
     @Override
-    public boolean createSeason(ISeason iSeason) {
-        if(iSeason == null){
+    public boolean createSeason(ISeason season) {
+        if(season == null){
             throw new IllegalArgumentException("Season cannot be null");
         }
-        if(iSeason.getYear() <= 0){
+        if(season.getYear() <= 0){
             throw new IllegalArgumentException("Season year must be greater than 0");
         }
-        if(findSeason(iSeason) != -1){
+        if(findSeason(season) != -1){
             throw new IllegalArgumentException("Season already exists");
         }
         if(seasonCount == seasons.length){
-            expandSeason();
+            expandSeasonArray();
         }
 
 
-        seasons[seasonCount] = iSeason;
+        seasons[seasonCount] = season;
         seasonCount++;
-        System.out.println("Season added: " + iSeason);
+        System.out.println("Season added: " + season);
         return true;
     }
 
@@ -71,7 +71,6 @@ public class League implements ILeague {
 
     @Override
     public ISeason getSeason(int year) {
-
         for(int i = 0; i < seasonCount; i++){
             if(seasons[i].getYear() == year){
                 return seasons[i];
@@ -89,16 +88,14 @@ public class League implements ILeague {
                 return i;
             }
         }
-
         return -1;
     }
 
-    private void expandSeason(){
+    private void expandSeasonArray(){
         ISeason[] newSeasons = new ISeason[seasons.length * 2];
         for(int i = 0; i < seasons.length; i++){
             newSeasons[i] = seasons[i];
         }
-
         seasons = newSeasons;
     }
 
@@ -111,12 +108,9 @@ public class League implements ILeague {
     public String toString(){
         String s = "League Name: " + name + "\n";
                s += "Seasons: " + "\n";
-
                for(int i = 0; i < seasonCount; i++){
                    s += this.seasons[i].toString();
                }
-
-
                return s;
     }
 }
