@@ -74,14 +74,16 @@ public class Match implements IMatch {
         isPlayed = true;
     }
 
+    //TODO FALTA FAZER
     @Override
     public int getTotalByEvent(Class eventClass, IClub team) {
         if(eventClass == null || team == null) {
             throw new NullPointerException("Event class or team is not defined!");
         }
-        for(IEventManager e : events){
+        //for(IEventManager e : events){
 
-        }
+        //}
+        return 0;
     }
 
     @Override

@@ -21,7 +21,7 @@ public class Menus {
 
         do {
             System.out.println("=======================================");
-            System.out.println("PPFootballManagerv1.0 - Temporada 24/25");
+            System.out.println("PPFootballManager v1.0 -Temporada 24/25");
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##-----------Menu Principal----------##");
@@ -30,6 +30,7 @@ public class Menus {
             System.out.println("|  Option 2 - Load a game             |");
             System.out.println("|  Option 3 - Create teams/players    |");
             System.out.println("|  Option 4 - Credits                 |");
+            System.out.println("|  Option 0 - Exit                    |");
             System.out.println("|-------------------------------------|");
             System.out.println("                                       ");
             System.out.println("Enter an option :");
@@ -45,17 +46,11 @@ public class Menus {
         return option;
     }
 
-    public static int startGame(Scanner input) {
+    //public static int startGame(Scanner input) {}
 
-    }
+    //public static int loadGame(Scanner input) {}
 
-    public static int loadGame(Scanner input) {
-
-    }
-
-    public static int createTeamAndPlayers(Scanner input) {
-
-    }
+    //public static int createTeamAndPlayers(Scanner input) {}
 
     public static void credits(Scanner input) {
         int option;
@@ -63,7 +58,7 @@ public class Menus {
 
         do {
             System.out.println("=======================================");
-            System.out.println("PPFootballManagerv1.0 - Temporada 24/25");
+            System.out.println("PPFootballManager v1.0 -Temporada 24/25");
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##--------------Credits--------------##");

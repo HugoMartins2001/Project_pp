@@ -20,13 +20,13 @@ public class main {
             Options = Menus.showMenu(input);
             switch (Options) {
                 case 1:
-                    Menus.startGame();
+                    //Menus.startGame();
                     break;
                 case 2:
-                    Menus.loadGame();
+                    //Menus.loadGame();
                     break;
                 case 3:
-                    Menus.createTeamAndPlayers();
+                    //Menus.createTeamAndPlayers();
                     break;
                 case 4:
                     Menus.credits(input);
