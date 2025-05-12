@@ -11,13 +11,10 @@ public class PlayerSelector implements IPlayerSelector {
         if (club == null) {
             throw new IllegalArgumentException("There is no club selected!");
         }
-
         IPlayer[] players = club.getPlayers();
-
         if (players == null || players.length == 0) {
             throw new IllegalArgumentException("There are no players in the club!");
         }
-
         for (IPlayer player : players) {
             if (player != null && position.equals(player.getPosition())) {
                 return player;

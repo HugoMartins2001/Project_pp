@@ -2,23 +2,21 @@ package team;
 
 import com.ppstudios.footballmanager.api.contracts.team.IFormation;
 
-import java.io.Serializable;
-
 public class Formation implements IFormation {
 
     private String displayName;
     private String formation;
 
-    //TODO ACABAR PORQUE FUI DORMIR
+    //TODO falta fazer o metodo e a logica
     @Override
-    public int getTacticalAdvantage(IFormation iFormation) {
-        if(this.formation == null && iFormation == null){
-            throw new IllegalArgumentException("Formations does not exist to compare");
+    public int getTacticalAdvantage(IFormation formation) {
+        if(this.formation == null || formation == null){
+            throw new IllegalStateException("Formations are not setted!");
         }
-        if(this.formation.equals(iFormation)) {
+        if(this.formation.equals(formation)) {
             return 0;
         }
-        return x;
+        return 0;
     }
 
     @Override

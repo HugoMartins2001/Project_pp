@@ -13,8 +13,7 @@ public class Team implements ITeam {
 
     private IClub club;
     private IFormation formation;
-    private Player[] team;
-    private int teamSize;
+    private IPlayer[] playersTeam;
 
     @Override
     public IClub getClub() {
@@ -23,64 +22,106 @@ public class Team implements ITeam {
 
     @Override
     public IFormation getFormation() {
-        return null;
+        if(formation == null){
+            throw new IllegalStateException("The formation is not setted!");
+        }
+        return formation;
     }
 
     @Override
     public IPlayer[] getPlayers() {
-        return new IPlayer[0];
+        IPlayer[] playersClone = new IPlayer[playersTeam.length];
+        try {
+            for (int i = 0; i < playersTeam.length; i++) {
+                playersClone[i] = ((Player) playersTeam[i]).clone();
+            }
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Error while cloning players!");
+            return new IPlayer[0];
+        }
+        return playersClone;
     }
 
     @Override
-    public void addPlayer(IPlayer iPlayer) {
-        if(iPlayer == null){
-            throw new IllegalArgumentException();
+    public void addPlayer(IPlayer player) {
+        if(player == null) {
+            throw new IllegalArgumentException("The player is not selected!");
         }
-        for( IPlayer x : team ){
-            if(x.equals(iPlayer)) {
-                throw new IllegalStateException();
+        for(IPlayer p : playersTeam) {
+            if(p != null && p.equals(player)){
+                throw new IllegalStateException("The player is already in the team!");
             }
         }
-        if(team.length + 1 > 24 ){
-            throw new IllegalStateException();
+        boolean hasSpace = false;
+        for(IPlayer p : playersTeam) {
+            if(p == null){
+                hasSpace = true;
+                break;
+            }
         }
-        if(!((Player)iPlayer).getClub().equals(club)){
-            throw new IllegalStateException();
+        if(!hasSpace) {
+            throw new IllegalStateException("The team is already full!");
         }
-        if(getFormation() == null){
-            throw new IllegalStateException();
+        if(!club.isPlayer(player)) {
+            throw new IllegalStateException("The player is not in the club!");
         }
-        team[teamSize] = (Player)iPlayer;
-        teamSize++;
+        if(formation == null) {
+            throw new IllegalStateException("The formation is not setted!");
+        }
+        for(int i = 0; i < playersTeam.length; i++) {
+            if(playersTeam[i] == null){
+                playersTeam[i] = player;
+                break;
+            }
+        }
     }
 
     @Override
-    public int getPositionCount(IPlayerPosition iPlayerPosition) {
-        if(iPlayerPosition == null){
-            throw new IllegalArgumentException();
+    public int getPositionCount(IPlayerPosition position) {
+        if(position == null){
+            throw new IllegalArgumentException("The position is not defined!");
         }
         int counter = 0;
-        for( IPlayer x : team ){
-            if(x.getPosition().equals(iPlayerPosition)){
+        for( IPlayer p : playersTeam ){
+            if(p != null && p.getPosition().equals(position)){
                 counter++;
             }
         }
         return counter;
     }
 
+    //TODO falta fazer
     @Override
-    public boolean isValidPositionForFormation(IPlayerPosition iPlayerPosition) {
-        return false;
+    public boolean isValidPositionForFormation(IPlayerPosition position) {
+        if(position == null){
+            throw new IllegalArgumentException("The position is not defined!");
+        }
+        return true;
     }
 
     @Override
     public int getTeamStrength() {
-        return 0;
+        int teamStrength = 0;
+        int playerCount = 0;
+        for (IPlayer p : playersTeam) {
+            if(p != null){
+                int playerAverage = (p.getShooting() + p.getPassing() + p.getStamina() + p.getSpeed()) / 4;
+                teamStrength += playerAverage;
+                playerCount++;
+            }
+        }
+        if(playerCount == 0){
+            throw new IllegalStateException("There is no player in the team!");
+        }
+        return teamStrength / playerCount;
     }
 
     @Override
-    public void setFormation(IFormation iFormation) {
-
+    public void setFormation(IFormation formation) {
+        if(formation == null) {
+            throw new IllegalArgumentException("The formation is not setted!");
+        }
+        this.formation = formation;
     }
 
     //TODO FALTA FAZER
