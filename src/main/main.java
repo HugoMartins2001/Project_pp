@@ -11,6 +11,7 @@ package main;
 
 import Data.Importer;
 import player.Player;
+import team.Club;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -42,10 +43,21 @@ public class main {
             }
         } while (Options != 0);*/
 
-        Player[] players = (new Importer()).importPlayers("./files/players/Arouca.json");
+        /*Player[] players = (new Importer()).importPlayers("./files/players/Arouca.json");
 
         for (Player player : players) {
             System.out.println(player);
+        }*/
+
+        Club[] clubs = (new Importer()).importClubs("./files/clubs.json");
+
+        for (Club club : clubs) {
+            System.out.println(club);
+            Player[] players = (new Importer()).importPlayers("./files/players/Benfica.json");
+            for (Player player : players) {
+                System.out.println("\t" + player);
+            }
+            System.out.println();
         }
     }
 }

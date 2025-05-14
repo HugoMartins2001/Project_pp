@@ -143,7 +143,7 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public String toString(){
-        String s = "Player: " + "\nName='" + name + "\n";
+        String s = "Player: " + "\nName: " + name + "\n";
                s += "Birthdate: " + birthdate + "\n";
                s += "Age: " + getAge() + "\n";
                s += "Nationality: " + nationality + "\n";

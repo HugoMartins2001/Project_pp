@@ -16,6 +16,7 @@ import com.ppstudios.footballmanager.api.contracts.team.IPlayerSelector;
 import player.Player;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Club implements IClub {
 
@@ -214,5 +215,19 @@ public class Club implements IClub {
     @Override
     public void exportToJson() throws IOException {
 
+    }
+
+    @Override
+    public String toString(){
+        String s = "Name: " + name + "\n";
+        s += "Code: " + code + "\n";
+        s += "Country: " + getCountry() + "\n";
+        s += "Nationality: " + clubNationality + "\n";
+        s += "Stadium name: " + stadiumName + "\n";
+        s += "Logo: " + clubLogo + "\n";
+        s += "Date of Foundation: " + dateOfFoundation + "\n";
+        s += "----------------------------------------\n";
+
+        return s;
     }
 }
