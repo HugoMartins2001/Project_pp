@@ -23,7 +23,6 @@ public class Player implements IPlayer, Cloneable {
     private String name;
     private LocalDate birthdate;
     private String nationality;
-    private String basePosition;
     private String photo;
     private int number;
     private int specPassing;
@@ -35,6 +34,25 @@ public class Player implements IPlayer, Cloneable {
     private PlayerPosition position;
     private PreferredFoot foot;
     private IClub club;
+
+    public Player(String name, LocalDate birthdate, String nationality,
+                  String photo, int number, int specPassing, int specShooting,
+                  int specSpeed, int specStamina, float weight, float height,
+                  PlayerPosition position, PreferredFoot foot) {
+        this.name = name;
+        this.birthdate = birthdate;
+        this.nationality = nationality;
+        this.photo = photo;
+        this.number = number;
+        this.specPassing = specPassing;
+        this.specShooting = specShooting;
+        this.specSpeed = specSpeed;
+        this.specStamina = specStamina;
+        this.weight = weight;
+        this.height = height;
+        this.position = position;
+        this.foot = foot;
+    }
 
     @Override
     public String getName() {
@@ -125,10 +143,10 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public String toString(){
-        String s = "Player: " + "Name='" + name + "\n";
-               s += "Birthdate=" + birthdate + "\n";
+        String s = "Player: " + "\nName='" + name + "\n";
+               s += "Birthdate: " + birthdate + "\n";
                s += "Age: " + getAge() + "\n";
-               s += "Nationality" + nationality + "\n";
+               s += "Nationality: " + nationality + "\n";
                s += "Photo: " + photo + "\n";
                s += "Number: " + number + "\n";
                s += "Shooting: " + specShooting + "\n";
@@ -138,8 +156,8 @@ public class Player implements IPlayer, Cloneable {
                s += "Position: " + position + "\n";
                s += "Height: " + height + "\n";
                s += "Weight: " + weight + "\n";
-               s += "Foot: " + foot + "\n";
-               s += "Club: " + club.getName() + "\n";
+               s += "Prefered foot: " + foot + "\n";
+               //s += "Club: " + club.getName() + "\n";
                s += "----------------------------------------\n";
 
         return s;

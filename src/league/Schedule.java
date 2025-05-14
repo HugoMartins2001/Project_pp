@@ -6,7 +6,7 @@
  * Name: <Hugo Leite Martins>
  * Number: <8230273>
  * Class: <LsircT2>
- */
+
 package league;
 
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
@@ -124,3 +124,4 @@ public class Schedule implements ISchedule {
 
     }
 }
+ */

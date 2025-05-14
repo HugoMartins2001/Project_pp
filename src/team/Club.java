@@ -20,13 +20,24 @@ import java.io.IOException;
 public class Club implements IClub {
 
     private String name;
-    private String acronymName;
+    private String code;
     private String clubNationality;
     private String stadiumName;
     private String clubLogo;
     private int dateOfFoundation;
     private IPlayer[] players;
     private boolean isvalid;
+
+    public Club(String name, String code, String clubNationality, String stadiumName,
+                String clubLogo, int dateOfFoundation) {
+        this.name = name;
+        this.code = code;
+        this.clubNationality = clubNationality;
+        this.stadiumName = stadiumName;
+        this.clubLogo = clubLogo;
+        this.dateOfFoundation = dateOfFoundation;
+        this.players = new IPlayer[25];
+    }
 
 
     @Override
@@ -50,7 +61,7 @@ public class Club implements IClub {
 
     @Override
     public String getCode() {
-        return acronymName;
+        return code;
     }
 
     @Override
@@ -159,7 +170,7 @@ public class Club implements IClub {
 
     @Override
     public boolean isValid() {
-        if(name == null || acronymName == null || clubNationality == null || stadiumName == null || clubLogo == null || dateOfFoundation == 0) {
+        if(name == null || code == null || clubNationality == null || stadiumName == null || clubLogo == null || dateOfFoundation == 0) {
             throw new IllegalStateException("The club is empty!");
         }
         if(getPlayerCount() == 0){

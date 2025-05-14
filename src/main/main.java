@@ -9,11 +9,15 @@
  */
 package main;
 
+import Data.Importer;
+import player.Player;
+
+import java.io.IOException;
 import java.util.Scanner;
 
 public class main {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        /*Scanner input = new Scanner(System.in);
         int Options;
 
         do {
@@ -36,6 +40,12 @@ public class main {
                 default:
                     System.out.println("Select a valid option!");
             }
-        } while (Options != 0);
+        } while (Options != 0);*/
+
+        Player[] players = (new Importer()).importPlayers("./files/players/Arouca.json");
+
+        for (Player player : players) {
+            System.out.println(player);
+        }
     }
 }
