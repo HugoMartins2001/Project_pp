@@ -38,13 +38,11 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public String getName() {
-
         return name;
     }
 
     @Override
     public LocalDate getBirthDate() {
-
         return birthdate;
     }
 
@@ -57,49 +55,41 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public String getNationality() {
-
         return nationality;
     }
 
     @Override
     public void setPosition(IPlayerPosition iPlayerPosition) {
-
         this.position = (PlayerPosition) iPlayerPosition;
     }
 
     @Override
     public String getPhoto() {
-
         return photo;
     }
 
     @Override
     public int getNumber() {
-
         return number;
     }
 
     @Override
     public int getShooting() {
-
         return specShooting;
     }
 
     @Override
     public int getPassing() {
-
         return specPassing;
     }
 
     @Override
     public int getStamina() {
-
         return specStamina;
     }
 
     @Override
     public int getSpeed() {
-
         return specSpeed;
     }
 
@@ -110,24 +100,20 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public float getHeight() {
-
         return height;
     }
 
     @Override
     public float getWeight() {
-
         return weight;
     }
 
     @Override
     public PreferredFoot getPreferredFoot() {
-
         return foot;
     }
 
     public IClub getClub() {
-
         return club;
     }
 
