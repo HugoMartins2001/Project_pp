@@ -13,10 +13,6 @@ import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import java.io.IOException;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
-/**
- *
- * @author hugol
- */
 public class Event implements IEvent{
     
     private String description;
@@ -45,7 +41,6 @@ public class Event implements IEvent{
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 }
