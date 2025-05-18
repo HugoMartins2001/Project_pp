@@ -1,4 +1,4 @@
-package Data;
+package data;
 
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import player.Player;
