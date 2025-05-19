@@ -21,13 +21,15 @@ public class Formation implements IFormation {
     //TODO falta fazer o metodo e a logica
     @Override
     public int getTacticalAdvantage(IFormation formation) {
-        if(this.formation == null || formation == null){
+        if(this.displayName == null || formation.getDisplayName() == null){
             throw new IllegalStateException("Formations are not setted!");
         }
-        if(this.formation.equals(formation)) {
+        if(this.displayName.equals(formation.getDisplayName())) {
             return 0;
         }
-        return 0;
+        if(this.defenders > ((Formation)formation).getDefenders()) {
+            return 1;
+        }
     }
 
     public int getDefenders() {
