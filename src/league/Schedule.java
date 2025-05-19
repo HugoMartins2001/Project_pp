@@ -6,7 +6,7 @@
  * Name: <Hugo Leite Martins>
  * Number: <8230273>
  * Class: <LsircT2>
-
+ */
 package league;
 
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
@@ -16,22 +16,22 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import java.io.IOException;
 
 public class Schedule implements ISchedule {
-    private IMatch[] matches;
+    private IMatch[][] matches;
+    private ISchedule schedule;
     private int numberOfRounds;
 
     @Override
     public IMatch[] getMatchesForRound(int round) {
-        if (matches == null) {
+        if (round < 0 || round >= matches.length) {
+            throw new IllegalStateException("Invalid Round");
+        }
+        if (schedule == null) {
             throw new IllegalStateException("Schedule is not initialized");
         }
-        if (round < 0 || round >= matches.length) {
-            throw new IllegalArgumentException("Round number must be between 0 and " + (matches.length - 1));
-        }
         if (matches[round] == null) {
-            throw new IllegalStateException("Matches for round " + round + " are not set");
+            throw new IllegalStateException("Matches are not set");
         }
-        //TODO: Terminar este metodo
-
+        return matches[round];
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Schedule implements ISchedule {
         if (team == null) {
             throw new IllegalArgumentException("Team cannot be null");
         }
-        if (matches == null) {
+        if (schedule == null) {
             throw new IllegalStateException("Schedule is not initialized");
         }
         if (matches.length == 0) {
@@ -49,11 +49,13 @@ public class Schedule implements ISchedule {
         IMatch[] teamMatches = new IMatch[matches.length];
         int counter = 0;
 
-        for (IMatch round : matches) {
+        for (IMatch[] round : matches) {
             if (round != null) {
-               if(round.getAwayTeam().equals(team) || round.getHomeTeam().equals(team)){
-                    teamMatches[counter++] = round;
-               }
+                for (IMatch match : round) {
+                    if (match.getHomeTeam().equals(team) || match.getAwayTeam().equals(team)) {
+                        teamMatches[counter++] = match;
+                    }
+                }
             }
         }
 
@@ -67,7 +69,7 @@ public class Schedule implements ISchedule {
 
     @Override
     public IMatch[] getAllMatches() {
-        if (matches == null) {
+        if (schedule == null) {
             throw new IllegalStateException("Schedule is not initialized");
         }
         int totalMatches = 0;
@@ -80,8 +82,9 @@ public class Schedule implements ISchedule {
         int index = 0;
         for (IMatch[] round : matches) {
             if (round != null) {
-                System.arraycopy(round, 0, allMatches, index, round.length);
-                index += round.length;
+                for (IMatch match : round) {
+                    allMatches[index++] = match;
+                }
             }
         }
         return allMatches;
@@ -92,11 +95,11 @@ public class Schedule implements ISchedule {
         if (iTeam == null) {
             throw new IllegalArgumentException("Team cannot be null");
         }
-        if (matches == null) {
-            throw new IllegalStateException("Schedule is not initialized");
-        }
         if (round < 0 || round >= matches.length) {
-            throw new IllegalArgumentException("Round number must be between 0 and " + (matches.length - 1));
+            throw new IllegalStateException("Invalid Round");
+        }
+        if (schedule == null) {
+            throw new IllegalStateException("Schedule is not initialized");
         }
         if (matches[round] == null) {
             throw new IllegalStateException("Matches for round " + round + " are not set");
@@ -124,4 +127,3 @@ public class Schedule implements ISchedule {
 
     }
 }
- */

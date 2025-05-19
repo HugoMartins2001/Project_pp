@@ -32,19 +32,12 @@ public class League implements ILeague {
 
     @Override
     public boolean createSeason(ISeason season) {
-        if(season == null){
-            throw new IllegalArgumentException("Season cannot be null");
+        if (findSeason(season) != -1 || season == null) {
+            throw new IllegalArgumentException("The season already exists or is null");
         }
-        if(season.getYear() <= 0){
-            throw new IllegalArgumentException("Season year must be greater than 0");
-        }
-        if(findSeason(season) != -1){
-            throw new IllegalArgumentException("Season already exists");
-        }
-        if(seasonCount == seasons.length){
+        if (seasonCount == seasons.length) {
             expandSeasonArray();
         }
-
 
         seasons[seasonCount] = season;
         seasonCount++;
@@ -54,10 +47,10 @@ public class League implements ILeague {
 
     @Override
     public ISeason removeSeason(int year) {
-        for(int i = 0; i < seasonCount; i++){
-            if(seasons[i].getYear() == year){
+        for (int i = 0; i < seasonCount; i++) {
+            if (seasons[i].getYear() == year) {
                 ISeason removedSeason = seasons[i];
-                for(int j = i; j < seasonCount - 1; j++){
+                for (int j = i; j < seasonCount - 1; j++) {
                     seasons[j] = seasons[j + 1];
                 }
                 seasons[seasonCount - 1] = null;
@@ -71,29 +64,29 @@ public class League implements ILeague {
 
     @Override
     public ISeason getSeason(int year) {
-        for(int i = 0; i < seasonCount; i++){
-            if(seasons[i].getYear() == year){
+        for (int i = 0; i < seasonCount; i++) {
+            if (seasons[i].getYear() == year) {
                 return seasons[i];
             }
         }
 
-    throw new IllegalArgumentException("Season not found");
+        throw new IllegalArgumentException("Season not found");
 
     }
 
 
-    private int findSeason(ISeason iSeason){
-        for(int i = 0; i < seasonCount; i++){
-            if(seasons[i].equals(iSeason)){
+    private int findSeason(ISeason iSeason) {
+        for (int i = 0; i < seasonCount; i++) {
+            if (seasons[i].equals(iSeason)) {
                 return i;
             }
         }
         return -1;
     }
 
-    private void expandSeasonArray(){
+    private void expandSeasonArray() {
         ISeason[] newSeasons = new ISeason[seasons.length * 2];
-        for(int i = 0; i < seasons.length; i++){
+        for (int i = 0; i < seasons.length; i++) {
             newSeasons[i] = seasons[i];
         }
         seasons = newSeasons;
@@ -105,12 +98,12 @@ public class League implements ILeague {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String s = "League Name: " + name + "\n";
-               s += "Seasons: " + "\n";
-               for(int i = 0; i < seasonCount; i++){
-                   s += this.seasons[i].toString();
-               }
-               return s;
+        s += "Seasons: " + "\n";
+        for (int i = 0; i < seasonCount; i++) {
+            s += this.seasons[i].toString();
+        }
+        return s;
     }
 }

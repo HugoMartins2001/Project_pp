@@ -13,70 +13,135 @@ import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 public class Standing implements IStanding {
+    private int points;
+    private int wins;
+    private int draws;
+    private int losses;
+    private int totalMatches;
+    private int goalsScored;
+    private int goalsConceded;
+    private int goalDifference;
+    private ITeam team;
+
+    public Standing(int points, int wins, int draws, int losses, int totalMatches, int goalsScored, int goalsConceded, int goalDifference, ITeam team) {
+        this.points = points;
+        this.wins = wins;
+        this.draws = draws;
+        this.losses = losses;
+        this.totalMatches = totalMatches;
+        this.goalsScored = goalsScored;
+        this.goalsConceded = goalsConceded;
+        this.goalDifference = goalDifference;
+        this.team = team;
+    }
 
 
     @Override
     public ITeam getTeam() {
-        return null;
+        if (team == null) {
+            throw new IllegalStateException("Team not initialized");
+        }
+        return this.team;
     }
 
     @Override
     public int getPoints() {
-        return 0;
+        if (points == 0) {
+            throw new IllegalStateException("Points not initialized");
+        }
+        return this.points;
     }
 
     @Override
     public void addPoints(int i) {
-
+        if (i < 0) {
+            throw new IllegalArgumentException("Points cannot be negative");
+        }
+        this.points += i;
     }
 
     @Override
     public void addWin(int i) {
-
+        if (i < 0) {
+            throw new IllegalArgumentException("Wins cannot be negative");
+        }
+        this.wins += i;
+        this.totalMatches += i;
+        this.points += i * 3;
     }
 
     @Override
     public void addDraw(int i) {
-
+        if (i < 0) {
+            throw new IllegalArgumentException("Draws cannot be negative");
+        }
+        this.draws += i;
+        this.totalMatches += i;
+        this.points += i;
     }
 
     @Override
     public void addLoss(int i) {
-
+        if (i < 0) {
+            throw new IllegalArgumentException("Losses cannot be negative");
+        }
+        this.losses += i;
+        this.totalMatches += i;
     }
 
     @Override
     public int getWins() {
-        return 0;
+        if (wins == 0) {
+            throw new IllegalStateException("Wins not initialized");
+        }
+        return this.wins;
     }
 
     @Override
     public int getDraws() {
-        return 0;
+        if (draws == 0) {
+            throw new IllegalStateException("Draws not initialized");
+        }
+        return this.draws;
     }
 
     @Override
     public int getLosses() {
-        return 0;
+        if (losses == 0) {
+            throw new IllegalStateException("Losses not initialized");
+        }
+        return this.losses;
     }
 
     @Override
     public int getTotalMatches() {
-        return 0;
+        if (totalMatches == 0) {
+            throw new IllegalStateException("Total Matches not initialized");
+        }
+        return this.totalMatches;
     }
 
     @Override
     public int getGoalScored() {
-        return 0;
+        if (goalsScored == 0) {
+            throw new IllegalStateException("Goals Scored not initialized");
+        }
+        return this.goalsScored;
     }
 
     @Override
     public int getGoalsConceded() {
-        return 0;
+        if (goalsConceded == 0) {
+            throw new IllegalStateException("Goals Conceded not initialized");
+        }
+        return this.goalsConceded;
     }
 
     @Override
     public int getGoalDifference() {
-        return 0;
+        if (goalDifference == 0) {
+            throw new IllegalStateException("Goal Difference not initialized");
+        }
+        return this.goalDifference;
     }
 }
