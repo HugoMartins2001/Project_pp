@@ -21,17 +21,32 @@ public class Standing implements IStanding {
     private int goalsScored;
     private int goalsConceded;
     private int goalDifference;
+    private boolean pointsInitialized; // foi adicionado para evitar o erro de inicialização pois estava a mete a 0 e no inicio da época começas os clubes todos a 0 e ia dar erro
+    private boolean winsInitialized;
+    private boolean drawsInitialized;
+    private boolean lossesInitialized;
+    private boolean totalMatchesInitialized;
+    private boolean goalsScoredInitialized;
+    private boolean goalsConcededInitialized;
+    private boolean goalDifferenceInitialized;
     private ITeam team;
 
-    public Standing(int points, int wins, int draws, int losses, int totalMatches, int goalsScored, int goalsConceded, int goalDifference, ITeam team) {
+    public Standing(int points, int wins, int draws, int losses, int totalMatches, int goalsScored, int goalsConceded, ITeam team) {
         this.points = points;
+        this.pointsInitialized = true;
         this.wins = wins;
+        this.winsInitialized = true;
         this.draws = draws;
+        this.drawsInitialized = true;
         this.losses = losses;
+        this.lossesInitialized = true;
         this.totalMatches = totalMatches;
+        this.totalMatchesInitialized = true;
         this.goalsScored = goalsScored;
+        this.goalsScoredInitialized = true;
         this.goalsConceded = goalsConceded;
-        this.goalDifference = goalDifference;
+        this.goalsConcededInitialized = true;
+        this.goalDifference = this.goalsScored - this.goalsConceded;
         this.team = team;
     }
 
@@ -46,7 +61,7 @@ public class Standing implements IStanding {
 
     @Override
     public int getPoints() {
-        if (points == 0) {
+        if (!pointsInitialized) {
             throw new IllegalStateException("Points not initialized");
         }
         return this.points;
@@ -91,7 +106,7 @@ public class Standing implements IStanding {
 
     @Override
     public int getWins() {
-        if (wins == 0) {
+        if (!winsInitialized) {
             throw new IllegalStateException("Wins not initialized");
         }
         return this.wins;
@@ -99,7 +114,7 @@ public class Standing implements IStanding {
 
     @Override
     public int getDraws() {
-        if (draws == 0) {
+        if (!drawsInitialized) {
             throw new IllegalStateException("Draws not initialized");
         }
         return this.draws;
@@ -107,7 +122,7 @@ public class Standing implements IStanding {
 
     @Override
     public int getLosses() {
-        if (losses == 0) {
+        if (!lossesInitialized) {
             throw new IllegalStateException("Losses not initialized");
         }
         return this.losses;
@@ -115,7 +130,7 @@ public class Standing implements IStanding {
 
     @Override
     public int getTotalMatches() {
-        if (totalMatches == 0) {
+        if (!totalMatchesInitialized) {
             throw new IllegalStateException("Total Matches not initialized");
         }
         return this.totalMatches;
@@ -123,7 +138,7 @@ public class Standing implements IStanding {
 
     @Override
     public int getGoalScored() {
-        if (goalsScored == 0) {
+        if (!goalsScoredInitialized) {
             throw new IllegalStateException("Goals Scored not initialized");
         }
         return this.goalsScored;
@@ -131,7 +146,7 @@ public class Standing implements IStanding {
 
     @Override
     public int getGoalsConceded() {
-        if (goalsConceded == 0) {
+        if (!goalsConcededInitialized) {
             throw new IllegalStateException("Goals Conceded not initialized");
         }
         return this.goalsConceded;
@@ -139,9 +154,9 @@ public class Standing implements IStanding {
 
     @Override
     public int getGoalDifference() {
-        if (goalDifference == 0) {
+        if (!goalDifferenceInitialized) {
             throw new IllegalStateException("Goal Difference not initialized");
         }
-        return this.goalDifference;
+        return this.goalsScored - this.goalsConceded;
     }
 }
