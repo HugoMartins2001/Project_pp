@@ -7,6 +7,8 @@ import team.Club;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import java.util.Locale;
 import java.util.Random;
 
 import java.io.FileReader;
@@ -92,8 +94,8 @@ public class Importer {
             file.close();
             return players;
 
-        } catch (Exception e) {
-            throw new IOException("Error reading player file:" + e.getMessage());
+        } catch (Exception error) {
+            throw new IOException("Error reading player file:" + error.getMessage());
         }
     }
 
@@ -109,7 +111,7 @@ public class Importer {
 
     private static int generateRandomSpeed(PlayerPosition position) {
         Random random = new Random();
-        switch (position.getDescription()) {
+        switch (position.getDescription().toUpperCase()) {
             case "GOALKEEPER":
                 return random.nextInt(20) + 30;
             case "DEFENDER":
@@ -125,7 +127,7 @@ public class Importer {
 
     private static int generateRandomStamina(PlayerPosition position) {
         Random random = new Random();
-        switch (position.getDescription()) {
+        switch (position.getDescription().toUpperCase()) {
             case "GOALKEEPER":
                 return random.nextInt(30) + 30;
             case "DEFENDER":
@@ -141,7 +143,7 @@ public class Importer {
 
     private static int generateRandomShooting(PlayerPosition position) {
         Random random = new Random();
-        switch (position.getDescription()) {
+        switch (position.getDescription().toUpperCase()) {
             case "GOALKEEPER":
                 return random.nextInt(20) + 30;
             case "DEFENDER":
@@ -157,7 +159,7 @@ public class Importer {
 
     private static int generateRandomPassing(PlayerPosition position) {
         Random random = new Random();
-        switch (position.getDescription()) {
+        switch (position.getDescription().toUpperCase()) {
             case "GOALKEEPER":
                 return random.nextInt(60) + 30;
             case "DEFENDER":
@@ -209,8 +211,24 @@ public class Importer {
             file.close();
             return clubs;
 
-        } catch (Exception e) {
-            throw new IOException("Error reading club file: " + e.getMessage());
+        } catch (Exception error) {
+            throw new IOException("Error reading club file: " + error.getMessage());
+        }
+    }
+
+
+    public Club[] importData() throws IOException {
+        try {
+            Club[] clubs = importClubs("./files/clubs.json");
+
+            for (Club club : clubs) {
+                Player[] players = importPlayers("./files/players/"+ club.getCode()+".json");
+                club.setPlayers(players);
+            }
+            return clubs;
+
+        }catch (Exception error) {
+            throw new IOException("Error reading club file: " + error.getMessage());
         }
     }
 }

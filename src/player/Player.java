@@ -142,23 +142,23 @@ public class Player implements IPlayer, Cloneable {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String s = "Player: " + "\nName: " + name + "\n";
-               s += "Birthdate: " + birthdate + "\n";
-               s += "Age: " + getAge() + "\n";
-               s += "Nationality: " + nationality + "\n";
-               s += "Photo: " + photo + "\n";
-               s += "Number: " + number + "\n";
-               s += "Shooting: " + specShooting + "\n";
-               s += "Passing: " + specPassing + "\n";
-               s += "Stamina: " + specStamina + "\n";
-               s += "Speed: " + specSpeed + "\n";
-               s += "Position: " + position + "\n";
-               s += "Height: " + height + "\n";
-               s += "Weight: " + weight + "\n";
-               s += "Prefered foot: " + foot + "\n";
-               //s += "Club: " + club.getName() + "\n";
-               s += "----------------------------------------\n";
+        s += "Birthdate: " + birthdate + "\n";
+        s += "Age: " + getAge() + "\n";
+        s += "Nationality: " + nationality + "\n";
+        s += "Photo: " + photo + "\n";
+        s += "Number: " + number + "\n";
+        s += "Shooting: " + specShooting + "\n";
+        s += "Passing: " + specPassing + "\n";
+        s += "Stamina: " + specStamina + "\n";
+        s += "Speed: " + specSpeed + "\n";
+        s += "Position: " + position + "\n";
+        s += "Height: " + height + "\n";
+        s += "Weight: " + weight + "\n";
+        s += "Prefered foot: " + foot + "\n";
+        s += "Club: " + club.getName() + "\n";
+        s += "----------------------------------------\n";
 
         return s;
     }

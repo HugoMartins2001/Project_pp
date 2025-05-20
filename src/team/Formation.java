@@ -18,20 +18,6 @@ public class Formation implements IFormation {
     private int defenders;
     private int midfielders;
 
-    //TODO falta fazer o metodo e a logica
-    @Override
-    public int getTacticalAdvantage(IFormation formation) {
-        if(this.displayName == null || formation.getDisplayName() == null){
-            throw new IllegalStateException("Formations are not setted!");
-        }
-        if(this.displayName.equals(formation.getDisplayName())) {
-            return 0;
-        }
-        if(this.defenders > ((Formation)formation).getDefenders()) {
-            return 1;
-        }
-    }
-
     public int getDefenders() {
         return defenders;
     }
@@ -43,6 +29,31 @@ public class Formation implements IFormation {
     public int getForwards() {
         return forwards;
     }
+
+    @Override
+    public int getTacticalAdvantage(IFormation formation) {
+        if (this.displayName == null || formation.getDisplayName() == null) {
+            throw new IllegalStateException("Formations are not setted!");
+        }
+
+        if (this.displayName.equals(formation.getDisplayName())) {
+            return 0;
+        }
+
+        return calculateAdvantageTacticalValue((Formation) formation);
+    }
+
+    private int calculateAdvantageTacticalValue(Formation formation) {
+        int[] homeTeam = {this.forwards, this.midfielders, this.defenders};
+        int[] awayTeam = {formation.getForwards(), formation.getMidfielders(), formation.getDefenders()};
+
+        for (int i = 0; i < 3; i++) {
+            if (homeTeam[i] > awayTeam[i]) return 1;
+            if (homeTeam[i] < awayTeam[i]) return -1;
+        }
+        return 0;
+    }
+
 
     @Override
     public String getDisplayName() {

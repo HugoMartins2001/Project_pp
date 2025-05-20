@@ -14,10 +14,11 @@ import player.Player;
 import team.Club;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class main {
     public static void main(String[] args) throws IOException {
-        /*Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         int Options;
 
         do {
@@ -30,9 +31,15 @@ public class main {
                     //Menus.loadGame();
                     break;
                 case 3:
-                    //Menus.createTeamAndPlayers();
+                    Menus.Club();
                     break;
                 case 4:
+                    //Menus.createTeamAndPlayers();
+                    break;
+                case 5:
+                    Menus.Player();
+                    break;
+                case 6:
                     Menus.credits(input);
                     break;
                 case 0:
@@ -40,23 +47,7 @@ public class main {
                 default:
                     System.out.println("Select a valid option!");
             }
-        } while (Options != 0);*/
+        } while (Options != 0);
 
-        /*Player[] players = (new Importer()).importPlayers("./files/players/Arouca.json");
-
-        for (Player player : players) {
-            System.out.println(player);
-        }*/
-
-        Club[] clubs = (new Importer()).importClubs("./files/clubs.json");
-
-        for (Club club : clubs) {
-            System.out.println(club);
-            Player[] players = (new Importer()).importPlayers("./files/players/Benfica.json");
-            for (Player player : players) {
-                System.out.println("\t" + player);
-            }
-            System.out.println();
-        }
     }
 }
