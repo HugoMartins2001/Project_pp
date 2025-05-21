@@ -34,12 +34,9 @@ public class main {
                     Menus.Club();
                     break;
                 case 4:
-                    //Menus.createTeamAndPlayers();
-                    break;
-                case 5:
                     Menus.Player();
                     break;
-                case 6:
+                case 5:
                     Menus.credits(input);
                     break;
                 case 0:

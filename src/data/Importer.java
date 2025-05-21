@@ -231,4 +231,14 @@ public class Importer {
             throw new IOException("Error reading club file: " + error.getMessage());
         }
     }
+
+    public Club[] loadClubs() {
+        Club[] clubs = new Club[0];
+        try {
+            clubs = importClubs("./files/clubs.json");
+        } catch (IOException e) {
+            System.out.println("Error loading clubs: " + e.getMessage());
+        }
+        return clubs;
+    }
 }

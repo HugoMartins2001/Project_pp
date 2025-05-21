@@ -35,9 +35,8 @@ public class Menus {
             System.out.println("|  Option 1 - Start a new game        |");
             System.out.println("|  Option 2 - Load a game             |");
             System.out.println("|  Option 3 - Club                    |");
-            System.out.println("|  Option 4 - Create teams/players    |");
-            System.out.println("|  Option 5 - Player                  |");
-            System.out.println("|  Option 6 - Credits                 |");
+            System.out.println("|  Option 4 - Player                  |");
+            System.out.println("|  Option 5 - Credits                 |");
             System.out.println("|  Option 0 - Exit                    |");
             System.out.println("|-------------------------------------|");
             System.out.println("                                       ");
