@@ -27,6 +27,10 @@ public class FreeKickEvent extends Event{
         return this.player;
     }
 
+    public String getDescription() {
+        return getDescription() + "Free kick by: " + player.getName() + " at " + getMinute() + " minutes";
+    }
+
     @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

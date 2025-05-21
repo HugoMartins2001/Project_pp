@@ -26,7 +26,7 @@ public class EventManager implements IEventManager {
         if (eventCount >= MAX_EVENTS) {
             throw new IllegalStateException("Event list is full");
         }
-        if(findEvent(ievent) == -1){
+        if(findEvent(ievent) != -1){
             throw new IllegalArgumentException("Event already exists");
         }
         if (eventCount == events.length) {

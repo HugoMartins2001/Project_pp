@@ -43,4 +43,8 @@ public class Event implements IEvent{
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public String toString(){
+        return "Event: {" + "description=" + description + ", minute=" + minute + ", team=" + team + '}';
+    }
 }

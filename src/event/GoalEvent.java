@@ -30,6 +30,11 @@ public class GoalEvent extends Event implements IGoalEvent{
     }
 
     @Override
+    public String getDescription() {
+        return super.getDescription() + "Goal by: " + player.getName() + " at " + getMinute() + " minutes";
+    }
+
+    @Override
     public void exportToJson() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
