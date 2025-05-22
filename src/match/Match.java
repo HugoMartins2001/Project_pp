@@ -165,4 +165,11 @@ public class Match implements IMatch {
     public int getEventCount() {
         return events.getEventCount();
     }
+
+    public void reset(){
+        awayTeam = null;
+        homeTeam = null;
+        winnerTeam = null;
+        isPlayed = false;
+    }
 }

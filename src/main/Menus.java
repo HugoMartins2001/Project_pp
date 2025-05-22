@@ -12,6 +12,8 @@ package main;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import data.Importer;
+import league.League;
+import league.Season;
 import team.Club;
 import player.Player;
 
@@ -32,8 +34,8 @@ public class Menus {
             System.out.println("                                       ");
             System.out.println("##-------------Main Menu-------------##");
             System.out.println("|-------------------------------------|");
-            System.out.println("|  Option 1 - Start a new game        |");
-            System.out.println("|  Option 2 - Load a game             |");
+            System.out.println("|  Option 1 - Create a new League     |");
+            System.out.println("|  Option 2 - Load a league           |");
             System.out.println("|  Option 3 - Club                    |");
             System.out.println("|  Option 4 - Player                  |");
             System.out.println("|  Option 5 - Credits                 |");
@@ -52,7 +54,45 @@ public class Menus {
         return option;
     }
 
-    //public static int startGame(Scanner input) {}
+    public static void startgame(Scanner input, League league) {
+        int option;
+        boolean verifyInput = false;
+
+        do {
+            System.out.println("=======================================");
+            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println("=======================================");
+            System.out.println("                                       ");
+            System.out.println("##------------Start Game-------------##");
+            System.out.println("|-------------------------------------|");
+            System.out.println("|  Option 1 - New Game                |");
+            System.out.println("|  Option 2 - Load Game               |");
+            System.out.println("|  option 0 - Back                    |");
+            System.out.println("|-------------------------------------|");
+            System.out.println("                                       ");
+            try {
+                option = input.nextInt();
+                verifyInput = true;
+                switch (option) {
+                    case 1:
+                        //NewGame();
+                        verifyInput = false;
+                        break;
+                    case 2:
+                        //loadGame(input);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Select a valid option!");
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Select a valid option!");
+                input.next();
+            }
+        } while (!verifyInput);
+
+    }
 
     //public static int loadGame(Scanner input) {}
 
