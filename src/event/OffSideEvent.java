@@ -14,20 +14,10 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.io.IOException;
 
-public class OffSideEvent extends Event{
-    private IPlayer player;
+public class OffSideEvent extends PlayerEvent {
 
-    public OffSideEvent(String description, int minute, ITeam team, IPlayer player) {
-        super(description,minute,team);
-        this.player = player;
-    }
-
-    public IPlayer getPlayer(){
-        return this.player;
-    }
-
-    public String getDescription() {
-        return getDescription() + "Offside by: " + player.getName() + "at" + getMinute() + " minutes";
+    public OffSideEvent(IPlayer player, int minute) {
+        super( player, minute, "Offside by: " + player.getName() + "at" + minute + " minutes");
     }
 
     @Override

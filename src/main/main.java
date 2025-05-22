@@ -11,6 +11,7 @@ package main;
 
 import data.Importer;
 import player.Player;
+import simulation.MatchSimulatorStrategy;
 import team.Club;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class main {
             Options = Menus.showMenu(input);
             switch (Options) {
                 case 1:
-                    //Menus.startGame();
+                    //Menus.startgame();
                     break;
                 case 2:
                     //Menus.loadGame();

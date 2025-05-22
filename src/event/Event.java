@@ -14,15 +14,12 @@ import java.io.IOException;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 public class Event implements IEvent{
-    
     private String description;
     private int minute;
-    private ITeam team;
     
-    public Event(String description, int minute, ITeam team){
+    public Event(String description, int minute){
         this.description = description;
         this.minute = minute;
-        this.team = team;
     }
 
     @Override
@@ -35,9 +32,6 @@ public class Event implements IEvent{
         return this.minute;
     }
 
-    public ITeam getTeam(){
-        return this.team;
-    }
 
     @Override
     public void exportToJson() throws IOException {
@@ -45,6 +39,6 @@ public class Event implements IEvent{
     }
 
     public String toString(){
-        return "Event: {" + "description=" + description + ", minute=" + minute + ", team=" + team + '}';
+        return "Event: {" + "description=" + description + ", minute=" + minute + '}';
     }
 }

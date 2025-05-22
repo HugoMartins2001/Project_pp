@@ -149,10 +149,12 @@ public class Menus {
             System.out.println("---------------------------------------");
 
             for (Club club : clubs) {
-                System.out.printf("Name: %-20s | Country: %-15s | Stadium: %s%n",
-                        club.getName(),
-                        club.getCountry(),
-                        club.getStadiumName());
+                if (club != null) {
+                    System.out.printf("Name: %-20s | Country: %-15s | Stadium: %s%n",
+                            club.getName(),
+                            club.getCountry(),
+                            club.getStadiumName());
+                }
             }
 
             System.out.println("---------------------------------------");
@@ -280,7 +282,7 @@ public class Menus {
             for (Club club : clubs) {
                 if (club.getCode().equalsIgnoreCase(clubCode)) {
                     found = true;
-                    Player[] players = importer.importPlayers("files/players/" + club.getCode() + ".json");
+                    Player[] players = importer.importPlayers("./files/players/" + club.getCode() + ".json");
                     club.setPlayers(players);
 
                     System.out.println("\nPlayers From " + club.getName() + ":");
@@ -303,6 +305,7 @@ public class Menus {
             }
 
         } catch (IOException error) {
+            error.printStackTrace();
             System.out.println("Error while loading data: " + error.getMessage());
         }
     }
@@ -334,7 +337,7 @@ public class Menus {
                     if (club.getCode().equalsIgnoreCase(clubCode)) {
                         found = true;
                         try {
-                            Player[] players = importer.importPlayers("files/players/" + club.getCode() + ".json");
+                            Player[] players = importer.importPlayers("./files/players/" + club.getCode() + ".json");
                             club.setPlayers(players);
 
                             System.out.println("\nPlayers from " + club.getName() + ":");

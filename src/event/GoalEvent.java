@@ -15,23 +15,11 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.io.IOException;
 
-public class GoalEvent extends Event implements IGoalEvent{
+public class GoalEvent extends PlayerEvent implements IGoalEvent{
 
-    private IPlayer player;
 
-    public GoalEvent(IPlayer player, String description, int minute, ITeam team) {
-        super(description,minute,team);
-        this.player = player;
-    }
-
-    @Override
-    public IPlayer getPlayer() {
-        return this.player;
-    }
-
-    @Override
-    public String getDescription() {
-        return super.getDescription() + "Goal by: " + player.getName() + " at " + getMinute() + " minutes";
+    public GoalEvent(IPlayer player, int minute) {
+        super(player, minute, "Goal by: " + player.getName() + " at " + minute + " minutes");
     }
 
     @Override

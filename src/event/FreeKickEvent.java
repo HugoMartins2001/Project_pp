@@ -14,21 +14,11 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.io.IOException;
 
-public class FreeKickEvent extends Event{
+public class FreeKickEvent extends PlayerEvent{
 
-    private IPlayer player;
+    public FreeKickEvent(IPlayer player,  int minute) {
+        super(player, minute, "Free kick by: " + player.getName() + " at " + minute + " minutes");
 
-    public FreeKickEvent(IPlayer player, String description, int minute, ITeam team) {
-        super(description,minute,team);
-        this.player = player;
-    }
-
-    public IPlayer getPlayer() {
-        return this.player;
-    }
-
-    public String getDescription() {
-        return getDescription() + "Free kick by: " + player.getName() + " at " + getMinute() + " minutes";
     }
 
     @Override

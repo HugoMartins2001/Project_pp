@@ -33,12 +33,12 @@ public class Player implements IPlayer, Cloneable {
     private float height;
     private PlayerPosition position;
     private PreferredFoot foot;
-    private IClub club;
+    private String club;
 
     public Player(String name, LocalDate birthdate, String nationality,
                   String photo, int number, int specPassing, int specShooting,
                   int specSpeed, int specStamina, float weight, float height,
-                  PlayerPosition position, PreferredFoot foot) {
+                  PlayerPosition position, PreferredFoot foot, String clubCode) {
         this.name = name;
         this.birthdate = birthdate;
         this.nationality = nationality;
@@ -52,6 +52,7 @@ public class Player implements IPlayer, Cloneable {
         this.height = height;
         this.position = position;
         this.foot = foot;
+        this.club = clubCode;
     }
 
     @Override
@@ -131,7 +132,7 @@ public class Player implements IPlayer, Cloneable {
         return foot;
     }
 
-    public IClub getClub() {
+    public String getClub() {
         return club;
     }
 
@@ -157,7 +158,7 @@ public class Player implements IPlayer, Cloneable {
         s += "Height: " + height + "\n";
         s += "Weight: " + weight + "\n";
         s += "Prefered foot: " + foot + "\n";
-        s += "Club: " + club.getName() + "\n";
+        s += "Club: " + club + "\n";
         s += "----------------------------------------\n";
 
         return s;

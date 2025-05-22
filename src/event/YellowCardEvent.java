@@ -14,22 +14,10 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.io.IOException;
 
-public class YellowCardEvent extends Event{
+public class YellowCardEvent extends PlayerEvent {
 
-    private IPlayer player;
-
-    public YellowCardEvent(IPlayer player, String description, int minute, ITeam team) {
-        super(description,minute,team);
-        this.player = player;
-    }
-
-    public IPlayer getPlayer() {
-        return this.player;
-    }
-
-    @Override
-    public String getDescription() {
-        return super.getDescription() + " Yellow card to: " + player.getName() + " at " + getMinute() + " minutes";
+    public YellowCardEvent(IPlayer player, int minute) {
+        super( player, minute, " Yellow card to: " + player.getName() + " at " + minute + " minutes");
     }
 
 

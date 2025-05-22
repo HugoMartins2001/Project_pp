@@ -27,6 +27,7 @@ public class Club implements IClub {
     private String clubLogo;
     private int dateOfFoundation;
     private IPlayer[] players;
+    private Player player;
     private int playerCount;
     private boolean isvalid;
 
@@ -66,6 +67,7 @@ public class Club implements IClub {
     public String getCode() {
         return code;
     }
+
 
     @Override
     public String getCountry() {

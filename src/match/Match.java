@@ -13,9 +13,11 @@ import com.ppstudios.footballmanager.api.contracts.data.IExporter;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.event.IEventManager;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
+import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import event.GoalEvent;
+import event.PlayerEvent;
 
 import java.io.IOException;
 
@@ -74,16 +76,21 @@ public class Match implements IMatch {
         isPlayed = true;
     }
 
-    //TODO FALTA FAZER
     @Override
     public int getTotalByEvent(Class eventClass, IClub team) {
         if(eventClass == null || team == null) {
             throw new NullPointerException("Event class or team is not defined!");
         }
-        //for(IEventManager e : events){
 
-        //}
-        return 0;
+        int total = 0;
+        for (IEvent event : getEvents()) {
+            if (eventClass.isInstance(event) && event instanceof PlayerEvent) {
+                    if (team.isPlayer(((PlayerEvent) event).getPlayer())) {
+                        total++;
+                    }
+            }
+        }
+        return total;
     }
 
     @Override
@@ -104,21 +111,8 @@ public class Match implements IMatch {
             throw new IllegalStateException("The match has not a winner yet");
         }
 
-        int homeGoals = 0;
-        int awayGoals = 0;
-
-        IEvent[] matchEvents = events.getEvents();
-
-        for (int i = 0; i < matchEvents.length; i++) {
-            if (matchEvents[i].getClass().equals(GoalEvent.class)) {
-                GoalEvent goalEvent = (GoalEvent) matchEvents[i];
-                if (goalEvent.getTeam().equals(homeTeam)) {
-                    homeGoals++;
-                } else {
-                    awayGoals++;
-                }
-            }
-        }
+        int homeGoals = getTotalByEvent(GoalEvent.class, homeClub);
+        int awayGoals = getTotalByEvent(GoalEvent.class, awayClub);
 
         if (homeGoals > awayGoals) {
             winnerTeam = homeTeam;

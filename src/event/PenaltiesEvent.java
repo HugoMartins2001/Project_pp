@@ -14,22 +14,10 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.io.IOException;
 
-public class PenaltiesEvent extends Event{
+public class PenaltiesEvent extends PlayerEvent {
 
-    private IPlayer player;
-
-    public PenaltiesEvent(IPlayer player, String description, int minute, ITeam team) {
-        super(description,minute,team);
-        this.player = player;
-    }
-
-    public IPlayer getPlayer() {
-        return this.player;
-    }
-
-    @Override
-    public String getDescription() {
-        return super.getDescription() + "Penalty by: " + player.getName() + " at " + getMinute() + " minutes";
+    public PenaltiesEvent(IPlayer player, int minute) {
+        super( player, minute, "Penalty by: " + player.getName() + " at " + minute + " minutes");
     }
 
     @Override
