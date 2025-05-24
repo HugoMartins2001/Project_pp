@@ -14,17 +14,13 @@ import com.ppstudios.footballmanager.api.contracts.event.IEventManager;
 
 public class EventManager implements IEventManager {
 
-    private static final int MAX_EVENTS = 20;
-    private IEvent[] events = new IEvent[MAX_EVENTS];
+    private IEvent[] events = new IEvent[1];
     private int eventCount = 0;
 
     @Override
     public void addEvent(IEvent ievent) {
         if (ievent == null) {
             throw new IllegalArgumentException("Event cannot be null");
-        }
-        if (eventCount >= MAX_EVENTS) {
-            throw new IllegalStateException("Event list is full");
         }
         if(findEvent(ievent) != -1){
             throw new IllegalArgumentException("Event already exists");
@@ -33,8 +29,7 @@ public class EventManager implements IEventManager {
             expandEvent();
         }
 
-        events[eventCount] = ievent;
-        eventCount++;
+        events[eventCount++] = ievent;
         System.out.println("Event added: " + ievent);
     }
 
@@ -53,7 +48,6 @@ public class EventManager implements IEventManager {
         for(int i = 0; i < events.length; i++){
             newEvents[i] = events[i];
         }
-
         events = newEvents;
     }
 

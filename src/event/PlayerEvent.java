@@ -23,6 +23,21 @@ public class PlayerEvent extends Event{
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof PlayerEvent)) {
+            return false;
+        }
+        PlayerEvent playerEvent = (PlayerEvent) obj;
+        return super.equals(obj) && player.equals(playerEvent.player);
     }
 }

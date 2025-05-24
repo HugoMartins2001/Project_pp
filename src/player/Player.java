@@ -13,6 +13,7 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
+import event.PlayerEvent;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -170,5 +171,20 @@ public class Player implements IPlayer, Cloneable {
     @Override
     public Player clone() throws CloneNotSupportedException {
         return (Player) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Player)) {
+            return false;
+        }
+        Player player = (Player) obj;
+        return name.equals(player.name) && birthdate.equals(player.birthdate) && clubCode.equals(player.clubCode);
     }
 }

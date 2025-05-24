@@ -17,6 +17,8 @@ import java.time.LocalDate;
 
 public class Importer {
 
+    private static final Random RANDOM = new Random();
+    
     public Player[] importPlayers(String filePath) throws IOException {
         try {
             FileReader file = new FileReader(filePath);
@@ -102,82 +104,75 @@ public class Importer {
     }
 
     private static float generateRandomHeight() {
-        Random random = new Random();
-        return 1.50f + random.nextFloat() * (2.00f - 1.50f);
+        return 1.50f + RANDOM.nextFloat() * (2.00f - 1.50f);
     }
 
     private static float generateRandomWeight() {
-        Random random = new Random();
-        return 60.00f + random.nextFloat() * (100.00f - 60.00f);
+        return 60.00f + RANDOM.nextFloat() * (100.00f - 60.00f);
     }
 
     private static int generateRandomSpeed(PlayerPosition position) {
-        Random random = new Random();
         switch (position.getDescription().toUpperCase()) {
             case "GOALKEEPER":
-                return random.nextInt(20) + 30;
+                return RANDOM.nextInt(20) + 30;
             case "DEFENDER":
-                return random.nextInt(40) + 30;
+                return RANDOM.nextInt(40) + 30;
             case "MIDFIELDER":
-                return random.nextInt(60) + 30;
+                return RANDOM.nextInt(60) + 30;
             case "FORWARD":
-                return random.nextInt(70) + 30;
+                return RANDOM.nextInt(70) + 30;
             default:
                 return 0;
         }
     }
 
     private static int generateRandomStamina(PlayerPosition position) {
-        Random random = new Random();
         switch (position.getDescription().toUpperCase()) {
             case "GOALKEEPER":
-                return random.nextInt(30) + 30;
+                return RANDOM.nextInt(30) + 30;
             case "DEFENDER":
-                return random.nextInt(60) + 30;
+                return RANDOM.nextInt(60) + 30;
             case "MIDFIELDER":
-                return random.nextInt(70) + 30;
+                return RANDOM.nextInt(70) + 30;
             case "FORWARD":
-                return random.nextInt(70) + 30;
+                return RANDOM.nextInt(70) + 30;
             default:
                 return 0;
         }
     }
 
     private static int generateRandomShooting(PlayerPosition position) {
-        Random random = new Random();
         switch (position.getDescription().toUpperCase()) {
             case "GOALKEEPER":
-                return random.nextInt(20) + 30;
+                return RANDOM.nextInt(20) + 30;
             case "DEFENDER":
-                return random.nextInt(50) + 30;
+                return RANDOM.nextInt(50) + 30;
             case "MIDFIELDER":
-                return random.nextInt(70) + 30;
+                return RANDOM.nextInt(70) + 30;
             case "FORWARD":
-                return random.nextInt(70) + 30;
+                return RANDOM.nextInt(70) + 30;
             default:
                 return 0;
         }
     }
 
     private static int generateRandomPassing(PlayerPosition position) {
-        Random random = new Random();
         switch (position.getDescription().toUpperCase()) {
             case "GOALKEEPER":
-                return random.nextInt(60) + 30;
+                return RANDOM.nextInt(60) + 30;
             case "DEFENDER":
-                return random.nextInt(60) + 30;
+                return RANDOM.nextInt(60) + 30;
             case "MIDFIELDER":
-                return random.nextInt(60) + 30;
+                return RANDOM.nextInt(60) + 30;
             case "FORWARD":
-                return random.nextInt(60) + 30;
+                return RANDOM.nextInt(60) + 30;
             default:
                 return 0;
         }
     }
 
     private static PreferredFoot generateRandomPreferredFoot() {
-        Random random = new Random();
-        int chance = random.nextInt(10) + 1; // 1 a 10
+        int chance = RANDOM.nextInt(10) + 1; // 1 a 10
 
         if (chance <= 2) {
             return PreferredFoot.Both;

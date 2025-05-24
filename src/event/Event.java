@@ -14,8 +14,8 @@ import java.io.IOException;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 public class Event implements IEvent{
-    private String description;
-    private int minute;
+    private final String description;
+    private final int minute;
     
     public Event(String description, int minute){
         this.description = description;
@@ -40,5 +40,20 @@ public class Event implements IEvent{
 
     public String toString(){
         return "Event: {" + "description=" + description + ", minute=" + minute + '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Event)) {
+            return false;
+        }
+        Event event = (Event) obj;
+        return minute == event.minute && description.equals(event.description);
     }
 }
