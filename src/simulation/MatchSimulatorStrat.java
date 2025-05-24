@@ -2,16 +2,33 @@ package simulation;
 
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import event.*;
+import match.Match;
 
 import java.util.Random;
 
-public class MatchSimulatorStrategy {
+public class MatchSimulatorStrat implements MatchSimulatorStrategy{
 
     private final Random rng = new Random();
 
     public void simulate(IMatch match) {
+        if(match == null) {
+            throw new IllegalArgumentException("Match cannot be null");
+        }
+        if (!((Match)match).isInitialized()) {
+            throw new IllegalStateException("Match is not initialized");
+        }
+
+        if (match.isPlayed()) {
+            throw new IllegalStateException("Match has already been played");
+        }
+
+        if (!match.isValid()) {
+            throw new IllegalStateException("Match is not valid");
+        }
+
         match.addEvent(new StartEvent(0));
 
         IClub homeTeam = match.getHomeClub();
@@ -53,18 +70,23 @@ public class MatchSimulatorStrategy {
             IPlayer selectedPlayer = players[rng.nextInt(players.length)];
             double eventRoll = rng.nextDouble();
 
-            if (eventRoll < 0.04) {
-                match.addEvent(new YellowCardEvent(selectedPlayer,  minute));
-            } else if (eventRoll < 0.02) {
+            if (eventRoll < 0.02) {
                 match.addEvent(new RedCardEvent(selectedPlayer, minute));
-            } else if (eventRoll < 0.05) {
-                match.addEvent(new OffSideEvent(selectedPlayer, minute));
-            } else if (eventRoll < 0.03) {
+            }
+            else if (eventRoll < 0.05) {
                 match.addEvent(new PenaltiesEvent(selectedPlayer, minute));
-            } else if (eventRoll < 0.06) {
-                match.addEvent(new CornerKickEvent(selectedPlayer, minute));
-            } else if (eventRoll < 0.04) {
+            }
+            else if (eventRoll < 0.09) {
+                match.addEvent(new YellowCardEvent(selectedPlayer, minute));
+            }
+            else if (eventRoll < 0.14) {
                 match.addEvent(new FreeKickEvent(selectedPlayer, minute));
+            }
+            else if (eventRoll < 0.2) {
+                match.addEvent(new OffSideEvent(selectedPlayer, minute));
+            }
+            else if (eventRoll < 0.27) {
+                match.addEvent(new CornerKickEvent(selectedPlayer, minute));
             }
         }
     }

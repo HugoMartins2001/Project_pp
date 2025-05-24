@@ -11,7 +11,7 @@ package main;
 
 import data.Importer;
 import player.Player;
-import simulation.MatchSimulatorStrategy;
+import simulation.MatchSimulatorStrat;
 import team.Club;
 
 import java.io.IOException;

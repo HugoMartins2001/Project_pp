@@ -33,7 +33,7 @@ public class Player implements IPlayer, Cloneable {
     private float height;
     private PlayerPosition position;
     private PreferredFoot foot;
-    private String club;
+    private String clubCode;
 
     public Player(String name, LocalDate birthdate, String nationality,
                   String photo, int number, int specPassing, int specShooting,
@@ -52,7 +52,7 @@ public class Player implements IPlayer, Cloneable {
         this.height = height;
         this.position = position;
         this.foot = foot;
-        this.club = clubCode;
+        this.clubCode = clubCode;
     }
 
     @Override
@@ -79,6 +79,9 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public void setPosition(IPlayerPosition iPlayerPosition) {
+        if(iPlayerPosition == null){
+            throw new IllegalArgumentException("Position cannot be null");
+        }
         this.position = (PlayerPosition) iPlayerPosition;
     }
 
@@ -133,7 +136,7 @@ public class Player implements IPlayer, Cloneable {
     }
 
     public String getClub() {
-        return club;
+        return clubCode;
     }
 
     //TODO: Fazer no final
@@ -158,12 +161,13 @@ public class Player implements IPlayer, Cloneable {
         s += "Height: " + height + "\n";
         s += "Weight: " + weight + "\n";
         s += "Prefered foot: " + foot + "\n";
-        s += "Club: " + club + "\n";
+        s += "Club: " + clubCode + "\n";
         s += "----------------------------------------\n";
 
         return s;
     }
 
+    @Override
     public Player clone() throws CloneNotSupportedException {
         return (Player) super.clone();
     }

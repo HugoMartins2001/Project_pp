@@ -24,6 +24,16 @@ public class Team implements ITeam {
     private IFormation formation;
     private IPlayer[] playersTeam;
 
+    public Team(IClub club) {
+        if (club == null) {
+            throw new IllegalArgumentException("The club is not defined!");
+        }
+        this.club = club;
+        this.formation = null;
+        this.playersTeam = null;
+    }
+
+
     @Override
     public IClub getClub() {
         return club;
@@ -39,6 +49,9 @@ public class Team implements ITeam {
 
     @Override
     public IPlayer[] getPlayers() {
+        if(playersTeam == null){
+            throw new IllegalStateException("There are no players in the team!");
+        }
         IPlayer[] playersClone = new IPlayer[playersTeam.length];
         try {
             for (int i = 0; i < playersTeam.length; i++) {
@@ -53,6 +66,9 @@ public class Team implements ITeam {
 
     @Override
     public void addPlayer(IPlayer player) {
+        if (!isValidPositionForFormation(player.getPosition())) {
+            throw new IllegalStateException("Too many players for position ");
+        }
         if(player == null) {
             throw new IllegalArgumentException("The player is not selected!");
         }
@@ -99,17 +115,25 @@ public class Team implements ITeam {
         return counter;
     }
 
-    //TODO falta fazer
     @Override
     public boolean isValidPositionForFormation(IPlayerPosition position) {
         if(position == null){
             throw new IllegalArgumentException("The position is not defined!");
         }
-        return true;
+        if(formation == null){
+            throw new IllegalStateException("The formation is not setted!");
+        }
+        if(((Formation)this.formation).getPositionFormation(position) >= getPositionCount(position)){
+            return true;
+        }
+        return false;
     }
 
     @Override
     public int getTeamStrength() {
+        if(playersTeam == null){
+            throw new IllegalStateException("There is no player in the team!");
+        }
         int teamStrength = 0;
         int playerCount = 0;
         for (IPlayer p : playersTeam) {
@@ -131,6 +155,7 @@ public class Team implements ITeam {
             throw new IllegalArgumentException("The formation is not setted!");
         }
         this.formation = formation;
+        this.playersTeam = new IPlayer[11];
     }
 
     //TODO FALTA FAZER

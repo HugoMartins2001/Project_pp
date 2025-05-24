@@ -175,7 +175,11 @@ public class Club implements IClub {
 
     public void setPlayers(Player[] players) {
         this.players = players;
-        this.playerCount = players.length;
+        int count = 0;
+        for (Player p : players) {
+            if (p != null) count++;
+        }
+        this.playerCount = count;
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import event.EventManager;
 import event.GoalEvent;
 import event.PlayerEvent;
 
@@ -27,11 +28,18 @@ public class Match implements IMatch {
     private IClub homeClub;
     private ITeam awayTeam;
     private ITeam homeTeam;
-    private ITeam winnerTeam;
     private int round;
     private IEventManager events;
     private boolean isPlayed;
 
+    public Match(IClub homeClub, IClub awayClub, int round) {
+        if(homeClub == null || awayClub == null) throw new IllegalArgumentException("Clubs cannot be null");
+        this.homeClub = homeClub;
+        this.awayClub = awayClub;
+        this.round = round;
+        this.events = new EventManager();
+        this.isPlayed = false;
+    }
 
     @Override
     public IClub getHomeClub() {
@@ -49,7 +57,6 @@ public class Match implements IMatch {
         return awayClub;
     }
 
-    //TODO: AVISAR O STOR SOBRE RETORNAR MATCH TIME!!!
     @Override
     public boolean isPlayed() {
         return isPlayed;
@@ -93,6 +100,10 @@ public class Match implements IMatch {
         return total;
     }
 
+    public boolean isInitialized() {
+        return homeClub != null && awayClub != null && homeTeam != null && awayTeam != null;
+    }
+
     @Override
     public boolean isValid() {
         if (awayTeam == null || homeTeam == null || homeTeam.equals(awayTeam)) {
@@ -107,21 +118,23 @@ public class Match implements IMatch {
         if (!isPlayed) {
             throw new IllegalStateException("The match has not been played yet");
         }
-        if (winnerTeam == null) {
-            throw new IllegalStateException("The match has not a winner yet");
+        if (homeTeam == null || awayTeam == null) {
+            throw new IllegalStateException("Teams are not set.");
+        }
+        if (!isValid()) {
+            throw new IllegalStateException("The match is not valid.");
         }
 
         int homeGoals = getTotalByEvent(GoalEvent.class, homeClub);
         int awayGoals = getTotalByEvent(GoalEvent.class, awayClub);
 
         if (homeGoals > awayGoals) {
-            winnerTeam = homeTeam;
+            return homeTeam;
         } else if (awayGoals > homeGoals) {
-            winnerTeam = awayTeam;
+            return awayTeam;
         } else {
-            winnerTeam = null;
+            return null;
         }
-        return winnerTeam;
     }
 
     @Override
@@ -169,7 +182,6 @@ public class Match implements IMatch {
     public void reset(){
         awayTeam = null;
         homeTeam = null;
-        winnerTeam = null;
         isPlayed = false;
     }
 }

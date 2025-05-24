@@ -9,6 +9,7 @@
  */
 package team;
 
+import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IFormation;
 
 public class Formation implements IFormation {
@@ -17,6 +18,16 @@ public class Formation implements IFormation {
     private int forwards;
     private int defenders;
     private int midfielders;
+
+    public Formation(String displayName, int defenders, int midfielders, int forwards) {
+        if (defenders + midfielders + forwards != 10) {
+            throw new IllegalArgumentException("A formation must have exactly 10 players (excluding the goalkeeper).");
+        }
+        this.displayName = displayName;
+        this.defenders = defenders;
+        this.midfielders = midfielders;
+        this.forwards = forwards;
+    }
 
     public int getDefenders() {
         return defenders;
@@ -41,6 +52,20 @@ public class Formation implements IFormation {
         }
 
         return calculateAdvantageTacticalValue((Formation) formation);
+    }
+
+    public int getPositionFormation(IPlayerPosition playerPosition) {
+        String description = playerPosition.getDescription();
+
+        if (description.equals("Defender")) {
+            return this.defenders;
+        } else if (description.equals("Midfielder")) {
+            return this.midfielders;
+        } else if (description.equals("Forward")) {
+            return this.forwards;
+        } else {
+            return 1;
+        }
     }
 
     private int calculateAdvantageTacticalValue(Formation formation) {

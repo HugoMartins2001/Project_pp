@@ -17,19 +17,22 @@ import java.io.IOException;
 
 public class Schedule implements ISchedule {
     private IMatch[][] matches;
-    private ISchedule schedule;
     private int numberOfRounds;
+
+    public Schedule(IMatch[][] matches) {
+        if (matches == null) throw new IllegalArgumentException("Matches cannot be null");
+        this.matches = matches;
+        this.numberOfRounds = matches.length;
+    }
+
 
     @Override
     public IMatch[] getMatchesForRound(int round) {
         if (round < 0 || round >= matches.length) {
-            throw new IllegalStateException("Invalid Round");
-        }
-        if (schedule == null) {
-            throw new IllegalStateException("Schedule is not initialized");
+            throw new IllegalArgumentException("Invalid round number");
         }
         if (matches[round] == null) {
-            throw new IllegalStateException("Matches are not set");
+            throw new IllegalStateException("Matches for round are not set");
         }
         return matches[round];
     }
@@ -39,21 +42,28 @@ public class Schedule implements ISchedule {
         if (team == null) {
             throw new IllegalArgumentException("Team cannot be null");
         }
-        if (schedule == null) {
-            throw new IllegalStateException("Schedule is not initialized");
-        }
-        if (matches.length == 0) {
+        if (matches == null || matches.length == 0) {
             throw new IllegalStateException("Matches are not set");
         }
 
-        IMatch[] teamMatches = new IMatch[matches.length];
-        int counter = 0;
-
+        int count = 0;
         for (IMatch[] round : matches) {
             if (round != null) {
                 for (IMatch match : round) {
                     if (match.getHomeTeam().equals(team) || match.getAwayTeam().equals(team)) {
-                        teamMatches[counter++] = match;
+                        count++;
+                    }
+                }
+            }
+        }
+
+        IMatch[] teamMatches = new IMatch[count];
+        int index = 0;
+        for (IMatch[] round : matches) {
+            if (round != null) {
+                for (IMatch match : round) {
+                    if (match.getHomeTeam().equals(team) || match.getAwayTeam().equals(team)) {
+                        teamMatches[index++] = match;
                     }
                 }
             }
@@ -69,15 +79,17 @@ public class Schedule implements ISchedule {
 
     @Override
     public IMatch[] getAllMatches() {
-        if (schedule == null) {
-            throw new IllegalStateException("Schedule is not initialized");
+        if (matches == null) {
+            throw new IllegalStateException("Matches are not set");
         }
+
         int totalMatches = 0;
         for (IMatch[] round : matches) {
             if (round != null) {
                 totalMatches += round.length;
             }
         }
+
         IMatch[] allMatches = new IMatch[totalMatches];
         int index = 0;
         for (IMatch[] round : matches) {
@@ -87,8 +99,10 @@ public class Schedule implements ISchedule {
                 }
             }
         }
+
         return allMatches;
     }
+
 
     @Override
     public void setTeam(ITeam iTeam, int round) {
@@ -96,10 +110,7 @@ public class Schedule implements ISchedule {
             throw new IllegalArgumentException("Team cannot be null");
         }
         if (round < 0 || round >= matches.length) {
-            throw new IllegalStateException("Invalid Round");
-        }
-        if (schedule == null) {
-            throw new IllegalStateException("Schedule is not initialized");
+            throw new IllegalArgumentException("Invalid round number");
         }
         if (matches[round] == null) {
             throw new IllegalStateException("Matches for round " + round + " are not set");
@@ -117,10 +128,12 @@ public class Schedule implements ISchedule {
                 break;
             }
         }
+
         if (!teamFound) {
             throw new IllegalStateException("Team is not scheduled for this round");
         }
     }
+
 
     @Override
     public void exportToJson() throws IOException {
