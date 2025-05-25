@@ -17,19 +17,19 @@ public class main {
         int Options;
 
         do {
-            Options = Menus.showMenu(input);
+            Options = Menus.mainMenu(input);
             switch (Options) {
                 case 1:
-                    Menus.startgame(input);
+                    Menus.startGameMenu(input);
                     break;
                 case 2:
-                    Menus.Club();
+                    Menus.clubMenu();
                     break;
                 case 3:
-                    Menus.Player();
+                    Menus.playerMenu();
                     break;
                 case 4:
-                    Menus.credits(input);
+                    Menus.creditsMenu(input);
                     break;
                 case 0:
                     break;

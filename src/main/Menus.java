@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class Menus {
 
-    public static int showMenu(Scanner input) {
+    public static int mainMenu(Scanner input) {
         int option = 0;
         boolean verifyInput = false;
 
@@ -31,7 +31,7 @@ public class Menus {
             System.out.println("|-------------------------------------|");
             System.out.println("|  Option 1 - Start game              |");
             System.out.println("|  Option 2 - All Clubs               |");
-            System.out.println("|  Option 3 - All Players             |");
+            System.out.println("|  Option 3 - All Players per Club    |");
             System.out.println("|  Option 4 - Credits                 |");
             System.out.println("|  Option 0 - Exit                    |");
             System.out.println("|-------------------------------------|");
@@ -48,7 +48,7 @@ public class Menus {
         return option;
     }
 
-    public static void startgame(Scanner input) {
+    public static void startGameMenu(Scanner input) {
         int option;
         boolean verifyInput = false;
 
@@ -171,7 +171,8 @@ public class Menus {
                         verifyInput = false;
                         break;
                     case 2:
-                        //loadGame(input);
+                        startSeasonMenu(input);
+                        verifyInput = false;
                         break;
                     case 3:
                         Functions.addClub(input, season);
@@ -209,7 +210,46 @@ public class Menus {
 
     }
 
-    public static void credits(Scanner input) {
+    public static void startSeasonMenu(Scanner input) {
+        int option;
+        boolean verifyInput = false;
+
+        do {
+            System.out.println("=======================================");
+            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println("=======================================");
+            System.out.println("                                       ");
+            System.out.println("##------------Start Season-----------##");
+            System.out.println("|-------------------------------------|");
+            System.out.println("|  Option 1 - Friendly Match          |");
+            System.out.println("|  Option 2 - Start Season            |");
+            System.out.println("|  Option 3 - Add Clubs (Manually)    |");
+            System.out.println("|  Option 4 - Add Clubs (Automatic)   |");
+            System.out.println("|  Option 5 - Remove Clubs (Manually) |");
+            System.out.println("|  Option 6 - Remove Clubs (Automatic)|");
+            System.out.println("|  Option 7 - List Season Clubs       |");
+            System.out.println("|  Option 8 - Reset Season            |");
+            System.out.println("|  Option 0 - Exit                    |");
+            System.out.println("|-------------------------------------|");
+            System.out.println("                                       ");
+            System.out.println("Press 0 to exit the credits!");
+            try {
+                option = input.nextInt();
+                verifyInput = true;
+                switch (option) {
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Select a valid option!");
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Select a valid option!");
+                input.next();
+            }
+        } while (!verifyInput);
+    }
+
+    public static void creditsMenu(Scanner input) {
         int option;
         boolean verifyInput = false;
 
@@ -246,7 +286,7 @@ public class Menus {
         } while (!verifyInput);
     }
 
-    public static void Club() {
+    public static void clubMenu() {
         int option;
         boolean verifyInput = false;
 
@@ -287,7 +327,7 @@ public class Menus {
         } while (!verifyInput);
     }
 
-    public static void Player() {
+    public static void playerMenu() {
         int option;
         boolean verifyInput = false;
 

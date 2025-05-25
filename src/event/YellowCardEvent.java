@@ -10,8 +10,6 @@
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
-import com.ppstudios.footballmanager.api.contracts.team.ITeam;
-
 import java.io.IOException;
 
 public class YellowCardEvent extends PlayerEvent {
@@ -23,7 +21,7 @@ public class YellowCardEvent extends PlayerEvent {
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
