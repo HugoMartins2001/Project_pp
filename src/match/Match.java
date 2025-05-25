@@ -16,6 +16,7 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import event.Event;
 import event.EventManager;
 import event.GoalEvent;
 import event.PlayerEvent;
@@ -171,7 +172,7 @@ public class Match implements IMatch {
 
     @Override
     public IEvent[] getEvents() {
-        return events.getEvents();
+        return ((EventManager)events).getEventsOrderedByMinute();
     }
 
     @Override

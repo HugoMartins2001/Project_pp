@@ -57,7 +57,23 @@ public class EventManager implements IEventManager {
         for(int i = 0; i < eventCount; i++){
             result[i] = events[i];
         }
+        return result;
+    }
 
+    public IEvent[] getEventsOrderedByMinute() {
+        IEvent[] result = new IEvent[eventCount];
+        for (int i = 0; i < eventCount; i++) {
+            result[i] = events[i];
+        }
+        for (int i = 0; i < eventCount - 1; i++) {
+            for (int j = 0; j < eventCount - i - 1; j++) {
+                if (result[j].getMinute() > result[j + 1].getMinute()) {
+                    IEvent temp = result[j];
+                    result[j] = result[j + 1];
+                    result[j + 1] = temp;
+                }
+            }
+        }
         return result;
     }
 

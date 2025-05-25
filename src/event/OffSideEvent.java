@@ -17,7 +17,7 @@ import java.io.IOException;
 public class OffSideEvent extends PlayerEvent {
 
     public OffSideEvent(IPlayer player, int minute) {
-        super( player, minute, "Offside by: " + player.getName() + "at" + minute + " minutes");
+        super( player, minute, "Offside by: " + player.getName() + " at " + minute + " minutes");
     }
 
     @Override

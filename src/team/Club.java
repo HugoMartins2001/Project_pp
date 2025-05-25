@@ -39,7 +39,7 @@ public class Club implements IClub {
         this.stadiumName = stadiumName;
         this.clubLogo = clubLogo;
         this.dateOfFoundation = dateOfFoundation;
-        this.players = new IPlayer[25];
+        this.players = new IPlayer[30];
         this.playerCount = 0;
     }
 
@@ -54,7 +54,9 @@ public class Club implements IClub {
         IPlayer[] playersClone = new IPlayer[players.length];
         try {
             for (int i = 0; i < players.length; i++) {
-                playersClone[i] = ((Player) players[i]).clone();
+                if(players[i] != null) {
+                    playersClone[i] = ((Player) players[i]).clone();
+                }
             }
         } catch (CloneNotSupportedException e) {
             System.out.println("Error while cloning players!");

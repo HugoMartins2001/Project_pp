@@ -55,7 +55,9 @@ public class Team implements ITeam {
         IPlayer[] playersClone = new IPlayer[playersTeam.length];
         try {
             for (int i = 0; i < playersTeam.length; i++) {
-                playersClone[i] = ((Player) playersTeam[i]).clone();
+                if(playersTeam[i] != null){
+                    playersClone[i] = ((Player) playersTeam[i]).clone();
+                }
             }
         } catch (CloneNotSupportedException e) {
             System.out.println("Error while cloning players!");
@@ -156,6 +158,39 @@ public class Team implements ITeam {
         }
         this.formation = formation;
         this.playersTeam = new IPlayer[11];
+    }
+
+    public void setAutomaticTeam(IPlayer[] players, Formation formation) {
+        if(players == null || formation == null) {
+            throw new IllegalArgumentException("Players and formation must be set!");
+        }
+        int keepercount = 0;
+        int defcount = 0;
+        int midcount = 0;
+        int forcount = 0;
+
+        for (IPlayer player : players) {
+            if (player == null || player.getPosition() == null) {
+                continue;
+            }
+
+            String pos = player.getPosition().getDescription();
+            if (pos.equals("Goalkeeper") && keepercount < 1) {
+                addPlayer(player);
+                keepercount++;
+            }
+            else if (pos.equals("Defender") && defcount < formation.getDefenders()) {
+                addPlayer(player);
+                defcount++;
+            } else if (pos.equals("Midfielder") && midcount < formation.getMidfielders()) {
+                addPlayer(player);
+                midcount++;
+            } else if (pos.equals("Forward") && forcount < formation.getForwards()) {
+                addPlayer(player);
+                forcount++;
+            }
+
+        }
     }
 
     //TODO FALTA FAZER

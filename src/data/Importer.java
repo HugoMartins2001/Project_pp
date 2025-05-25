@@ -1,5 +1,6 @@
 package data;
 
+import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
 import player.Player;
 import player.PlayerPosition;
@@ -8,7 +9,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.util.Locale;
 import java.util.Random;
 
 import java.io.FileReader;
@@ -203,6 +203,12 @@ public class Importer {
 
 
                 clubs[i] = new Club(name, code, clubNationality, stadiumName, clubLogo, dateOfFoundation);
+                IPlayer[] players = importPlayers("./files/players/" + code + ".json");
+                for (IPlayer player : players) {
+                    if (player != null) {
+                        clubs[i].addPlayer(player);
+                    }
+                }
             }
 
             file.close();

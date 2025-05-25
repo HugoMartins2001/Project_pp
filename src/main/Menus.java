@@ -10,14 +10,9 @@
 
 package main;
 
-import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
-import data.Importer;
+import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import league.League;
 import league.Season;
-import team.Club;
-import player.Player;
-
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -34,11 +29,10 @@ public class Menus {
             System.out.println("                                       ");
             System.out.println("##-------------Main Menu-------------##");
             System.out.println("|-------------------------------------|");
-            System.out.println("|  Option 1 - Create a new League     |");
-            System.out.println("|  Option 2 - Load a league           |");
-            System.out.println("|  Option 3 - Club                    |");
-            System.out.println("|  Option 4 - Player                  |");
-            System.out.println("|  Option 5 - Credits                 |");
+            System.out.println("|  Option 1 - Start game              |");
+            System.out.println("|  Option 2 - All Clubs               |");
+            System.out.println("|  Option 3 - All Players             |");
+            System.out.println("|  Option 4 - Credits                 |");
             System.out.println("|  Option 0 - Exit                    |");
             System.out.println("|-------------------------------------|");
             System.out.println("                                       ");
@@ -54,13 +48,13 @@ public class Menus {
         return option;
     }
 
-    public static void startgame(Scanner input, League league) {
+    public static void startgame(Scanner input) {
         int option;
         boolean verifyInput = false;
 
         do {
             System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##------------Start Game-------------##");
@@ -75,7 +69,10 @@ public class Menus {
                 verifyInput = true;
                 switch (option) {
                     case 1:
-                        //NewGame();
+                        System.out.print("Insert a League Name:  ");
+                        String leagueName = input.next();
+                        League newLeague = new League(leagueName);
+                        leagueMenu(input , newLeague);
                         verifyInput = false;
                         break;
                     case 2:
@@ -94,9 +91,123 @@ public class Menus {
 
     }
 
+    public static void leagueMenu(Scanner input, League league) {
+        int option;
+        boolean verifyInput = false;
+
+        do {
+            System.out.println("=======================================");
+            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println("=======================================");
+            System.out.println("                                       ");
+            System.out.println("##------------Menu League------------##");
+            System.out.println("|-------------------------------------|");
+            System.out.println("|  Option 1 - New Season              |");
+            System.out.println("|  Option 2 - Load Season             |");
+            System.out.println("|  option 0 - Back                    |");
+            System.out.println("|-------------------------------------|");
+            try {
+                option = input.nextInt();
+                verifyInput = true;
+                switch (option) {
+                    case 0:
+                        return;
+                    case 1:
+                        Season newSeason = Functions.createSeason(input);
+                        league.createSeason(newSeason);
+                        System.out.println("New season created: " + newSeason.getName());
+                        verifyInput = false;
+                        break;
+                    case 2:
+                        ISeason loadedSeason = Functions.loadSeason(input, league);
+                        if(loadedSeason == null) {
+                            break;
+                        }
+                        seasonMenu(input, (Season)loadedSeason);
+                        verifyInput = false;
+                        break;
+                    default:
+                        System.out.println("Select a valid option!");
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Select a valid option!");
+                input.next();
+            }
+        } while (!verifyInput);
+    }
+
     //public static int loadGame(Scanner input) {}
 
     //public static int createTeamAndPlayers(Scanner input) {}
+
+    public static void seasonMenu(Scanner input, Season season) {
+        int option;
+        boolean verifyInput = false;
+
+        do {
+            System.out.println("=======================================");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
+            System.out.println("=======================================");
+            System.out.println("                                       ");
+            System.out.println("##------------Start Game-------------##");
+            System.out.println("|-------------------------------------|");
+            System.out.println("|  Option 1 - Friendly Match          |");
+            System.out.println("|  Option 2 - Start Season            |");
+            System.out.println("|  Option 3 - Add Clubs (Manually)    |");
+            System.out.println("|  Option 4 - Add Clubs (Automatic)   |");
+            System.out.println("|  Option 5 - Remove Clubs (Manually) |");
+            System.out.println("|  Option 6 - Remove Clubs (Automatic)|");
+            System.out.println("|  Option 7 - List Season Clubs       |");
+            System.out.println("|  Option 8 - Reset Season            |");
+            System.out.println("|  Option 0 - Exit                    |");
+            System.out.println("|-------------------------------------|");
+            System.out.println("                                       ");
+            try {
+                option = input.nextInt();
+                verifyInput = true;
+                switch (option) {
+                    case 1:
+                        Functions.startFriendlyMatch(input, season);
+                        verifyInput = false;
+                        break;
+                    case 2:
+                        //loadGame(input);
+                        break;
+                    case 3:
+                        Functions.addClub(input, season);
+                        verifyInput = false;
+                        break;
+                    case 4:
+                        Functions.addAllClubsToSeason(season);
+                        verifyInput = false;
+                        break;
+                    case 5:
+                        Functions.removeClub(input, season);
+                        verifyInput = false;
+                        break;
+                    case 6:
+                        Functions.removeAllClubsToSeason(season);
+                        verifyInput = false;
+                        break;
+                    case 7:
+                        Functions.listSeasonClubs(season);
+                        verifyInput = false;
+                        break;
+                    case 8:
+                        //loadGame(input);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Select a valid option!");
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Select a valid option!");
+                input.next();
+            }
+        } while (!verifyInput);
+
+    }
 
     public static void credits(Scanner input) {
         int option;
@@ -157,11 +268,11 @@ public class Menus {
                 verifyInput = true;
                 switch (option) {
                     case 1:
-                        viewAllClubs();
+                        Functions.viewAllClubs();
                         verifyInput = false;
                         break;
                     case 2:
-                        viewClub();
+                        Functions.viewClub();
                         verifyInput = false;
                         break;
                     case 0:
@@ -174,88 +285,6 @@ public class Menus {
                 input.next();
             }
         } while (!verifyInput);
-    }
-
-    public static void viewAllClubs() {
-        System.out.println("=======================================");
-        System.out.println("PPFootballManager v1.0 - Season 24/25");
-        System.out.println("=======================================");
-
-        try {
-            Importer importer = new Importer();
-            Club[] clubs = importer.importClubs("files/clubs.json");
-
-            System.out.println("\nView Available Clubs:");
-            System.out.println("---------------------------------------");
-
-            for (Club club : clubs) {
-                if (club != null) {
-                    System.out.printf("Name: %-20s | Country: %-15s | Stadium: %s%n",
-                            club.getName(),
-                            club.getCountry(),
-                            club.getStadiumName());
-                }
-            }
-
-            System.out.println("---------------------------------------");
-        } catch (IOException error) {
-            System.out.println("Error while loading the clubs: " + error.getMessage());
-        }
-    }
-
-    public static void viewClub() {
-        int option;
-        Scanner input = new Scanner(System.in);
-
-        do {
-            System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
-            System.out.println("=======================================");
-            System.out.println("Enter the name of the club you want to view:");
-            String clubCode = input.nextLine();
-
-            try {
-                Importer importer = new Importer();
-                Club[] clubs = importer.importClubs("files/clubs.json");
-
-                boolean found = false;
-                for (Club club : clubs) {
-                    if (club.getCode().equalsIgnoreCase(clubCode)) {
-                        System.out.println("Club Details:");
-                        System.out.println("Name: " + club.getName());
-                        System.out.println("Country: " + club.getCountry());
-                        System.out.println("Stadium: " + club.getStadiumName());
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    System.out.println("Club not found!");
-                }
-            } catch (IOException error) {
-                System.out.println("Error while loading the clubs: " + error.getMessage());
-            }
-
-            System.out.println("\n1- Do you want to view another club?");
-            System.out.println("0 - Back to the previous menu");
-            System.out.println("Enter your option:");
-
-            while (!input.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a number.");
-                input.next();
-            }
-            option = input.nextInt();
-            input.nextLine();
-
-            if (option == 0) {
-                return;
-            }
-
-            if (option != 1 && option != 0) {
-                System.out.println("Select a valid option!");
-            }
-        } while (option == 1);
     }
 
     public static void Player() {
@@ -280,11 +309,11 @@ public class Menus {
                 verifyInput = true;
                 switch (option) {
                     case 1:
-                        viewAllPlayers();
+                        Functions.viewAllPlayers();
                         verifyInput = false;
                         break;
                     case 2:
-                        viewPlayer();
+                        Functions.viewPlayer();
                         verifyInput = false;
                         break;
                     case 0:
@@ -298,163 +327,4 @@ public class Menus {
             }
         } while (!verifyInput);
     }
-
-    public static void viewAllPlayers() {
-        Scanner input = new Scanner(System.in);
-        System.out.println("=======================================");
-        System.out.println("PPFootballManager v1.0 - Season 24/25");
-        System.out.println("=======================================");
-
-        try {
-            Importer importer = new Importer();
-            Club[] clubs = importer.importClubs("files/clubs.json");
-
-            System.out.println("\nAvailable Clubs:");
-            System.out.println("---------------------------------------");
-            for (Club club : clubs) {
-                System.out.println("Code: " + club.getCode() + " | Name: " + club.getName());
-            }
-
-            System.out.println("\nEnter your club code to see your players:");
-            String clubCode = input.nextLine().toUpperCase();
-
-            boolean found = false;
-            for (Club club : clubs) {
-                if (club.getCode().equalsIgnoreCase(clubCode)) {
-                    found = true;
-                    Player[] players = importer.importPlayers("./files/players/" + club.getCode() + ".json");
-                    club.setPlayers(players);
-
-                    System.out.println("\nPlayers From " + club.getName() + ":");
-                    System.out.println("---------------------------------------");
-                    for (IPlayer player : club.getPlayers()) {
-                        if (player != null) {
-                            System.out.printf("Name: %-20s | Position: %-12s | Number: %d%n",
-                                    player.getName(),
-                                    player.getPosition().getDescription(),
-                                    player.getNumber());
-                        }
-                    }
-                    System.out.println("---------------------------------------");
-                    break;
-                }
-            }
-
-            if (!found) {
-                System.out.println("Club not found!");
-            }
-
-        } catch (IOException error) {
-            error.printStackTrace();
-            System.out.println("Error while loading data: " + error.getMessage());
-        }
-    }
-
-    public static void viewPlayer() {
-        int option;
-        Scanner input = new Scanner(System.in);
-
-        do {
-            System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
-            System.out.println("=======================================");
-            System.out.println("\nAvailable Clubs:");
-            System.out.println("---------------------------------------");
-
-            try {
-                Importer importer = new Importer();
-                Club[] clubs = importer.importClubs("files/clubs.json");
-
-                for (Club club : clubs) {
-                    System.out.println("Code: " + club.getCode() + " | Name: " + club.getName());
-                }
-
-                System.out.println("\nEnter club code to view players:");
-                String clubCode = input.nextLine().toUpperCase();
-
-                boolean found = false;
-                for (Club club : clubs) {
-                    if (club.getCode().equalsIgnoreCase(clubCode)) {
-                        found = true;
-                        try {
-                            Player[] players = importer.importPlayers("./files/players/" + club.getCode() + ".json");
-                            club.setPlayers(players);
-
-                            System.out.println("\nPlayers from " + club.getName() + ":");
-                            System.out.println("---------------------------------------");
-                            for (IPlayer player : club.getPlayers()) {
-                                if (player != null) {
-                                    System.out.printf("Name: %-20s | Number: %d%n",
-                                            player.getName(),
-                                            player.getNumber());
-                                }
-                            }
-
-                            System.out.println("\nEnter player number to see details (0 to skip):");
-                            int playerNumber = input.nextInt();
-                            input.nextLine();
-
-                            if (playerNumber != 0) {
-                                boolean playerFound = false;
-                                for (IPlayer player : club.getPlayers()) {
-                                    if (player != null && player.getNumber() == playerNumber) {
-                                        playerFound = true;
-                                        System.out.println("\nPlayer Details:");
-                                        System.out.println("---------------------------------------");
-                                        System.out.println("Name: " + player.getName());
-                                        System.out.println("Number: " + player.getNumber());
-                                        System.out.println("Position: " + player.getPosition().getDescription());
-                                        System.out.println("Age: " + player.getAge());
-                                        System.out.println("Nationality: " + player.getNationality());
-                                        System.out.println("Height: " + String.format("%.2f", player.getHeight()) + "m");
-                                        System.out.println("Weight: " + String.format("%.2f", player.getWeight()) + "kg");
-                                        System.out.println("Preferred Foot: " + player.getPreferredFoot());
-                                        System.out.println("\nAttributes:");
-                                        System.out.println("Shooting: " + player.getShooting());
-                                        System.out.println("Passing: " + player.getPassing());
-                                        System.out.println("Speed: " + player.getSpeed());
-                                        System.out.println("Stamina: " + player.getStamina());
-                                        System.out.println("---------------------------------------");
-                                        break;
-                                    }
-                                }
-                                if (!playerFound) {
-                                    System.out.println("Player not found!");
-                                }
-                            }
-                        } catch (IOException e) {
-                            System.out.println("Error loading players: " + e.getMessage());
-                        }
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    System.out.println("Club not found!");
-                }
-            } catch (IOException error) {
-                System.out.println("Error while loading players: " + error.getMessage());
-            }
-
-            System.out.println("\n1 - See another player status");
-            System.out.println("0 - Return to previous menu");
-            System.out.print("Enter your option: ");
-
-            while (!input.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a number.");
-                input.next();
-            }
-            option = input.nextInt();
-            input.nextLine();
-
-            if (option == 0) {
-                return;
-            }
-
-            if (option != 1 && option != 0) {
-                System.out.println("Invalid Option!");
-            }
-        } while (option == 1);
-    }
-
 }

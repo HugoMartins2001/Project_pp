@@ -9,16 +9,10 @@
  */
 package main;
 
-import data.Importer;
-import player.Player;
-import simulation.MatchSimulatorStrat;
-import team.Club;
-
-import java.io.IOException;
 import java.util.Scanner;
 
 public class main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int Options;
 
@@ -26,18 +20,15 @@ public class main {
             Options = Menus.showMenu(input);
             switch (Options) {
                 case 1:
-                    //Menus.startgame();
+                    Menus.startgame(input);
                     break;
                 case 2:
-                    //Menus.loadGame();
-                    break;
-                case 3:
                     Menus.Club();
                     break;
-                case 4:
+                case 3:
                     Menus.Player();
                     break;
-                case 5:
+                case 4:
                     Menus.credits(input);
                     break;
                 case 0:
@@ -46,6 +37,5 @@ public class main {
                     System.out.println("Select a valid option!");
             }
         } while (Options != 0);
-
     }
 }

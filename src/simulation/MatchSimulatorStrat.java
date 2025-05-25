@@ -12,6 +12,8 @@ import java.util.Random;
 public class MatchSimulatorStrat implements MatchSimulatorStrategy{
 
     private final Random rng = new Random();
+    private IPlayer[] redCardPlayers = new IPlayer[1];
+    private int redCardCount = 0;
 
     public void simulate(IMatch match) {
         if(match == null) {
@@ -34,32 +36,11 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy{
         IClub homeTeam = match.getHomeClub();
         IClub awayTeam = match.getAwayClub();
 
-        int homeGoals = generateRandomGoals();
-        int awayGoals = generateRandomGoals();
-
         generateMatchEvents(match, homeTeam);
         generateMatchEvents(match, awayTeam);
 
-        generateGoalsForTeam(match, homeTeam, homeGoals);
-        generateGoalsForTeam(match, awayTeam, awayGoals);
-
         match.addEvent(new EndEvent(90));
         match.setPlayed();
-    }
-
-    private int generateRandomGoals() {
-        return rng.nextInt(6) + rng.nextInt(6);
-    }
-
-    private void generateGoalsForTeam(IMatch match, IClub team, int goals) {
-        IPlayer[] players = team.getPlayers();
-        if (players == null || players.length == 0) return;
-
-        for (int i = 0; i < goals; i++) {
-            IPlayer scorer = players[rng.nextInt(players.length)];
-            int minute = rng.nextInt(90) + 1;
-            match.addEvent(new GoalEvent(scorer, minute));
-        }
     }
 
     private void generateMatchEvents(IMatch match, IClub team) {
@@ -67,27 +48,68 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy{
         if (players == null || players.length == 0) return;
 
         for (int minute = 1; minute <= 90; minute += rng.nextInt(10) + 1) {
-            IPlayer selectedPlayer = players[rng.nextInt(players.length)];
+            IPlayer selectedPlayer = null;
+            do{
+                IPlayer randomPlayer = players[rng.nextInt(team.getPlayerCount())];
+                if(playerHasRedCard(randomPlayer)) {
+                    continue;
+                }
+                selectedPlayer = randomPlayer;
+            }while(selectedPlayer == null);
+
             double eventRoll = rng.nextDouble();
 
             if (eventRoll < 0.02) {
                 match.addEvent(new RedCardEvent(selectedPlayer, minute));
+                if(redCardCount == redCardPlayers.length) {
+                    expandRedCardPlayersArray();
+                }
+                redCardPlayers[redCardCount++] = selectedPlayer;
             }
             else if (eventRoll < 0.05) {
                 match.addEvent(new PenaltiesEvent(selectedPlayer, minute));
             }
             else if (eventRoll < 0.09) {
-                match.addEvent(new YellowCardEvent(selectedPlayer, minute));
+                if(selectedPlayer.getPosition().getDescription().equals("GoalKeeper")) {
+                    continue;
+                }
+                match.addEvent(new GoalEvent(selectedPlayer, minute));
             }
             else if (eventRoll < 0.14) {
-                match.addEvent(new FreeKickEvent(selectedPlayer, minute));
+                match.addEvent(new YellowCardEvent(selectedPlayer, minute));
             }
             else if (eventRoll < 0.2) {
-                match.addEvent(new OffSideEvent(selectedPlayer, minute));
+                match.addEvent(new FreeKickEvent(selectedPlayer, minute));
             }
             else if (eventRoll < 0.27) {
+                if(selectedPlayer.getPosition().getDescription().equals("GoalKeeper")) {
+                    continue;
+                }
+                match.addEvent(new OffSideEvent(selectedPlayer, minute));
+            }
+            else if (eventRoll < 0.35) {
+                if(selectedPlayer.getPosition().getDescription().equals("GoalKeeper")) {
+                    continue;
+                }
                 match.addEvent(new CornerKickEvent(selectedPlayer, minute));
             }
         }
+    }
+
+    private void expandRedCardPlayersArray() {
+        IPlayer[] newArray = new IPlayer[redCardPlayers.length * 2];
+        for (int i = 0; i < redCardPlayers.length; i++) {
+            newArray[i] = redCardPlayers[i];
+        }
+        redCardPlayers = newArray;
+    }
+
+    private boolean playerHasRedCard(IPlayer player) {
+        for (int i = 0; i < redCardCount; i++) {
+            if (redCardPlayers[i] != null && redCardPlayers[i].equals(player)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
