@@ -268,7 +268,7 @@ public class Functions {
         final int TOTAL_OUTFIELD_PLAYERS = 10;
 
         System.out.println("Select the formation for the " + teamLabel + " team: ");
-        System.out.print("Displayed name: ");
+        System.out.print("Displayed formation: ");
         displayName = input.next();
 
         while (true) {

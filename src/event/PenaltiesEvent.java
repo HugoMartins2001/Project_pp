@@ -17,7 +17,7 @@ import java.io.IOException;
 public class PenaltiesEvent extends PlayerEvent {
 
     public PenaltiesEvent(IPlayer player, int minute) {
-        super( player, minute, "Penalty by: " + player.getName() + " at " + minute + " minutes");
+        super(player, minute, "\uD83C\uDFAF Penalty by: " + player.getName() + " at " + minute + " minutes");
     }
 
     @Override

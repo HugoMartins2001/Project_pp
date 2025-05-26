@@ -30,7 +30,6 @@ public class EventManager implements IEventManager {
         }
 
         events[eventCount++] = ievent;
-        System.out.println("Event added: " + ievent);
     }
 
     private int findEvent(IEvent ievent){

@@ -11,7 +11,6 @@ package event;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import java.io.IOException;
-import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 public class Event implements IEvent{
     private final String description;
@@ -39,7 +38,7 @@ public class Event implements IEvent{
     }
 
     public String toString(){
-        return "Event: {" + "description=" + description + ", minute=" + minute + '}';
+        return minute + " | " + description;
     }
 
     @Override

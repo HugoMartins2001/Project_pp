@@ -14,12 +14,12 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.io.IOException;
 
-public class CornerKickEvent extends Event{
+public class CornerKickEvent extends Event {
 
     private IPlayer player;
 
     public CornerKickEvent(IPlayer player, int minute) {
-        super( "Corner kick by: " + player.getName() + " at " + minute + " minutes",minute);
+        super("\uD83E\uDD7E Corner kick by: " + player.getName() + " at " + minute + " minutes", minute);
         this.player = player;
     }
 

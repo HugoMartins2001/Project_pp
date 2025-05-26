@@ -126,7 +126,7 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy{
                     match.addEvent(new RedCardEvent(selectedPlayer, minute));
                     if (redCardCount == redCardPlayers.length) {
                         expandRedCardPlayersArray();
-                        }
+                    }
                     redCardPlayers[redCardCount++] = selectedPlayer;
                 }
                 else if (consequenceRoll < 0.30) {

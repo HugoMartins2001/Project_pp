@@ -113,14 +113,6 @@
         "number": 10
       },
       {
-        "name": "Ángel Di María",
-        "birthDate": "1988-02-14",
-        "nationality": "Argentine",
-        "basePosition": "Forward",
-        "photo": "https://www.slbenfica.pt/pt-pt/players/angel-di-maria",
-        "number": 11
-      },
-      {
         "name": "Renato Sanches",
         "birthDate": "1997-08-18",
         "nationality": "Portuguese",
@@ -183,6 +175,14 @@
         "basePosition": "Forward",
         "photo": "https://www.slbenfica.pt/pt-pt/players/rafa-silva",
         "number": 27
+      },
+      {
+        "name": "Ángel Di María",
+        "birthDate": "1988-02-14",
+        "nationality": "Argentine",
+        "basePosition": "Forward",
+        "photo": "https://www.slbenfica.pt/pt-pt/players/angel-di-maria",
+        "number": 11
       }
     ]
   }

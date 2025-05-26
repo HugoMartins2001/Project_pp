@@ -14,10 +14,10 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.io.IOException;
 
-public class RedCardEvent extends PlayerEvent{
+public class RedCardEvent extends PlayerEvent {
 
     public RedCardEvent(IPlayer player, int minute) {
-        super(player, minute, "Red card to: " + player.getName() + " at " + minute + " minutes");
+        super(player, minute, "❗ Red card to: " + player.getName() + " at " + minute + " minutes");
     }
 
     @Override

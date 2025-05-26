@@ -1,14 +1,10 @@
 package event;
 
-public class EndEvent extends Event{
+public class EndEvent extends Event {
     public EndEvent(int minute) {
-        super("Match ended", minute);
+        super("\uD83D\uDED1 Match ended", minute);
     }
 
-    @Override
-    public String getDescription() {
-        return "Match ended at " + getMinute() + " minutes";
-    }
 
     @Override
     public void exportToJson() {

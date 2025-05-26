@@ -3,12 +3,7 @@ package event;
 public class StartEvent extends Event {
 
     public StartEvent(int minute) {
-        super("Match started", minute);
-    }
-
-    @Override
-    public String getDescription() {
-        return "Match started at " + getMinute() + " minutes";
+        super("\uD83D\uDFE2 Match started", minute);
     }
 
     @Override
