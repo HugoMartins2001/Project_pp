@@ -90,9 +90,18 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy{
                     }
                 }
             }
-            else if (eventRoll < 0.08) {
+            else if (eventRoll < 0.05) {
                 if (!selectedPlayer.getPosition().getDescription().equals("GoalKeeper")) {
-                    match.addEvent(new GoalEvent(selectedPlayer, minute));
+                    match.addEvent(new ShotEvent(selectedPlayer, minute));
+                }
+            } else if (eventRoll < 0.08) {
+                if (!selectedPlayer.getPosition().getDescription().equals("GoalKeeper")) {
+                    match.addEvent(new ShotOnGoalEvent(selectedPlayer, minute));
+
+                    double goalChance = rng.nextDouble();
+                    if (goalChance < 0.30) {
+                        match.addEvent(new GoalEvent(selectedPlayer, minute));
+                    }
                 }
             }
             else if(eventRoll < 0.20) {

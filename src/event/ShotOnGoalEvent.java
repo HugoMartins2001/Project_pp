@@ -4,9 +4,9 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
 import java.io.IOException;
 
-public class ShotsOnGoalEvent extends PlayerEvent{
+public class ShotOnGoalEvent extends PlayerEvent{
 
-    public ShotsOnGoalEvent(IPlayer player, int minute) {
+    public ShotOnGoalEvent(IPlayer player, int minute) {
         super( player, minute,  player.getName() + " shot the goal at" + minute + " minutes");
     }
 
