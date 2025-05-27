@@ -17,13 +17,7 @@ import java.io.IOException;
 public class FreeKickEvent extends PlayerEvent {
 
     public FreeKickEvent(IPlayer player, int minute) {
-        super(player, minute, "\uD83E\uDDB5 Free kick by: " + player.getName() + " at " + minute + " minutes");
+        super(player, minute, "\uD83E\uDDB5 Free kick by " + player.getName() + " at " + minute + " minutes");
 
     }
-
-    @Override
-    public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }

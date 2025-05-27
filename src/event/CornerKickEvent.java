@@ -11,30 +11,14 @@ package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import data.Exporter;
+import player.Player;
 
 import java.io.IOException;
 
-public class CornerKickEvent extends Event {
-
-    private IPlayer player;
+public class CornerKickEvent extends PlayerEvent {
 
     public CornerKickEvent(IPlayer player, int minute) {
-        super("\uD83E\uDD7E Corner kick by: " + player.getName() + " at " + minute + " minutes", minute);
-        this.player = player;
+        super(player, minute, "\uD83E\uDD7E Corner kick by " + player.getName() + " at " + minute + " minutes");
     }
-
-    public IPlayer getPlayer() {
-        return this.player;
-    }
-
-    @Override
-    public String getDescription() {
-        return super.getDescription();
-    }
-
-    @Override
-    public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }

@@ -19,8 +19,4 @@ public class SubstitutionEvent extends Event {
     public IPlayer getPlayerIn() {
         return playerIn;
     }
-
-    @Override
-    public void exportToJson() {
-    }
 }

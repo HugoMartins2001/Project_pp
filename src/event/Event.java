@@ -10,6 +10,8 @@
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
+import player.Player;
+
 import java.io.IOException;
 
 public class Event implements IEvent{
@@ -34,7 +36,13 @@ public class Event implements IEvent{
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String json = "event : {\n" +
+                "  \"type\": \"PlayerEvent\",\n" +
+                "  \"description\": \"" + getDescription() + "\",\n" +
+                "  \"minute\": " + getMinute() + ",\n" +
+                "}";
+
+        System.out.println(json);
     }
 
     public String toString(){

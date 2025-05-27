@@ -9,9 +9,4 @@ public class InjuryEvent extends PlayerEvent {
     public InjuryEvent(IPlayer player, int minute) {
         super(player, minute, "\uD83E\uDE79 " + player.getName() + " got injured at " + minute + " minutes");
     }
-
-    @Override
-    public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

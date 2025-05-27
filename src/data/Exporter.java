@@ -1,6 +1,7 @@
 package data;
 import com.ppstudios.footballmanager.api.contracts.data.IExporter;
 
+import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.league.ILeague;
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
@@ -9,6 +10,8 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import event.Event;
+import event.PlayerEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import player.Player;
@@ -188,6 +191,26 @@ public class Exporter implements IExporter {
         playerJson.put("clubCode", player.getClub());
 
         return playerJson;
+    }
+    public JSONArray eventsToJsonArray(IEvent[] events) {
+        JSONArray eventsJson = new JSONArray();
+        for (IEvent event : events) {
+            if(event != null){
+                eventsJson.add(eventToJsonObject((Event)event));
+            }
+        }
+        return eventsJson;
+    }
+
+    private JSONObject eventToJsonObject(Event event) {
+        JSONObject eventJson = new JSONObject();
+        eventJson.put("type", event.getClass().toString());
+        eventJson.put("minute", event.getMinute());
+        eventJson.put("description", event.getDescription());
+        if(event instanceof PlayerEvent){
+            eventJson.put("player", playerToJsonObject((Player)((PlayerEvent) event).getPlayer()));
+        }
+        return eventJson;
     }
 
 }

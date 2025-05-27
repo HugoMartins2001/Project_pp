@@ -10,18 +10,12 @@
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+
 import java.io.IOException;
 
 public class YellowCardEvent extends PlayerEvent {
 
     public YellowCardEvent(IPlayer player, int minute) {
-        super( player, minute, "⚠\uFE0F Yellow card to: " + player.getName() + " at " + minute + " minutes");
+        super(player, minute, "⚠\uFE0F Yellow card to " + player.getName() + " at " + minute + " minutes");
     }
-
-
-    @Override
-    public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

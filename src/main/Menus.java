@@ -13,6 +13,8 @@ package main;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import league.League;
 import league.Season;
+
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -324,6 +326,8 @@ public class Menus {
             } catch (InputMismatchException exception) {
                 System.out.println("Select a valid option!");
                 input.next();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         } while (!verifyInput);
     }

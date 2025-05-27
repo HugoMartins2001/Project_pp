@@ -22,11 +22,6 @@ import java.util.Scanner;
 
 public class Functions {
 
-    public static void clearConsole() {
-            for (int i = 0; i < 50; ++i) System.out.println();
-    }
-
-
     public static Season createSeason(Scanner input) {
         System.out.println("Enter the name of the season: ");
         String seasonName = input.next();
@@ -348,9 +343,17 @@ public class Functions {
         }
     }
 
-    public static void viewClub() {
+    public static void viewClub() throws IOException {
         int option;
         Scanner input = new Scanner(System.in);
+
+        Importer importer = new Importer();
+        Club[] clubs = importer.importClubs("files/clubs.json");
+
+
+        for (Club club : clubs) {
+            System.out.println("Code: " + club.getCode() + " | Name: " + club.getName());
+        }
 
         do {
             System.out.println("=======================================");
@@ -359,27 +362,20 @@ public class Functions {
             System.out.println("Enter the name of the club you want to view:");
             String clubCode = input.nextLine();
 
-            try {
-                Importer importer = new Importer();
-                Club[] clubs = importer.importClubs("files/clubs.json");
-
-                boolean found = false;
-                for (Club club : clubs) {
-                    if (club.getCode().equalsIgnoreCase(clubCode) || club.getName().equalsIgnoreCase(clubCode)) {
-                        System.out.println("Club Details:");
-                        System.out.println("Name: " + club.getName());
-                        System.out.println("Country: " + club.getCountry());
-                        System.out.println("Stadium: " + club.getStadiumName());
-                        found = true;
-                        break;
-                    }
+            boolean found = false;
+            for (Club club : clubs) {
+                if (club.getCode().equalsIgnoreCase(clubCode) || club.getName().equalsIgnoreCase(clubCode)) {
+                    System.out.println("Club Details:");
+                    System.out.println("Name: " + club.getName());
+                    System.out.println("Country: " + club.getCountry());
+                    System.out.println("Stadium: " + club.getStadiumName());
+                    found = true;
+                    break;
                 }
+            }
 
-                if (!found) {
-                    System.out.println("Club not found!");
-                }
-            } catch (IOException error) {
-                System.out.println("Error while loading the clubs: " + error.getMessage());
+            if (!found) {
+                System.out.println("Club not found!");
             }
 
             System.out.println("\n1- Do you want to view another club?");

@@ -17,12 +17,6 @@ import java.io.IOException;
 public class RedCardEvent extends PlayerEvent {
 
     public RedCardEvent(IPlayer player, int minute) {
-        super(player, minute, "❗ Red card to: " + player.getName() + " at " + minute + " minutes");
+        super(player, minute, "❗ Red card to " + player.getName() + " at " + minute + " minutes");
     }
-
-    @Override
-    public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }

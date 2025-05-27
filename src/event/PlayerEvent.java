@@ -1,9 +1,11 @@
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
+import player.Player;
+
 import java.io.IOException;
 
-public class PlayerEvent extends Event{
+public class PlayerEvent extends Event {
     private IPlayer player;
 
     public PlayerEvent(IPlayer player, int minute, String description) {
@@ -23,7 +25,17 @@ public class PlayerEvent extends Event{
 
     @Override
     public void exportToJson() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String json = "event : {\n" +
+                "  \"type\": \"PlayerEvent\",\n" +
+                "  \"description\": \"" + getDescription() + "\",\n" +
+                "  \"minute\": " + getMinute() + ",\n" +
+                "  \"player\": {\n" +
+                "    \"name\": \"" + player.getName() + "\",\n" +
+                "    \"clubCode\": \"" + ((Player) player).getClub() + "\"\n" +
+                "  }\n" +
+                "}";
+
+        System.out.println(json);
     }
 
     @Override

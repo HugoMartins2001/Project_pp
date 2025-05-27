@@ -80,7 +80,7 @@ public class Player implements IPlayer, Cloneable {
 
     @Override
     public void setPosition(IPlayerPosition iPlayerPosition) {
-        if(iPlayerPosition == null){
+        if (iPlayerPosition == null) {
             throw new IllegalArgumentException("Position cannot be null");
         }
         this.position = (PlayerPosition) iPlayerPosition;
@@ -140,10 +140,26 @@ public class Player implements IPlayer, Cloneable {
         return clubCode;
     }
 
-    //TODO: Fazer no final
     @Override
     public void exportToJson() throws IOException {
+        String json = "Player :{\n" +
+                "  \"name\": \"" + name + "\",\n" +
+                "  \"birthdate\": \"" + birthdate.toString() + "\",\n" +
+                "  \"nationality\": \"" + nationality + "\",\n" +
+                "  \"photo\": \"" + photo + "\",\n" +
+                "  \"number\": " + number + ",\n" +
+                "  \"specPassing\": " + specPassing + ",\n" +
+                "  \"specShooting\": " + specShooting + ",\n" +
+                "  \"specSpeed\": " + specSpeed + ",\n" +
+                "  \"specStamina\": " + specStamina + ",\n" +
+                "  \"weight\": " + weight + ",\n" +
+                "  \"height\": " + height + ",\n" +
+                "  \"position\": \"" + position.getDescription() + "\",\n" +
+                "  \"foot\": \"" + foot + "\",\n" +
+                "  \"clubCode\": \"" + clubCode + "\"\n" +
+                "}";
 
+        System.out.println(json);
     }
 
     @Override
