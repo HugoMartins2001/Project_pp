@@ -904,4 +904,12 @@ public class Functions {
 
         System.out.println("======================\n");
     }
+
+    public static void ResetSeason(Season season) {
+        if (season == null) {
+            throw new IllegalArgumentException("Season cannot be null.");
+        }
+        season.resetSeason();
+        System.out.println("Season " + season.getName() + " has been reset successfully.");
+    }
 }

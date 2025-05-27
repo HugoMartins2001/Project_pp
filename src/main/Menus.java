@@ -160,7 +160,7 @@ public class Menus {
             System.out.println("|  Option 7 - List Season Clubs        |");
             System.out.println("|  Option 8 - List a event form a match|");
             System.out.println("|  Option 9 - View Season Standings    |");
-            System.out.println("|  Option 10 - Load Game               |");
+            System.out.println("|  Option 10 - Reset season            |");
             System.out.println("|  Option 0 - Exit                     |");
             System.out.println("|--------------------------------------|");
             System.out.println("                                       ");
@@ -205,7 +205,7 @@ public class Menus {
                         verifyInput = false;
                         break;
                     case 10:
-                        //loadGame(input);
+                        Functions.ResetSeason(season);
                         break;
                     case 0:
                         return;
