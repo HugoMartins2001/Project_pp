@@ -48,7 +48,7 @@ public class Menus {
         return option;
     }
 
-    public static void startGameMenu(Scanner input) {
+    public static void startLeagueMenu(Scanner input) {
         int option;
         boolean verifyInput = false;
 
@@ -57,10 +57,10 @@ public class Menus {
             System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
             System.out.println("=======================================");
             System.out.println("                                       ");
-            System.out.println("##------------Start Game-------------##");
+            System.out.println("##-----------Start League------------##");
             System.out.println("|-------------------------------------|");
-            System.out.println("|  Option 1 - New Game                |");
-            System.out.println("|  Option 2 - Load Game               |");
+            System.out.println("|  Option 1 - New League              |");
+            System.out.println("|  Option 2 - Load League             |");
             System.out.println("|  option 0 - Back                    |");
             System.out.println("|-------------------------------------|");
             System.out.println("                                       ");
@@ -116,6 +116,7 @@ public class Menus {
                         Season newSeason = Functions.createSeason(input);
                         league.createSeason(newSeason);
                         System.out.println("New season created: " + newSeason.getName());
+                        seasonMenu(input, newSeason);
                         verifyInput = false;
                         break;
                     case 2:

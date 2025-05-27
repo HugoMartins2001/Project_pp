@@ -20,7 +20,7 @@ public class main {
             Options = Menus.mainMenu(input);
             switch (Options) {
                 case 1:
-                    Menus.startGameMenu(input);
+                    Menus.startLeagueMenu(input);
                     break;
                 case 2:
                     Menus.clubMenu();
