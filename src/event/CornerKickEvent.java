@@ -19,6 +19,6 @@ import java.io.IOException;
 public class CornerKickEvent extends PlayerEvent {
 
     public CornerKickEvent(IPlayer player, int minute) {
-        super(player, minute, "\uD83E\uDD7E Corner kick by " + player.getName() + " at " + minute + " minutes");
+        super(player, minute, "-> Corner kick by " + player.getName() + " at " + minute + " minutes");
     }
 }

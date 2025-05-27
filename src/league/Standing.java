@@ -10,7 +10,9 @@
 package league;
 
 import com.ppstudios.footballmanager.api.contracts.league.IStanding;
+import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
+import event.GoalEvent;
 
 public class Standing implements IStanding {
     private int points;
@@ -44,6 +46,28 @@ public class Standing implements IStanding {
         this.totalMatches = totalMatches;
         this.goalsScored = goalsScored;
         this.goalsConceded = goalsConceded;
+        this.team = team;
+        this.pointsInitialized = true;
+        this.winsInitialized = true;
+        this.drawsInitialized = true;
+        this.lossesInitialized = true;
+        this.totalMatchesInitialized = true;
+        this.goalsScoredInitialized = true;
+        this.goalsConcededInitialized = true;
+        this.teamInitialized = true;
+    }
+
+    public Standing(ITeam team) {
+        if (team == null) {
+            throw new IllegalArgumentException("Team cannot be null");
+        }
+        this.points = 0;
+        this.wins = 0;
+        this.draws = 0;
+        this.losses = 0;
+        this.totalMatches = 0;
+        this.goalsScored = 0;
+        this.goalsConceded = 0;
         this.team = team;
         this.pointsInitialized = true;
         this.winsInitialized = true;
@@ -120,6 +144,7 @@ public class Standing implements IStanding {
         this.totalMatchesInitialized = true;
         this.pointsInitialized = true;
     }
+    
 
     @Override
     public int getWins() {
@@ -175,5 +200,43 @@ public class Standing implements IStanding {
             throw new IllegalStateException("Goal difference not initialized");
         }
         return this.goalsScored - this.goalsConceded;
+    }
+
+    public void updateStandings(IMatch match){
+        if (match == null) {
+            throw new IllegalArgumentException("Match cannot be null");
+        }
+        if (!match.isPlayed()) {
+            throw new IllegalStateException("Match has not been played yet");
+        }
+
+        ITeam homeTeam = match.getHomeTeam();
+        ITeam awayTeam = match.getAwayTeam();
+
+        int homeGoals = match.getTotalByEvent(GoalEvent.class, homeTeam.getClub());
+        int awayGoals = match.getTotalByEvent(GoalEvent.class, awayTeam.getClub());
+
+        if (homeTeam.equals(this.team)) {
+            this.goalsScored += homeGoals;
+            this.goalsConceded += awayGoals;
+            if (homeGoals > awayGoals) {
+                addWin(3);
+            } else if (homeGoals < awayGoals) {
+                addLoss(0);
+            } else {
+                addDraw(1);
+            }
+        } else if (awayTeam.equals(this.team)) {
+            this.goalsScored += awayGoals;
+            this.goalsConceded += homeGoals;
+            if (awayGoals > homeGoals) {
+                addWin(3);
+            } else if (awayGoals < homeGoals) {
+                addLoss(0);
+            } else {
+                addDraw(1);
+            }
+        }
+
     }
 }

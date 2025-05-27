@@ -18,6 +18,7 @@ import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import event.GoalEvent;
 import match.Match;
 import team.Club;
+import team.Team;
 
 import java.io.IOException;
 
@@ -38,6 +39,7 @@ public class Season implements ISeason {
         this.year = year;
         this.maxTeams = maxTeams;
         this.clubs = new IClub[maxTeams];
+        this.leagueStandings = new IStanding[maxTeams];
         this.match = new IMatch[0];
         this.currentRound = 0;
         this.numberOfTeams = 0;
@@ -63,6 +65,7 @@ public class Season implements ISeason {
         }
 
         clubs[numberOfTeams++] = club;
+        leagueStandings[numberOfTeams - 1] = new Standing(new Team(club));
         System.out.println("Club added: " + club.getName());
         return true;
     }
@@ -114,65 +117,65 @@ public class Season implements ISeason {
     }
 
     @Override
-        public void generateSchedule() {
-            if (numberOfTeams < 2) {
-                throw new IllegalStateException("Not enough teams to generate a schedule.");
-            }
+    public void generateSchedule() {
+        if (numberOfTeams < 2) {
+            throw new IllegalStateException("Not enough teams to generate a schedule.");
+        }
 
-            if (match != null) {
-                for (int i = 0; i < match.length; i++) {
-                    if (match[i] != null && match[i].isPlayed()) {
-                        throw new IllegalStateException("A match was already played.");
-                    }
-                }
-            }
-
-            int teamCount = numberOfTeams;
-            boolean isOdd = false;
-            Club[] scheduleTeams;
-
-            if (teamCount % 2 != 0) {
-                isOdd = true;
-                teamCount++;
-                scheduleTeams = new Club[teamCount];
-                for (int i = 0; i < numberOfTeams; i++) {
-                    scheduleTeams[i] = (Club) clubs[i];
-                }
-                scheduleTeams[teamCount - 1] = null;
-            } else {
-                scheduleTeams = new Club[teamCount];
-                for (int i = 0; i < teamCount; i++) {
-                    scheduleTeams[i] = (Club) clubs[i];
-                }
-            }
-
-            int roundsPerLeg = teamCount - 1;
-            int totalRounds = roundsPerLeg * 2;
-            int matchesPerRound = teamCount / 2;
-            int totalMatches = totalRounds * matchesPerRound;
-
-            match = new IMatch[totalMatches];
-            int matchIndex = 0;
-
-            for (int round = 0; round < roundsPerLeg; round++) {
-                for (int game = 0; game < matchesPerRound; game++) {
-                    int homeIndex = (round + game) % (teamCount - 1);
-                    int awayIndex = (teamCount - 1 - game + round) % (teamCount - 1);
-
-                    if (game == 0) {
-                        awayIndex = teamCount - 1;
-                    }
-
-                    Club homeClub = scheduleTeams[homeIndex];
-                    Club awayClub = scheduleTeams[awayIndex];
-
-                    if (!isOdd || (homeClub != null && awayClub != null)) {
-                        match[matchIndex++] = new Match(homeClub, awayClub, round);
-                        match[matchIndex++] = new Match(awayClub, homeClub, round + roundsPerLeg);
-                    }
+        if (match != null) {
+            for (int i = 0; i < match.length; i++) {
+                if (match[i] != null && match[i].isPlayed()) {
+                    throw new IllegalStateException("A match was already played.");
                 }
             }
         }
+
+        int teamCount = numberOfTeams;
+        boolean isOdd = false;
+        Club[] scheduleTeams;
+
+        if (teamCount % 2 != 0) {
+            isOdd = true;
+            teamCount++;
+            scheduleTeams = new Club[teamCount];
+            for (int i = 0; i < numberOfTeams; i++) {
+                scheduleTeams[i] = (Club) clubs[i];
+            }
+            scheduleTeams[teamCount - 1] = null;
+        } else {
+            scheduleTeams = new Club[teamCount];
+            for (int i = 0; i < teamCount; i++) {
+                scheduleTeams[i] = (Club) clubs[i];
+            }
+        }
+
+        int roundsPerLeg = teamCount - 1;
+        int totalRounds = roundsPerLeg * 2;
+        int matchesPerRound = teamCount / 2;
+        int totalMatches = totalRounds * matchesPerRound;
+
+        match = new IMatch[totalMatches];
+        int matchIndex = 0;
+
+        for (int round = 0; round < roundsPerLeg; round++) {
+            for (int game = 0; game < matchesPerRound; game++) {
+                int homeIndex = (round + game) % (teamCount - 1);
+                int awayIndex = (teamCount - 1 - game + round) % (teamCount - 1);
+
+                if (game == 0) {
+                    awayIndex = teamCount - 1;
+                }
+
+                Club homeClub = scheduleTeams[homeIndex];
+                Club awayClub = scheduleTeams[awayIndex];
+
+                if (!isOdd || (homeClub != null && awayClub != null)) {
+                    match[matchIndex++] = new Match(homeClub, awayClub, round);
+                    match[matchIndex++] = new Match(awayClub, homeClub, round + roundsPerLeg);
+                }
+            }
+        }
+    }
 
     @Override
     public void simulateRound() {

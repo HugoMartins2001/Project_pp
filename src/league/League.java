@@ -105,7 +105,6 @@ public class League implements ILeague {
 
     @Override
     public void exportToJson() throws IOException {
-
     }
 
     @Override

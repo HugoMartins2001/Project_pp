@@ -29,6 +29,29 @@ public class Formation implements IFormation {
         this.forwards = forwards;
     }
 
+    public Formation(String formationString) {
+        this.displayName = formationString;
+
+       String[] numeros = formationString.split("-");
+
+        if (numeros.length != 3) {
+            throw new IllegalArgumentException("A formação deve estar no formato X-Y-Z, por exemplo: 4-3-3");
+        }
+
+        int defesas = Integer.parseInt(numeros[0]);
+        int medios = Integer.parseInt(numeros[1]);
+        int avancados = Integer.parseInt(numeros[2]);
+
+        if (defesas + medios + avancados != 10) {
+            throw new IllegalArgumentException("A soma dos jogadores (defesas + médios + avançados) tem de ser 10.");
+        }
+
+        this.defenders = defesas;
+        this.midfielders = medios;
+        this.forwards = avancados;
+    }
+
+
     public int getDefenders() {
         return defenders;
     }

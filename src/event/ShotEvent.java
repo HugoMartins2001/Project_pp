@@ -8,6 +8,6 @@ import java.io.IOException;
 public class ShotEvent extends PlayerEvent {
 
     public ShotEvent(IPlayer player, int minute) {
-        super(player, minute, "\uD83E\uDDB6 " + player.getName() + " shot at " + minute + " minutes");
+        super(player, minute, "-> " + player.getName() + " shot at " + minute + " minutes");
     }
 }

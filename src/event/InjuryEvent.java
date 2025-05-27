@@ -7,6 +7,6 @@ import java.io.IOException;
 public class InjuryEvent extends PlayerEvent {
 
     public InjuryEvent(IPlayer player, int minute) {
-        super(player, minute, "\uD83E\uDE79 " + player.getName() + " got injured at " + minute + " minutes");
+        super(player, minute, "-> " + player.getName() + " got injured at " + minute + " minutes");
     }
 }

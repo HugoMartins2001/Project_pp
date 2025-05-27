@@ -226,6 +226,21 @@ public class Club implements IClub {
         return true;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Club)) {
+            return false;
+        }
+        Club club = (Club) obj;
+        return this.name.equals(club.name);
+    }
+
     //TODO fazer no final
     @Override
     public void exportToJson() throws IOException {

@@ -3,7 +3,7 @@ package event;
 public class StartEvent extends Event {
 
     public StartEvent(int minute) {
-        super("\uD83D\uDFE2 Match started", minute);
+        super("-> Match started", minute);
     }
 
     @Override

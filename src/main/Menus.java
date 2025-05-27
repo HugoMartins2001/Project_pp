@@ -74,7 +74,7 @@ public class Menus {
                         System.out.print("Insert a League Name:  ");
                         String leagueName = input.next();
                         League newLeague = new League(leagueName);
-                        leagueMenu(input , newLeague);
+                        leagueMenu(input, newLeague);
                         verifyInput = false;
                         break;
                     case 2:
@@ -123,10 +123,10 @@ public class Menus {
                         break;
                     case 2:
                         ISeason loadedSeason = Functions.loadSeason(input, league);
-                        if(loadedSeason == null) {
+                        if (loadedSeason == null) {
                             break;
                         }
-                        seasonMenu(input, (Season)loadedSeason);
+                        seasonMenu(input, (Season) loadedSeason);
                         verifyInput = false;
                         break;
                     default:
@@ -139,9 +139,6 @@ public class Menus {
         } while (!verifyInput);
     }
 
-    //public static int loadGame(Scanner input) {}
-
-    //public static int createTeamAndPlayers(Scanner input) {}
 
     public static void seasonMenu(Scanner input, Season season) {
         int option;
@@ -153,17 +150,19 @@ public class Menus {
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##------------Start Game-------------##");
-            System.out.println("|-------------------------------------|");
-            System.out.println("|  Option 1 - Friendly Match          |");
-            System.out.println("|  Option 2 - Start Season            |");
-            System.out.println("|  Option 3 - Add Clubs (Manually)    |");
-            System.out.println("|  Option 4 - Add Clubs (Automatic)   |");
-            System.out.println("|  Option 5 - Remove Clubs (Manually) |");
-            System.out.println("|  Option 6 - Remove Clubs (Automatic)|");
-            System.out.println("|  Option 7 - List Season Clubs       |");
-            System.out.println("|  Option 8 - Reset Season            |");
-            System.out.println("|  Option 0 - Exit                    |");
-            System.out.println("|-------------------------------------|");
+            System.out.println("|--------------------------------------|");
+            System.out.println("|  Option 1 - Friendly Match           |");
+            System.out.println("|  Option 2 - Start Season             |");
+            System.out.println("|  Option 3 - Add Clubs (Manually)     |");
+            System.out.println("|  Option 4 - Add Clubs (Automatic)    |");
+            System.out.println("|  Option 5 - Remove Clubs (Manually)  |");
+            System.out.println("|  Option 6 - Remove Clubs (Automatic) |");
+            System.out.println("|  Option 7 - List Season Clubs        |");
+            System.out.println("|  Option 8 - List a event form a match|");
+            System.out.println("|  Option 9 - View Season Standings    |");
+            System.out.println("|  Option 10 - Load Game               |");
+            System.out.println("|  Option 0 - Exit                     |");
+            System.out.println("|--------------------------------------|");
             System.out.println("                                       ");
             try {
                 option = input.nextInt();
@@ -174,7 +173,7 @@ public class Menus {
                         verifyInput = false;
                         break;
                     case 2:
-                        startSeasonMenu(input);
+                        Functions.startSeason(input, season);
                         verifyInput = false;
                         break;
                     case 3:
@@ -198,6 +197,14 @@ public class Menus {
                         verifyInput = false;
                         break;
                     case 8:
+                        Functions.ListEventFromAMatch(input, season);
+                        verifyInput = false;
+                        break;
+                    case 9:
+                        Functions.viewSeasonStandings(season);
+                        verifyInput = false;
+                        break;
+                    case 10:
                         //loadGame(input);
                         break;
                     case 0:
@@ -211,45 +218,6 @@ public class Menus {
             }
         } while (!verifyInput);
 
-    }
-
-    public static void startSeasonMenu(Scanner input) {
-        int option;
-        boolean verifyInput = false;
-
-        do {
-            System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
-            System.out.println("=======================================");
-            System.out.println("                                       ");
-            System.out.println("##------------Start Season-----------##");
-            System.out.println("|-------------------------------------|");
-            System.out.println("|  Option 1 - Friendly Match          |");
-            System.out.println("|  Option 2 - Start Season            |");
-            System.out.println("|  Option 3 - Add Clubs (Manually)    |");
-            System.out.println("|  Option 4 - Add Clubs (Automatic)   |");
-            System.out.println("|  Option 5 - Remove Clubs (Manually) |");
-            System.out.println("|  Option 6 - Remove Clubs (Automatic)|");
-            System.out.println("|  Option 7 - List Season Clubs       |");
-            System.out.println("|  Option 8 - Reset Season            |");
-            System.out.println("|  Option 0 - Exit                    |");
-            System.out.println("|-------------------------------------|");
-            System.out.println("                                       ");
-            System.out.println("Press 0 to exit the credits!");
-            try {
-                option = input.nextInt();
-                verifyInput = true;
-                switch (option) {
-                    case 0:
-                        return;
-                    default:
-                        System.out.println("Select a valid option!");
-                }
-            } catch (InputMismatchException exception) {
-                System.out.println("Select a valid option!");
-                input.next();
-            }
-        } while (!verifyInput);
     }
 
     public static void creditsMenu(Scanner input) {

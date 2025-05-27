@@ -164,9 +164,12 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
     }
 
     private boolean isPlayerUnavailable(IPlayer player) {
-        for (int i = 0; i < redCardCount; i++) if (redCardPlayers[i] != null && redCardPlayers[i].equals(player)) return true;
-        for (int i = 0; i < injuredCount; i++) if (injuredPlayers[i] != null && injuredPlayers[i].equals(player)) return true;
-        for (int i = 0; i < substitutedCount; i++) if (substitutedPlayers[i] != null && substitutedPlayers[i].equals(player)) return true;
+        for (int i = 0; i < redCardCount; i++)
+            if (redCardPlayers[i] != null && redCardPlayers[i].equals(player)) return true;
+        for (int i = 0; i < injuredCount; i++)
+            if (injuredPlayers[i] != null && injuredPlayers[i].equals(player)) return true;
+        for (int i = 0; i < substitutedCount; i++)
+            if (substitutedPlayers[i] != null && substitutedPlayers[i].equals(player)) return true;
         return false;
     }
 
@@ -174,8 +177,11 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
         IPlayer[] players = team.getPlayers();
         if (players.length <= 11) return null;
         for (int i = 11; i < players.length; i++) {
-            IPlayer player = players[i];
-            if (!isPlayerUnavailable(player) && player.getPosition().getDescription().equals(position)) return player;
+            if (players[i] != null) {
+                IPlayer player = players[i];
+                if (!isPlayerUnavailable(player) && player.getPosition().getDescription().equals(position))
+                    return player;
+            }
         }
         return null;
     }

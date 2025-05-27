@@ -9,14 +9,11 @@
  */
 package match;
 
-import com.ppstudios.footballmanager.api.contracts.data.IExporter;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.event.IEventManager;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
-import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
-import event.Event;
 import event.EventManager;
 import event.GoalEvent;
 import event.PlayerEvent;
@@ -34,7 +31,7 @@ public class Match implements IMatch {
     private boolean isPlayed;
 
     public Match(IClub homeClub, IClub awayClub, int round) {
-        if(homeClub == null || awayClub == null) throw new IllegalArgumentException("Clubs cannot be null");
+        if (homeClub == null || awayClub == null) throw new IllegalArgumentException("Clubs cannot be null");
         this.homeClub = homeClub;
         this.awayClub = awayClub;
         this.round = round;
@@ -86,16 +83,16 @@ public class Match implements IMatch {
 
     @Override
     public int getTotalByEvent(Class eventClass, IClub team) {
-        if(eventClass == null || team == null) {
+        if (eventClass == null || team == null) {
             throw new NullPointerException("Event class or team is not defined!");
         }
 
         int total = 0;
         for (IEvent event : getEvents()) {
             if (eventClass.isInstance(event) && event instanceof PlayerEvent) {
-                    if (team.isPlayer(((PlayerEvent) event).getPlayer())) {
-                        total++;
-                    }
+                if (team.isPlayer(((PlayerEvent) event).getPlayer())) {
+                    total++;
+                }
             }
         }
         return total;
@@ -151,9 +148,9 @@ public class Match implements IMatch {
         if (isPlayed) {
             throw new IllegalStateException("Cannot set a team because match was already played!");
         }
-        if(homeClub.equals(team.getClub())) {
+        if (homeClub.equals(team.getClub())) {
             homeTeam = team;
-        } else if(awayClub.equals(team.getClub())) {
+        } else if (awayClub.equals(team.getClub())) {
             awayTeam = team;
         } else {
             throw new IllegalStateException("The club does not belong to the match");
@@ -172,7 +169,7 @@ public class Match implements IMatch {
 
     @Override
     public IEvent[] getEvents() {
-        return ((EventManager)events).getEventsOrderedByMinute();
+        return ((EventManager) events).getEventsOrderedByMinute();
     }
 
     @Override
@@ -180,9 +177,10 @@ public class Match implements IMatch {
         return events.getEventCount();
     }
 
-    public void reset(){
+    public void reset() {
         awayTeam = null;
         homeTeam = null;
         isPlayed = false;
+
     }
 }
