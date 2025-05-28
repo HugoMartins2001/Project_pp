@@ -176,6 +176,9 @@ public class Menus {
                         verifyInput = false;
                         break;
                     case 2:
+                        if(season.isManager()){
+                            Functions.startSeasonManager(input, season);
+                        }
                         Functions.startSeason(input, season);
                         verifyInput = false;
                         break;

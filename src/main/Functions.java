@@ -6,6 +6,7 @@ import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
+import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import data.Importer;
 import event.*;
 import league.League;
@@ -30,7 +31,10 @@ public class Functions {
         String seasonName = input.next();
 
         int year = 0, maxTeams = 0;
+        boolean isManager = false;
         boolean validInput = false;
+
+        String managerInput = "";
 
         while (!validInput) {
             try {
@@ -40,13 +44,21 @@ public class Functions {
                 System.out.println("Enter the maximum number of teams for the season: ");
                 maxTeams = input.nextInt();
 
+                System.out.println("Do you want to be the manager of this season? (Y/N): ");
+
+                do {
+                    managerInput = input.next();
+                }while(!managerInput.equalsIgnoreCase("Y") && !managerInput.equalsIgnoreCase("N"));
+
+                isManager = managerInput.equals("Y");
+
                 validInput = true;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter numeric values.");
                 input.next();
             }
         }
-        return new Season(seasonName, year, maxTeams);
+        return new Season(seasonName, year, maxTeams, isManager);
     }
 
     public static ISeason loadSeason(Scanner input, League league) {
@@ -213,7 +225,7 @@ public class Functions {
 
         Team homeTeam = new Team(homeClub);
         homeTeam.setFormation(readFormation(input, "home"));
-        homeTeam.setAutomaticTeam(homeTeam.getPlayers(), (Formation) homeTeam.getFormation());
+        homeTeam.setAutomaticTeam(homeClub.getPlayers(), (Formation) homeTeam.getFormation());
 
         IClub awayClub = null;
         while (awayClub == null || awayClub.equals(homeClub)) {
@@ -233,7 +245,7 @@ public class Functions {
 
         Team awayTeam = new Team(awayClub);
         awayTeam.setFormation(readFormation(input, "away"));
-        awayTeam.setAutomaticTeam(awayTeam.getPlayers(), (Formation) awayTeam.getFormation());
+        awayTeam.setAutomaticTeam(awayClub.getPlayers(), (Formation) awayTeam.getFormation());
 
         IMatch friendlyMatch = new Match(homeClub, awayClub, 0);
         friendlyMatch.setTeam(homeTeam);
@@ -561,6 +573,7 @@ public class Functions {
     }
 
     public static void startSeason(Scanner input, Season season) {
+
         if (season == null) {
             throw new IllegalArgumentException("Season cannot be null.");
         }
@@ -580,29 +593,10 @@ public class Functions {
             }
         }
 
-        // Escolher clube para gerir
-        IClub selectedClub = null;
-        while (selectedClub == null) {
-            System.out.println("\n=== Choose your club ===");
-            System.out.print("Enter the code or name of the club you want to manage this season: ");
-            String inputClub = input.next();
-            for (IClub club : seasonClubs) {
-                if (club != null && (club.getCode().equalsIgnoreCase(inputClub) || club.getName().equalsIgnoreCase(inputClub))) {
-                    selectedClub = club;
-                    break;
-                }
-            }
-            if (selectedClub == null) {
-                System.out.println("Invalid club. Please try again.");
-            }
-        }
-
-        // Criar equipa do utilizador com formação manual
-        Team userTeam = new Team(selectedClub);
-        userTeam.setFormation(readFormation(input, "your"));
-
         System.out.println("\n=== STARTING SEASON: " + season.getName().toUpperCase() + " (" + season.getYear() + ") ===");
         season.generateSchedule();
+
+        season.printSchedule();
 
         IMatch[] matches = season.getMatches();
         if (matches == null || matches.length == 0) {
@@ -617,23 +611,18 @@ public class Functions {
         for (IMatch match : matches) {
             if (match == null) continue;
 
-            // Equipa da casa
-            if (match.getHomeClub().equals(selectedClub)) {
-                match.setTeam(userTeam);
-            } else {
-                Team autoTeam = new Team(match.getHomeClub());
-                autoTeam.setFormation(generateRandomFormation());
-                match.setTeam(autoTeam);
-            }
 
-            // Equipa visitante
-            if (match.getAwayClub().equals(selectedClub)) {
-                match.setTeam(userTeam);
-            } else {
-                Team autoTeam = new Team(match.getAwayClub());
-                autoTeam.setFormation(generateRandomFormation());
-                match.setTeam(autoTeam);
-            }
+            Team homeTeam = new Team(match.getHomeClub());
+            homeTeam.setFormation(generateRandomFormation());
+            homeTeam.setAutomaticTeam(homeTeam.getClub().getPlayers(), (Formation) homeTeam.getFormation());
+            match.setTeam(homeTeam);
+
+
+            Team awayTeam = new Team(match.getAwayClub());
+            awayTeam.setFormation(generateRandomFormation());
+            awayTeam.setAutomaticTeam(awayTeam.getClub().getPlayers(), (Formation) awayTeam.getFormation());
+            match.setTeam(awayTeam);
+
 
             // Simular jogo
             matchSimulator.simulate(match);
@@ -702,6 +691,7 @@ public class Functions {
 
         System.out.println("\n=== SEASON " + season.getName().toUpperCase() + " HAS CONCLUDED ===");
         System.out.println("Thank you for playing!");
+
     }
 
 
@@ -709,27 +699,27 @@ public class Functions {
     // Função para gerar formação aleatória
     public static Formation generateRandomFormation() {
         String[] formations = {"4-4-2", "4-3-3", "3-5-2", "5-3-2", "4-2-3-1", "3-4-3"};
-
         int index = (int) (Math.random() * formations.length);
-        String f = formations[index];
+        String formationStr = formations[index];
 
-        // Converter string para objeto Formation
-        switch (f) {
-            case "4-4-2":
-                return new Formation("4-4-2", 4, 4, 2);
-            case "4-3-3":
-                return new Formation("4-3-3", 4, 3, 3);
-            case "3-5-2":
-                return new Formation("3-5-2", 3, 5, 2);
-            case "5-3-2":
-                return new Formation("5-3-2", 5, 3, 2);
-            case "4-2-3-1":
-                return new Formation("4-2-3-1", 4, 5, 1); // 2+3 médios = 5
-            case "3-4-3":
-                return new Formation("3-4-3", 3, 4, 3);
-            default:
-                return new Formation("4-4-2", 4, 4, 2); // fallback
+        String[] parts = formationStr.split("-");
+
+        int defenders = Integer.parseInt(parts[0]);
+        int midfielders;
+        int forwards;
+
+        if (parts.length == 3) {
+            midfielders = Integer.parseInt(parts[1]);
+            forwards = Integer.parseInt(parts[2]);
         }
+        else if (parts.length == 4) {
+            midfielders = Integer.parseInt(parts[1]) + Integer.parseInt(parts[2]);
+            forwards = Integer.parseInt(parts[3]);
+        } else {
+            return new Formation("4-4-2", 4, 4, 2);
+        }
+
+        return new Formation(formationStr, defenders, midfielders, forwards);
     }
 
     public static void viewSeasonStandings(Season season) {
@@ -826,7 +816,7 @@ public class Functions {
             }
         }
 
-        Class<? extends Event> selectedClass = null;
+        Class selectedClass = null;
         switch (option) {
             case 1:
                 selectedClass = CornerKickEvent.class;
@@ -964,4 +954,154 @@ public class Functions {
             }
         }
     }
+
+    public static void startSeasonManager(Scanner input, Season season) {
+
+        if (season == null) {
+            throw new IllegalArgumentException("Season cannot be null.");
+        }
+
+        IClub[] seasonClubs = season.getCurrentClubs();
+        if (seasonClubs == null || seasonClubs.length < 2) {
+            System.out.println("=== Not enough clubs to start the season. Please add more clubs. ===");
+            return;
+        }
+
+        // Listar clubes disponíveis
+        System.out.println("\n=== AVAILABLE CLUBS IN THE SEASON ===");
+        for (IClub club : seasonClubs) {
+            if (club != null) {
+                System.out.printf("Name: %-40s | Code: %-10s | Country: %-15s | Stadium: %s%n",
+                        club.getName(), club.getCode(), club.getCountry(), club.getStadiumName());
+            }
+        }
+
+        // Escolher clube para gerir
+        IClub selectedClub = null;
+        while (selectedClub == null) {
+            System.out.println("\n=== Choose your club ===");
+            System.out.print("Enter the code or name of the club you want to manage this season: ");
+            String inputClub = input.next();
+            for (IClub club : seasonClubs) {
+                if (club != null && (club.getCode().equalsIgnoreCase(inputClub) || club.getName().equalsIgnoreCase(inputClub))) {
+                    selectedClub = club;
+                    break;
+                }
+            }
+            if (selectedClub == null) {
+                System.out.println("Invalid club. Please try again.");
+            }
+        }
+
+        // Criar equipa do utilizador com formação manual
+        Team userTeam = new Team(selectedClub);
+        userTeam.setFormation(readFormation(input, "your"));
+
+        //TODO: pedir os player que ele quer
+
+        System.out.println("\n=== STARTING SEASON: " + season.getName().toUpperCase() + " (" + season.getYear() + ") ===");
+
+        season.generateSchedule();
+        season.printSchedule();
+
+        MatchSimulatorStrat matchSimulator = new MatchSimulatorStrat();
+
+        for(int i = 0; i < season.getMaxRounds(); i++) {
+
+            //TODO: MENU COM AS OPCOES DE JOGO (mudar formacao equipa e ver standings atuais)
+            System.out.println("Round " + (i + 1) + ":");
+            for (IMatch match : season.getMatches(i)) {
+                if (match == null) continue;
+
+                // Equipa da casa
+                if (match.getHomeClub().equals(selectedClub)) {
+                    match.setTeam(userTeam);
+                } else {
+                    Team autoTeam = new Team(match.getHomeClub());
+                    autoTeam.setFormation(generateRandomFormation());
+                    autoTeam.setAutomaticTeam(autoTeam.getClub().getPlayers(), (Formation) autoTeam.getFormation());
+                    match.setTeam(autoTeam);
+                }
+
+                // Equipa visitante
+                if (match.getAwayClub().equals(selectedClub)) {
+                    match.setTeam(userTeam);
+                } else {
+                    Team autoTeam = new Team(match.getAwayClub());
+                    autoTeam.setFormation(generateRandomFormation());
+                    autoTeam.setAutomaticTeam(autoTeam.getClub().getPlayers(), (Formation) autoTeam.getFormation());
+                    match.setTeam(autoTeam);
+                }
+
+                // Simular jogo
+                matchSimulator.simulate(match);
+                System.out.println("Match: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName());
+                System.out.println("Final Score: " +
+                        match.getHomeClub().getName() + " " +
+                        match.getTotalByEvent(GoalEvent.class, match.getHomeClub()) + " - " +
+                        match.getTotalByEvent(GoalEvent.class, match.getAwayClub()) + " " +
+                        match.getAwayClub().getName() + "\n");
+
+                // Atualizar classificações
+                for (IStanding standing : season.getLeagueStandings()) {
+                    if (standing != null) {
+                        ((Standing) standing).updateStandings(match);
+                    }
+                }
+            }
+        }
+
+        // Ordenar classificações
+        IStanding[] standings = season.getLeagueStandings();
+
+        for (int i = 0; i < standings.length - 1; i++) {
+            for (int j = 0; j < standings.length - i - 1; j++) {
+                IStanding a = standings[j];
+                IStanding b = standings[j + 1];
+
+                if (a == null || b == null) continue;
+
+                int pointsDiff = b.getPoints() - a.getPoints();
+                int goalDiffA = a.getGoalScored() - a.getGoalsConceded();
+                int goalDiffB = b.getGoalScored() - b.getGoalsConceded();
+
+                if (pointsDiff > 0 ||
+                        (pointsDiff == 0 && goalDiffB > goalDiffA) ||
+                        (pointsDiff == 0 && goalDiffB == goalDiffA && b.getGoalScored() > a.getGoalScored())) {
+
+                    standings[j] = b;
+                    standings[j + 1] = a;
+                }
+            }
+        }
+
+        System.out.println("\n================================= FINAL STANDINGS =====================================");
+        System.out.printf("%-3s | %-40s | PTS | PJ | W  | D  | L  | GM | GS | GD%n", "#", "Club");
+        System.out.println("=======================================================================================");
+
+        for (int i = 0; i < standings.length; i++) {
+            IStanding s = standings[i];
+            if (s != null) {
+                int played = s.getWins() + s.getDraws() + s.getLosses();
+                int gd = s.getGoalScored() - s.getGoalsConceded();
+
+                System.out.printf("%-3d | %-40s | %-3d | %-2d | %-2d | %-2d | %-2d | %-2d | %-2d | %+3d%n",
+                        i + 1,
+                        s.getTeam().getClub().getName(),
+                        s.getPoints(),
+                        played,
+                        s.getWins(),
+                        s.getDraws(),
+                        s.getLosses(),
+                        s.getGoalScored(),
+                        s.getGoalsConceded(),
+                        gd);
+            }
+        }
+
+        System.out.println("\n=== SEASON " + season.getName().toUpperCase() + " HAS CONCLUDED ===");
+        System.out.println("Thank you for playing!");
+
+    }
+
 }

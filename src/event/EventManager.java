@@ -22,14 +22,12 @@ public class EventManager implements IEventManager {
         if (ievent == null) {
             throw new IllegalArgumentException("Event cannot be null");
         }
-        if(findEvent(ievent) != -1){
-            throw new IllegalArgumentException("Event already exists");
+        if(findEvent(ievent) == -1){
+            if(eventCount == events.length) {
+                expandEvent();
+            }
+            events[eventCount++] = ievent;
         }
-        if (eventCount == events.length) {
-            expandEvent();
-        }
-
-        events[eventCount++] = ievent;
     }
 
     private int findEvent(IEvent ievent){

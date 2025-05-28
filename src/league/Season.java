@@ -35,8 +35,9 @@ public class Season implements ISeason {
     private MatchSimulatorStrategy matchSimulatorStrategy;
     private IStanding[] leagueStandings;
     private int numberOfTeams;
+    private boolean isManager;
 
-    public Season(String name, int year, int maxTeams) {
+    public Season(String name, int year, int maxTeams, boolean isManager) {
         this.name = name;
         this.year = year;
         this.maxTeams = maxTeams;
@@ -45,6 +46,11 @@ public class Season implements ISeason {
         this.match = new IMatch[0];
         this.currentRound = 0;
         this.numberOfTeams = 0;
+        this.isManager = isManager;
+    }
+
+    public boolean isManager() {
+        return isManager;
     }
 
     @Override
@@ -385,6 +391,22 @@ public class Season implements ISeason {
                 injury, freeKicks
         );
         System.out.println(playerStats);
+    }
+
+    public void printSchedule() {
+        if (match == null || match.length == 0) {
+            System.out.println("No matches scheduled.");
+            return;
+        }
+
+        for (int i = 0; i < getMaxRounds(); i++) {
+            System.out.println("Round " + i);
+            for (IMatch iMatch : match) {
+                if (iMatch != null && iMatch.getRound() == i) {
+                    System.out.println(iMatch.getHomeClub().getName() + " vs " + iMatch.getAwayClub().getName() + " - Round: " + iMatch.getRound());
+                }
+            }
+        }
     }
 
     @Override

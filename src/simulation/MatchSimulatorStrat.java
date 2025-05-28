@@ -4,8 +4,11 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.simulation.MatchSimulatorStrategy;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
+import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import event.*;
 import match.Match;
+import team.Formation;
+import team.Team;
 
 import java.util.Random;
 
@@ -28,15 +31,24 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
         if (match.isPlayed()) throw new IllegalStateException("Match has already been played");
         if (!match.isValid()) throw new IllegalStateException("Match is not valid");
 
+        ITeam homeTeam = match.getHomeTeam();
+        ITeam awayTeam = match.getAwayTeam();
+
         match.addEvent(new StartEvent(0));
-        generateMatchEvents(match, match.getHomeClub(), true);
-        generateMatchEvents(match, match.getAwayClub(), false);
+        generateMatchEvents(match, homeTeam, true);
+        generateMatchEvents(match, awayTeam, false);
         match.addEvent(new EndEvent(90));
         match.setPlayed();
     }
 
-    private void generateMatchEvents(IMatch match, IClub team, boolean isHomeTeam) {
+    private void generateMatchEvents(IMatch match, ITeam team, boolean isHomeTeam) {
         IPlayer[] players = team.getPlayers();
+        int playerCount = 0;
+        for(IPlayer player : players){
+            if(player != null){
+                playerCount++;
+            }
+        }
         if (players == null || players.length == 0) return;
 
         int matchDuration = 90 + rng.nextInt(10) + 1;
@@ -46,7 +58,7 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
             int attempts = 0;
 
             while (selectedPlayer == null && attempts < 50) {
-                IPlayer randomPlayer = players[rng.nextInt(team.getPlayerCount())];
+                IPlayer randomPlayer = players[rng.nextInt(playerCount)];
                 if (!isPlayerUnavailable(randomPlayer)) selectedPlayer = randomPlayer;
                 attempts++;
             }
@@ -56,7 +68,7 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
             double eventRoll = rng.nextDouble();
 
             if (eventRoll < 0.01) {
-                handleInjuryAndSubstitution(match, team, selectedPlayer, minute, isHomeTeam);
+                handleInjuryAndSubstitution(match, team.getClub(), selectedPlayer, minute, isHomeTeam);
             } else if (eventRoll < 0.07) {
                 if (!selectedPlayer.getPosition().getDescription().equals("GoalKeeper")) {
                     match.addEvent(new ShotEvent(selectedPlayer, minute));
@@ -73,7 +85,7 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
                 double consequenceFoulRoll = rng.nextDouble();
 
                 if (consequenceFoulRoll < 0.03) {
-                    handleInjuryAndSubstitution(match, team, selectedPlayer, minute, isHomeTeam);
+                    handleInjuryAndSubstitution(match, team.getClub(), selectedPlayer, minute, isHomeTeam);
                 } else if (consequenceFoulRoll < 0.08) {
                     match.addEvent(new RedCardEvent(selectedPlayer, minute));
                     if (redCardCount == redCardPlayers.length) expandRedCardPlayersArray();
