@@ -15,6 +15,7 @@ import league.League;
 import league.Season;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -145,11 +146,11 @@ public class Menus {
         boolean verifyInput = false;
 
         do {
-            System.out.println("=======================================");
-            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
-            System.out.println("=======================================");
-            System.out.println("                                       ");
-            System.out.println("##------------Start Game-------------##");
+            System.out.println("========================================");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25  ");
+            System.out.println("========================================");
+            System.out.println("                                        ");
+            System.out.println("##-------------Start Game-------------##");
             System.out.println("|--------------------------------------|");
             System.out.println("|  Option 1 - Friendly Match           |");
             System.out.println("|  Option 2 - Start Season             |");
@@ -161,9 +162,11 @@ public class Menus {
             System.out.println("|  Option 8 - List a event form a match|");
             System.out.println("|  Option 9 - View Season Standings    |");
             System.out.println("|  Option 10 - Reset season            |");
+            System.out.println("|  Option 11 - Get stats by players    |");
+            System.out.println("|  Option 12 - Get stats all players   |");
             System.out.println("|  Option 0 - Exit                     |");
             System.out.println("|--------------------------------------|");
-            System.out.println("                                       ");
+            System.out.println("                                        ");
             try {
                 option = input.nextInt();
                 verifyInput = true;
@@ -206,6 +209,15 @@ public class Menus {
                         break;
                     case 10:
                         Functions.ResetSeason(season);
+                        verifyInput = false;
+                        break;
+                    case 11:
+                        Functions.inputPlayerToGetStats(input, season);
+                        verifyInput = false;
+                        break;
+                    case 12:
+                        Functions.viewAllPlayerStats(season);
+                        verifyInput = false;
                         break;
                     case 0:
                         return;

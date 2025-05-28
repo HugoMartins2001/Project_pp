@@ -912,4 +912,56 @@ public class Functions {
         season.resetSeason();
         System.out.println("Season " + season.getName() + " has been reset successfully.");
     }
+
+    public static void inputPlayerToGetStats(Scanner input, Season season) {
+        System.out.println("Choose the player club that you want to check stats:");
+        for(IClub club : season.getCurrentClubs()) {
+            if (club != null) {
+                System.out.println("Club: " + club.getName());
+            }
+        }
+        input.nextLine();
+        String selectedClub = input.nextLine();
+        System.out.println("Enter the number of the player you want to get stats for:");
+        for(IClub club : season.getCurrentClubs()) {
+            if (club != null && club.getName().equalsIgnoreCase(selectedClub) || club.getCode().equalsIgnoreCase(selectedClub)) {
+                for (IPlayer player : club.getPlayers()) {
+                    if (player != null) {
+                        System.out.println("Player: " + player.getName() + " | Number: " + player.getNumber());
+                    }
+                }
+            }
+        }
+        int selectedPlayer = input.nextInt();
+        for(IClub club : season.getCurrentClubs()) {
+            if (club != null && club.getName().equalsIgnoreCase(selectedClub) || club.getCode().equalsIgnoreCase(selectedClub)) {
+                for (IPlayer player : club.getPlayers()) {
+                    if (player != null && player.getNumber() == selectedPlayer) {
+                        season.getPlayerStatistics(player);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void viewAllPlayerStats(Season season) {
+        if (season == null) {
+            throw new IllegalArgumentException("Season cannot be null.");
+        }
+        for (IClub club : season.getCurrentClubs()) {
+            if (club != null) {
+                System.out.println("");
+                System.out.println("=======================================");
+                System.out.println("=======================================");
+                System.out.println("Club: " + club.getName());
+                System.out.println("");
+                for (IPlayer player : club.getPlayers()) {
+                    if (player != null) {
+                        System.out.println("");
+                        season.getPlayerStatistics(player);
+                    }
+                }
+            }
+        }
+    }
 }
