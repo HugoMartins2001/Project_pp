@@ -46,6 +46,7 @@ public class Season implements ISeason {
         this.currentRound = 0;
         this.numberOfTeams = 0;
         this.isManager = isManager;
+        this.schedule = new Schedule(new IMatch[0][0]);
     }
 
     public boolean isManager() {

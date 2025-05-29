@@ -41,7 +41,7 @@ public class main {
                     Exporter exporter = new Exporter();
                     exporter.exportToJson();
 
-                    importer.exportHtmlReports();
+                    exporter.exportHtmlReports();
                     break;
                 default:
                     System.out.println("Select a valid option!");

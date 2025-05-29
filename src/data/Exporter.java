@@ -9,8 +9,11 @@
  */
 
 package data;
+
 import com.ppstudios.footballmanager.api.contracts.data.IExporter;
 
+import com.ppstudios.footballmanager.api.contracts.data.htmlgenerators.ClubHtmlGenerator;
+import com.ppstudios.footballmanager.api.contracts.data.htmlgenerators.SeasonHtmlGenerator;
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.league.ILeague;
 import com.ppstudios.footballmanager.api.contracts.league.ISchedule;
@@ -30,6 +33,7 @@ import org.json.simple.JSONObject;
 import player.Player;
 import team.Club;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -43,7 +47,7 @@ public class Exporter implements IExporter {
             file.write(leaguesJson.toJSONString());
             file.flush();
             System.out.println("League exported successfully to JSON file.");
-        }catch(IOException e) {
+        } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
     }
@@ -51,7 +55,7 @@ public class Exporter implements IExporter {
     private JSONArray leaguesToJsonArray(ILeague[] leagues) {
         JSONArray leaguesArray = new JSONArray();
         for (ILeague league : leagues) {
-            if(league != null){
+            if (league != null) {
                 leaguesArray.add(leagueToJsonObject(league));
             }
         }
@@ -68,7 +72,7 @@ public class Exporter implements IExporter {
     private JSONArray seasonToJsonArray(ISeason[] seasons) {
         JSONArray seasonsArray = new JSONArray();
         for (ISeason season : seasons) {
-            if(season != null){
+            if (season != null) {
                 seasonsArray.add(seasonToJsonObject(season));
             }
         }
@@ -85,7 +89,7 @@ public class Exporter implements IExporter {
         seasonJson.put("matches", matchesToJsonArray(season.getMatches()));
         seasonJson.put("schedule", scheduleToJsonObject(season.getSchedule()));
         seasonJson.put("standings", standingsToJsonArray(season.getLeagueStandings()));
-        seasonJson.put("is_manager", ((Season)season).isManager());
+        seasonJson.put("is_manager", ((Season) season).isManager());
 
         return seasonJson;
     }
@@ -93,7 +97,7 @@ public class Exporter implements IExporter {
     private JSONArray standingsToJsonArray(IStanding[] standings) {
         JSONArray standingsArray = new JSONArray();
         for (IStanding standing : standings) {
-            if(standing != null){
+            if (standing != null) {
                 standingsArray.add(standingToJsonObject(standing));
             }
         }
@@ -117,7 +121,7 @@ public class Exporter implements IExporter {
     private JSONArray matchesToJsonArray(IMatch[] matches) {
         JSONArray matchesJsonArray = new JSONArray();
         for (IMatch match : matches) {
-            if(match != null){
+            if (match != null) {
                 matchesJsonArray.add(matchToJsonObject(match));
             }
         }
@@ -126,8 +130,8 @@ public class Exporter implements IExporter {
 
     private JSONObject matchToJsonObject(IMatch match) {
         JSONObject matchJsonObject = new JSONObject();
-        matchJsonObject.put("home_club", clubToJsonObject((Club)match.getHomeClub()));
-        matchJsonObject.put("away_club", clubToJsonObject((Club)match.getAwayClub()));
+        matchJsonObject.put("home_club", clubToJsonObject((Club) match.getHomeClub()));
+        matchJsonObject.put("away_club", clubToJsonObject((Club) match.getAwayClub()));
         matchJsonObject.put("home_team", teamToJsonObject(match.getHomeTeam()));
         matchJsonObject.put("away_team", teamToJsonObject(match.getAwayTeam()));
         matchJsonObject.put("round", match.getRound());
@@ -145,9 +149,9 @@ public class Exporter implements IExporter {
     private JSONObject teamToJsonObject(ITeam team) {
         JSONObject teamJson = new JSONObject();
         String formation;
-        try{
+        try {
             formation = team.getFormation().toString();
-        }catch(IllegalStateException e){
+        } catch (IllegalStateException e) {
             formation = "4-4-2";
         }
 
@@ -162,7 +166,7 @@ public class Exporter implements IExporter {
         JSONArray clubsJson = new JSONArray();
 
         for (IClub club : clubs) {
-            if(club != null){
+            if (club != null) {
                 clubsJson.add(clubToJsonObject((Club) club));
             }
         }
@@ -187,7 +191,7 @@ public class Exporter implements IExporter {
         JSONArray playersJson = new JSONArray();
 
         for (IPlayer player : players) {
-            if(player == null) continue;
+            if (player == null) continue;
             playersJson.add(playerToJsonObject((Player) player));
         }
         return playersJson;
@@ -214,11 +218,12 @@ public class Exporter implements IExporter {
 
         return playerJson;
     }
+
     public JSONArray eventsToJsonArray(IEvent[] events) {
         JSONArray eventsJson = new JSONArray();
         for (IEvent event : events) {
-            if(event != null){
-                eventsJson.add(eventToJsonObject((Event)event));
+            if (event != null) {
+                eventsJson.add(eventToJsonObject((Event) event));
             }
         }
         return eventsJson;
@@ -228,14 +233,56 @@ public class Exporter implements IExporter {
         JSONObject eventJson = new JSONObject();
         eventJson.put("type", event.getClass().getSimpleName());
         eventJson.put("minute", event.getMinute());
-        if(event instanceof PlayerEvent){
-            eventJson.put("player", playerToJsonObject((Player)((PlayerEvent) event).getPlayer()));
-        }
-
-        else if(event instanceof SubstitutionEvent){
-            eventJson.put("player", playerToJsonObject((Player)((SubstitutionEvent) event).getPlayerOut()));
-            eventJson.put("player_in", playerToJsonObject((Player)((SubstitutionEvent) event).getPlayerIn()));
+        if (event instanceof PlayerEvent) {
+            eventJson.put("player", playerToJsonObject((Player) ((PlayerEvent) event).getPlayer()));
+        } else if (event instanceof SubstitutionEvent) {
+            eventJson.put("player", playerToJsonObject((Player) ((SubstitutionEvent) event).getPlayerOut()));
+            eventJson.put("player_in", playerToJsonObject((Player) ((SubstitutionEvent) event).getPlayerIn()));
         }
         return eventJson;
+    }
+
+    public void exportHtmlReports() {
+        ILeague[] leagues = Functions.getLeagues();
+
+        if (leagues == null || leagues.length == 0) {
+            System.out.println("There are no leagues available to export.");
+            return;
+        }
+
+        File seasonDir = new File("output/html/seasons/");
+        File clubDir = new File("output/html/clubs/");
+        if (!seasonDir.exists()) seasonDir.mkdirs();
+        if (!clubDir.exists()) clubDir.mkdirs();
+
+        for (ILeague league : leagues) {
+            if (league == null) continue;
+
+            for (ISeason season : league.getSeasons()) {
+                if (season == null) continue;
+
+                String seasonPath = "output/html/seasons/" + season.getName().replace(" ", "_") + "_" + season.getYear() + ".html";
+                try {
+                    SeasonHtmlGenerator.generate(season, seasonPath);
+                } catch (Exception e) {
+                    System.out.println("Error generating HTML for the season: " + season.getName());
+                    e.printStackTrace();
+                }
+
+                for (IClub club : season.getCurrentClubs()) {
+                    if (club == null) continue;
+
+                    String clubPath = "output/html/clubs/" + club.getName().replace(" ", "_") + ".html";
+                    try {
+                        ClubHtmlGenerator.generate(club, clubPath);
+                    } catch (Exception e) {
+                        System.out.println("Error generating HTML for club:: " + club.getName());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        System.out.println("Exportação HTML concluída.");
     }
 }
