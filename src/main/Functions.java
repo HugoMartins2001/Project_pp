@@ -733,6 +733,17 @@ public class Functions {
             return;
         }
 
+        for (int i = 0; i < standings.length - 1; i++) {
+            for (int j = 0; j < standings.length - i - 1; j++) {
+                if (standings[j] != null && standings[j + 1] != null &&
+                        standings[j].getPoints() < standings[j + 1].getPoints()) {
+                    IStanding temp = standings[j];
+                    standings[j] = standings[j + 1];
+                    standings[j + 1] = temp;
+                }
+            }
+        }
+
         System.out.println("\n========================== SEASON STANDINGS: " + season.getName().toUpperCase() + "=================================\n");
 
         System.out.printf("%-3s | %-35s | PTS | PJ |  W |  D |  L | GM | GS | GD%n", "#", "Club");
@@ -1093,8 +1104,6 @@ public class Functions {
                 System.out.println("Player not found, invalid number, or position quota full. Try again.");
             }
         }
-
-
 
         userTeam.setManualTeam(selectedPlayers);
 
