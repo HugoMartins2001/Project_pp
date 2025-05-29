@@ -25,12 +25,12 @@ import team.Team;
 import java.io.IOException;
 
 public class Season implements ISeason {
+
     private String name;
     private int year;
     private int currentRound;
     private int maxTeams;
     private IClub[] clubs;
-    private IMatch[] match;
     private ISchedule schedule;
     private MatchSimulatorStrategy matchSimulatorStrategy;
     private IStanding[] leagueStandings;
@@ -43,23 +43,8 @@ public class Season implements ISeason {
         this.maxTeams = maxTeams;
         this.clubs = new IClub[maxTeams];
         this.leagueStandings = new IStanding[maxTeams];
-        this.schedule = new Schedule();
-        this.match = new IMatch[0];
         this.currentRound = 0;
         this.numberOfTeams = 0;
-        this.isManager = isManager;
-    }
-
-    public Season(String name, int year, int currentRound, int maxTeams, IClub[] clubs, IMatch[] match, ISchedule schedule, IStanding[] leagueStandings, int numberOfTeams, boolean isManager) {
-        this.name = name;
-        this.year = year;
-        this.currentRound = currentRound;
-        this.maxTeams = maxTeams;
-        this.clubs = clubs;
-        this.match = match;
-        this.schedule = schedule;
-        this.leagueStandings = leagueStandings;
-        this.numberOfTeams = numberOfTeams;
         this.isManager = isManager;
     }
 
@@ -114,28 +99,13 @@ public class Season implements ISeason {
 
     @Override
     public IMatch[] getMatches() {
-        return match;
+        return schedule != null ? schedule.getAllMatches() : new IMatch[0];
     }
+
 
     @Override
     public IMatch[] getMatches(int round) {
-        if (round < 0 || round >= getMaxRounds()) {
-            throw new IllegalArgumentException("Invalid round number");
-        }
-        int count = 0;
-        for (IMatch m : match) {
-            if (m != null && m.getRound() == round) {
-                count++;
-            }
-        }
-        IMatch[] result = new IMatch[count];
-        int index = 0;
-        for (IMatch m : match) {
-            if (m != null && m.getRound() == round) {
-                result[index++] = m;
-            }
-        }
-        return result;
+        return schedule != null ? schedule.getMatchesForRound(round) : new IMatch[0];
     }
 
     @Override
@@ -144,20 +114,19 @@ public class Season implements ISeason {
             throw new IllegalStateException("Not enough teams to generate a schedule.");
         }
 
-        if (match != null) {
-            for (int i = 0; i < match.length; i++) {
-                if (match[i] != null && match[i].isPlayed()) {
+        if (schedule != null) {
+            for (IMatch match : schedule.getAllMatches()) {
+                if (match != null && match.isPlayed()) {
                     throw new IllegalStateException("A match was already played.");
                 }
             }
         }
 
         int teamCount = numberOfTeams;
-        boolean isOdd = false;
+        boolean isOdd = (teamCount % 2 != 0);
         Club[] scheduleTeams;
 
-        if (teamCount % 2 != 0) {
-            isOdd = true;
+        if (isOdd) {
             teamCount++;
             scheduleTeams = new Club[teamCount];
             for (int i = 0; i < numberOfTeams; i++) {
@@ -174,31 +143,28 @@ public class Season implements ISeason {
         int roundsPerLeg = teamCount - 1;
         int totalRounds = roundsPerLeg * 2;
         int matchesPerRound = teamCount / 2;
-        int totalMatches = totalRounds * matchesPerRound;
 
-        match = new IMatch[totalMatches];
-        int matchIndex = 0;
+        IMatch[][] allMatches = new IMatch[totalRounds][matchesPerRound];
 
         for (int round = 0; round < roundsPerLeg; round++) {
             for (int game = 0; game < matchesPerRound; game++) {
                 int homeIndex = (round + game) % (teamCount - 1);
                 int awayIndex = (teamCount - 1 - game + round) % (teamCount - 1);
 
-                if (game == 0) {
-                    awayIndex = teamCount - 1;
-                }
+                if (game == 0) awayIndex = teamCount - 1;
 
-                Club homeClub = scheduleTeams[homeIndex];
-                Club awayClub = scheduleTeams[awayIndex];
+                Club home = scheduleTeams[homeIndex];
+                Club away = scheduleTeams[awayIndex];
 
-                if (!isOdd || (homeClub != null && awayClub != null)) {
-                    match[matchIndex++] = new Match(homeClub, awayClub, round);
-                    match[matchIndex++] = new Match(awayClub, homeClub, round + roundsPerLeg);
+                if (!isOdd || (home != null && away != null)) {
+                    allMatches[round][game] = new Match(home, away, round);
+                    allMatches[round + roundsPerLeg][game] = new Match(away, home, round + roundsPerLeg);
                 }
             }
         }
-    }
 
+        this.schedule = new Schedule(allMatches);
+    }
     @Override
     public void simulateRound() {
         if (matchSimulatorStrategy == null) {
@@ -209,9 +175,10 @@ public class Season implements ISeason {
             throw new IllegalStateException("Max rounds reached");
         }
 
-        for (IMatch iMatch : match) {
-            if (iMatch.getRound() == currentRound) {
-                matchSimulatorStrategy.simulate(iMatch);
+        IMatch[] roundMatches = schedule.getMatchesForRound(currentRound);
+        for (IMatch match : roundMatches) {
+            if (!match.isPlayed()) {
+                matchSimulatorStrategy.simulate(match);
             }
         }
 
@@ -232,8 +199,8 @@ public class Season implements ISeason {
 
     @Override
     public boolean isSeasonComplete() {
-        for (IMatch iMatch : match) {
-            if (iMatch != null && !iMatch.isPlayed()) {
+        for (IMatch match : schedule.getAllMatches()) {
+            if (!match.isPlayed()) {
                 return false;
             }
         }
@@ -243,11 +210,9 @@ public class Season implements ISeason {
     @Override
     public void resetSeason() {
         currentRound = 0;
-        if (match != null) {
-            for (IMatch match : match) {
-                if (match != null && match.isPlayed()) {
-                    ((Match) match).reset();
-                }
+        for (IMatch match : schedule.getAllMatches()) {
+            if (match.isPlayed()) {
+                ((Match) match).reset();
             }
         }
     }
@@ -304,18 +269,17 @@ public class Season implements ISeason {
 
     @Override
     public int getMaxRounds() {
-        return (2 * (numberOfTeams - 1));
+        return schedule != null ? schedule.getNumberOfRounds() : 0;
     }
 
     @Override
     public int getCurrentMatches() {
-        int currentMatches = 0;
-        for (IMatch iMatch : match) {
-            if (iMatch.getRound() == currentRound) {
-                currentMatches++;
-            }
+        int count = 0;
+        IMatch[] roundMatches = schedule.getMatchesForRound(currentRound);
+        for (IMatch match : roundMatches) {
+            if (!match.isPlayed()) count++;
         }
-        return currentMatches;
+        return count;
     }
 
     @Override
@@ -350,8 +314,8 @@ public class Season implements ISeason {
         int goals = 0;
         int freeKicks = 0;
 
-        for(IMatch iMatch : match) {
-            if(match != null && iMatch.isPlayed()){
+        for(IMatch iMatch : schedule.getAllMatches()) {
+            if(iMatch != null && iMatch.isPlayed()){
                 for(IEvent event : iMatch.getEvents()) {
                     if(event != null && event instanceof PlayerEvent && ((PlayerEvent) event).getPlayer().equals(player)) {
                         if (event instanceof GoalEvent) {
@@ -408,17 +372,15 @@ public class Season implements ISeason {
     }
 
     public void printSchedule() {
-        if (match == null || match.length == 0) {
+        if (schedule == null) {
             System.out.println("No matches scheduled.");
             return;
         }
 
-        for (int i = 0; i < getMaxRounds(); i++) {
+        for (int i = 0; i < schedule.getNumberOfRounds(); i++) {
             System.out.println("Round " + i);
-            for (IMatch iMatch : match) {
-                if (iMatch != null && iMatch.getRound() == i) {
-                    System.out.println(iMatch.getHomeClub().getName() + " vs " + iMatch.getAwayClub().getName() + " - Round: " + iMatch.getRound());
-                }
+            for (IMatch iMatch : schedule.getMatchesForRound(i)) {
+                System.out.println(iMatch.getHomeClub().getName() + " vs " + iMatch.getAwayClub().getName() + " - Round: " + iMatch.getRound());
             }
         }
     }
@@ -427,4 +389,13 @@ public class Season implements ISeason {
     public void exportToJson() throws IOException {
         //TODO implementar exportToJson
     }
+
+    public void setShedule(ISchedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public void setStandings(IStanding[] standings) {
+        this.leagueStandings = standings;
+    }
+
 }

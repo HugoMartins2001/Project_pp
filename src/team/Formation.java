@@ -41,6 +41,10 @@ public class Formation implements IFormation {
         return forwards;
     }
 
+    public String toString() {
+        return defenders + "-" + midfielders + "-" + forwards;
+    }
+
     @Override
     public int getTacticalAdvantage(IFormation formation) {
         if (this.displayName == null || formation.getDisplayName() == null) {

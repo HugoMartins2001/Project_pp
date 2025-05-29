@@ -146,7 +146,7 @@ public class Exporter implements IExporter {
         JSONObject teamJson = new JSONObject();
         String formation;
         try{
-            formation = team.getFormation().getDisplayName();
+            formation = team.getFormation().toString();
         }catch(IllegalStateException e){
             formation = "4-4-2";
         }
@@ -207,7 +207,7 @@ public class Exporter implements IExporter {
         playerJson.put("height", player.getHeight());
         playerJson.put("weight", player.getWeight());
         playerJson.put("nationality", player.getNationality());
-        playerJson.put("preferredFoot", player.getPreferredFoot());
+        playerJson.put("preferredFoot", player.getPreferredFoot().getPreferredFoot());
         playerJson.put("photo", player.getPhoto());
         playerJson.put("birthDate", player.getBirthDate().toString());
         playerJson.put("clubCode", player.getClub());

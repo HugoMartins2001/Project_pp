@@ -257,6 +257,7 @@ public class Importer {
             ILeague[] leagues = ILeagueJSONtoArray(leaguesArray);
             Functions.setLeagues(leagues);
         }catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error reading club file: " + e.getMessage());
         }
     }
@@ -294,18 +295,25 @@ public class Importer {
         int currentRound = ((Long) jsonObject.get("current_round")).intValue();
         int maxTeams = ((Long) jsonObject.get("max_teams")).intValue();
         IClub[] clubs = IClubJSONtoArray((JSONArray) jsonObject.get("clubs"));
-        IMatch[] matches = IMatchJSONtoArray((JSONArray) jsonObject.get("matches"));
         ISchedule schedule = IScheduleJSONtoObject((JSONObject) jsonObject.get("schedule"));
         IStanding[] standings = IStandingJSONtoArray((JSONArray) jsonObject.get("standings"));
         boolean isManager = (boolean) jsonObject.get("is_manager");
 
-        int numberOfTeams = 0;
-        for(IClub club : clubs){
-            if(club != null){
-                numberOfTeams++;
-            }
+        Season season = new Season(name, year, maxTeams, isManager);
+
+        for (IClub club : clubs) {
+            season.addClub(club);
         }
-        return new Season(name, year, currentRound, maxTeams, clubs, matches, schedule, standings, numberOfTeams, isManager);
+
+        season.setShedule(schedule);
+        season.setStandings(standings);
+
+        while(season.getCurrentRound() < currentRound) {
+            season.simulateRound();
+        }
+
+        return season;
+
     }
 
     private IClub[] IClubJSONtoArray(JSONArray jsonArray) {
@@ -527,11 +535,11 @@ public class Importer {
                 return new ShotEvent(player, minute);
             case "ShotOnGoalEvent":
                 return new ShotOnGoalEvent(player, minute);
-            case "Start Event":
+            case "StartEvent":
                 return new StartEvent(minute);
-            case "Substitution Card":
+            case "SubstitutionEvent":
                 return new SubstitutionEvent(player,(Player) this.IPlayerJSONtoObject((JSONObject) eventJson.get("player_in")), minute);
-            case "Yellow Card":
+            case "YellowCardEvent":
                 return new YellowCardEvent(player, minute);
             default:
                 throw new IllegalStateException("Unknown Event: " + type);
