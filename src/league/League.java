@@ -52,6 +52,7 @@ public class League implements ILeague {
 
         seasons[seasonCount] = season;
         seasonCount++;
+        System.out.println("");
         System.out.println("Season added: " + season.getName() + " | year: " + season.getYear());
         return true;
     }

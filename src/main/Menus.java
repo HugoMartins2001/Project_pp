@@ -25,8 +25,9 @@ public class Menus {
         boolean verifyInput = false;
 
         do {
+            System.out.println("");
             System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##-------------Main Menu-------------##");
@@ -55,6 +56,7 @@ public class Menus {
         boolean verifyInput = false;
 
         do {
+            System.out.println("");
             System.out.println("=======================================");
             System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
             System.out.println("=======================================");
@@ -71,6 +73,7 @@ public class Menus {
                 verifyInput = true;
                 switch (option) {
                     case 1:
+                        System.out.println("");
                         System.out.print("Insert a League Name:  ");
                         String leagueName = input.next();
                         League newLeague = new League(leagueName);
@@ -78,6 +81,7 @@ public class Menus {
                         verifyInput = false;
                         break;
                     case 2:
+                        //TODO FALTA IMPLEMENTAR
                         //loadGame(input);
                         break;
                     case 0:
@@ -98,8 +102,9 @@ public class Menus {
         boolean verifyInput = false;
 
         do {
+            System.out.println("");
             System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##------------Menu League------------##");
@@ -145,80 +150,56 @@ public class Menus {
         boolean verifyInput = false;
 
         do {
-            System.out.println("========================================");
-            System.out.println(" PPFootballManager v1.0 - Season 24/25  ");
-            System.out.println("========================================");
-            System.out.println("                                        ");
-            System.out.println("##-------------Start Game-------------##");
-            System.out.println("|--------------------------------------|");
-            System.out.println("|  Option 1 - Friendly Match           |");
-            System.out.println("|  Option 2 - Start Season             |");
-            System.out.println("|  Option 3 - Add Clubs (Manually)     |");
-            System.out.println("|  Option 4 - Add Clubs (Automatic)    |");
-            System.out.println("|  Option 5 - Remove Clubs (Manually)  |");
-            System.out.println("|  Option 6 - Remove Clubs (Automatic) |");
-            System.out.println("|  Option 7 - List Season Clubs        |");
-            System.out.println("|  Option 8 - List a event form a match|");
-            System.out.println("|  Option 9 - View Season Standings    |");
-            System.out.println("|  Option 10 - Reset season            |");
-            System.out.println("|  Option 11 - Get stats by players    |");
-            System.out.println("|  Option 12 - Get stats all players   |");
-            System.out.println("|  Option 0 - Exit                     |");
-            System.out.println("|--------------------------------------|");
-            System.out.println("                                        ");
+            System.out.println("");
+            System.out.println("=========================================");
+            System.out.println("  PPFootballManager v1.0 - Season 24/25  ");
+            System.out.println("=========================================");
+            System.out.println("                                         ");
+            System.out.println("##--------------Start Game-------------##");
+            System.out.println("|---------------------------------------|");
+            System.out.println("|  Option 1 - Start Season              |");
+            System.out.println("|  Option 2 - Friendly Match            |");
+            System.out.println("|  Option 3 - View Season Standings     |");
+            System.out.println("|  Option 4 - List a event form a match |");
+            System.out.println("|  Option 5 - Get Player Stats          |");
+            System.out.println("|  Option 6 - Add/Remove/List Clubs Menu|");
+            System.out.println("|  Option 7 - Reset season              |");
+            System.out.println("|  Option 0 - Exit                      |");
+            System.out.println("|---------------------------------------|");
+            System.out.println("                                         ");
             try {
                 option = input.nextInt();
                 verifyInput = true;
                 switch (option) {
                     case 1:
-                        Functions.startFriendlyMatch(input, season);
-                        verifyInput = false;
-                        break;
-                    case 2:
                         if(season.isManager()){
                             Functions.startSeasonManager(input, season);
                         }
                         Functions.startSeason(input, season);
                         verifyInput = false;
                         break;
+                    case 2:
+                        Functions.startFriendlyMatch(input, season);
+                        verifyInput = false;
+                        break;
                     case 3:
-                        Functions.addClub(input, season);
-                        verifyInput = false;
-                        break;
-                    case 4:
-                        Functions.addAllClubsToSeason(season);
-                        verifyInput = false;
-                        break;
-                    case 5:
-                        Functions.removeClub(input, season);
-                        verifyInput = false;
-                        break;
-                    case 6:
-                        Functions.removeAllClubsToSeason(season);
-                        verifyInput = false;
-                        break;
-                    case 7:
-                        Functions.listSeasonClubs(season);
-                        verifyInput = false;
-                        break;
-                    case 8:
-                        Functions.ListEventFromAMatch(input, season);
-                        verifyInput = false;
-                        break;
-                    case 9:
                         Functions.viewSeasonStandings(season);
                         verifyInput = false;
                         break;
-                    case 10:
+                    case 4:
+                        Functions.ListEventFromAMatch(input, season);
+                        verifyInput = false;
+                        break;
+                    case 5:
+                        getStatsMenu(input, season);
+                        verifyInput = false;
+                        break;
+                    case 6:
+                        addRemoveClubsMenu(input, season);
+                        verifyInput = false;
+                        break;
+                    case 7:
                         Functions.ResetSeason(season);
-                        verifyInput = false;
-                        break;
-                    case 11:
-                        Functions.inputPlayerToGetStats(input, season);
-                        verifyInput = false;
-                        break;
-                    case 12:
-                        Functions.viewAllPlayerStats(season);
                         verifyInput = false;
                         break;
                     case 0:
@@ -239,8 +220,9 @@ public class Menus {
         boolean verifyInput = false;
 
         do {
+            System.out.println("");
             System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##--------------Credits--------------##");
@@ -276,8 +258,9 @@ public class Menus {
         boolean verifyInput = false;
 
         do {
+            System.out.println("");
             System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##------------View Club-------------##");
@@ -319,8 +302,9 @@ public class Menus {
         boolean verifyInput = false;
 
         do {
+            System.out.println("");
             System.out.println("=======================================");
-            System.out.println("PPFootballManager v1.0 - Season 24/25");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
             System.out.println("=======================================");
             System.out.println("                                       ");
             System.out.println("##------------View Player------------##");
@@ -341,6 +325,103 @@ public class Menus {
                         break;
                     case 2:
                         Functions.viewPlayer();
+                        verifyInput = false;
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Select a valid option!");
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Select a valid option!");
+                input.next();
+            }
+        } while (!verifyInput);
+    }
+
+    public static void getStatsMenu(Scanner input, Season season) {
+        int option;
+        boolean verifyInput = false;
+
+        do {
+            System.out.println("");
+            System.out.println("=======================================");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
+            System.out.println("=======================================");
+            System.out.println("                                       ");
+            System.out.println("##------------Stats Menu-------------##");
+            System.out.println("|-------------------------------------|");
+            System.out.println("|  Option 1 - Get stats by player     |");
+            System.out.println("|  Option 2 - Get stats all players   |");
+            System.out.println("|  option 0 - Back                    |");
+            System.out.println("|-------------------------------------|");
+            System.out.println("                                       ");
+            try {
+                option = input.nextInt();
+                verifyInput = true;
+                switch (option) {
+                    case 1:
+                        Functions.inputPlayerToGetStats(input, season);
+                        verifyInput = false;
+                        break;
+                    case 2:
+                        Functions.viewAllPlayerStats(season);
+                        verifyInput = false;
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Select a valid option!");
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Select a valid option!");
+                input.next();
+            }
+        } while (!verifyInput);
+    }
+
+    public static void addRemoveClubsMenu(Scanner input, Season season) {
+        int option;
+        boolean verifyInput = false;
+
+        do {
+            System.out.println("");
+            System.out.println("=======================================");
+            System.out.println(" PPFootballManager v1.0 - Season 24/25 ");
+            System.out.println("=======================================");
+            System.out.println("                                       ");
+            System.out.println("##------ Add/Remove Clubs Menu ------##");
+            System.out.println("|-------------------------------------|");
+            System.out.println("|  Option 1 - Add Clubs (Manually)    |");
+            System.out.println("|  Option 2 - Add Clubs (Automatic)   |");
+            System.out.println("|  Option 3 - Remove Clubs (Manually) |");
+            System.out.println("|  Option 4 - Remove Clubs (Automatic)|");
+            System.out.println("|  Option 5 - List All Season Clubs   |");
+            System.out.println("|  option 0 - Back                    |");
+            System.out.println("|-------------------------------------|");
+            System.out.println("                                       ");
+            try {
+                option = input.nextInt();
+                verifyInput = true;
+                switch (option) {
+                    case 1:
+                        Functions.addClub(input, season);
+                        verifyInput = false;
+                        break;
+                    case 2:
+                        Functions.addAllClubsToSeason(season);
+                        verifyInput = false;
+                        break;
+                    case 3:
+                        Functions.removeClub(input, season);
+                        verifyInput = false;
+                        break;
+                    case 4:
+                        Functions.removeAllClubsToSeason(season);
+                        verifyInput = false;
+                        break;
+                    case 5:
+                        Functions.listSeasonClubs(season);
                         verifyInput = false;
                         break;
                     case 0:
