@@ -11,8 +11,25 @@ package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
+/**
+ * Represents a red card event given to a player during a football match.
+ * This event includes the player who received the red card and the minute it occurred.
+ * Inherits from {@link PlayerEvent}.
+ *
+ * <p>The event description is automatically generated in the format:
+ * "-> Red card to [Player Name] at [Minute] minutes".</p>
+ *
+ * <p>Used to track disciplinary actions in match simulations or logs.</p>
+ *
+ */
 public class RedCardEvent extends PlayerEvent {
 
+    /**
+     * Constructs a new RedCardEvent.
+     *
+     * @param player The player who received the red card.
+     * @param minute The minute the red card was given.
+     */
     public RedCardEvent(IPlayer player, int minute) {
         super(player, minute, "-> Red card to " + player.getName() + " at " + minute + " minutes");
     }

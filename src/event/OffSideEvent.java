@@ -11,8 +11,25 @@ package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
+/**
+ * Represents an offside event committed by a player during a football match.
+ * This event captures the player involved and the minute it occurred.
+ * Inherits from {@link PlayerEvent}.
+ *
+ * <p>The event description is automatically generated in the format:
+ * "-> Offside by [Player Name] at [Minute] minutes".</p>
+ *
+ * <p>This can be used for event tracking, statistics, or match commentary.</p>
+ *
+ */
 public class OffSideEvent extends PlayerEvent {
 
+    /**
+     * Constructs a new OffSideEvent.
+     *
+     * @param player The player who committed the offside.
+     * @param minute The minute when the offside occurred.
+     */
     public OffSideEvent(IPlayer player, int minute) {
         super(player, minute, "-> Offside by " + player.getName() + " at " + minute + " minutes");
     }

@@ -11,8 +11,23 @@ package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
+/**
+ * Represents a corner kick event in a football match.
+ * This event is associated with a specific player and the minute in which it occurred.
+ * Inherits from {@link PlayerEvent}.
+ *
+ * <p>The description of the event is automatically generated in the format:
+ * "-> Corner kick by [Player Name] at [Minute] minutes".</p>
+ *
+ */
 public class CornerKickEvent extends PlayerEvent {
 
+    /**
+     * Constructs a new CornerKickEvent.
+     *
+     * @param player The player who performed the corner kick.
+     * @param minute The minute in which the corner kick occurred.
+     */
     public CornerKickEvent(IPlayer player, int minute) {
         super(player, minute, "-> Corner kick by " + player.getName() + " at " + minute + " minutes");
     }

@@ -18,8 +18,18 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Class containing all menu-related methods for user interaction.
+ * Handles navigation and input for league, season, clubs, and players.
+ */
 public class Menus {
 
+    /**
+     * Displays the main menu and prompts the user to select an option.
+     *
+     * @param input Scanner object for reading user input.
+     * @return Selected option as an integer.
+     */
     public static int mainMenu(Scanner input) {
         int option = 0;
         boolean verifyInput = false;
@@ -51,6 +61,11 @@ public class Menus {
         return option;
     }
 
+    /**
+     * Displays the Start League Menu and processes user input to create or load a league.
+     *
+     * @param input Scanner object for user input.
+     */
     public static void startLeagueMenu(Scanner input) {
         int option;
         boolean verifyInput = false;
@@ -99,9 +114,14 @@ public class Menus {
                 input.next();
             }
         } while (!verifyInput);
-
     }
 
+    /**
+     * Displays the League Menu for a specific league. Allows creating or loading seasons.
+     *
+     * @param input  Scanner for input.
+     * @param league League to be managed.
+     */
     public static void leagueMenu(Scanner input, League league) {
         int option;
         boolean verifyInput = false;
@@ -149,7 +169,12 @@ public class Menus {
         } while (!verifyInput);
     }
 
-
+    /**
+     * Displays the Season Menu for a specific season. Allows starting seasons, viewing stats, etc.
+     *
+     * @param input  Scanner for input.
+     * @param season Season to be managed.
+     */
     public static void seasonMenu(Scanner input, Season season) {
         int option;
         boolean verifyInput = false;
@@ -221,11 +246,14 @@ public class Menus {
         } while (!verifyInput);
 
     }
-
+    /**
+     * Displays the credits screen with project and authorship information.
+     *
+     * @param input Scanner for user input to return to the main menu.
+     */
     public static void creditsMenu(Scanner input) {
         int option;
         boolean verifyInput = false;
-
         do {
             System.out.println("");
             System.out.println("=======================================");
@@ -260,10 +288,12 @@ public class Menus {
         } while (!verifyInput);
     }
 
+    /**
+     * Displays the Club Menu to allow users to view all clubs or a specific club.
+     */
     public static void clubMenu() {
         int option;
         boolean verifyInput = false;
-
         do {
             System.out.println("");
             System.out.println("=======================================");
@@ -304,10 +334,12 @@ public class Menus {
         } while (!verifyInput);
     }
 
+    /**
+     * Displays the Player Menu to allow users to view all players or a specific player.
+     */
     public static void playerMenu() {
         int option;
         boolean verifyInput = false;
-
         do {
             System.out.println("");
             System.out.println("=======================================");
@@ -346,10 +378,15 @@ public class Menus {
         } while (!verifyInput);
     }
 
+    /**
+     * Displays the statistics menu and allows viewing individual or all players' stats.
+     *
+     * @param input  Scanner object for user input.
+     * @param season The season from which to gather player statistics.
+     */
     public static void getStatsMenu(Scanner input, Season season) {
         int option;
         boolean verifyInput = false;
-
         do {
             System.out.println("");
             System.out.println("=======================================");
@@ -387,10 +424,15 @@ public class Menus {
         } while (!verifyInput);
     }
 
+    /**
+     * Displays the Add/Remove Clubs menu to manually or automatically modify the clubs in a season.
+     *
+     * @param input  Scanner for user input.
+     * @param season Season to modify.
+     */
     public static void addRemoveClubsMenu(Scanner input, Season season) {
         int option;
         boolean verifyInput = false;
-
         do {
             System.out.println("");
             System.out.println("=======================================");

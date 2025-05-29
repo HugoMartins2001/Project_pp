@@ -15,22 +15,53 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 
 import java.io.IOException;
 
+/**
+ * Represents a schedule of matches organized into rounds.
+ * Implements the {@link ISchedule} interface.
+ *
+ * <p>Each round is represented as an array of {@link IMatch} objects.
+ * The schedule provides methods to retrieve matches by round or team,
+ * as well as to assign teams and export data.</p>
+ *
+ * <p>This class assumes that each match has a home and away team,
+ * and matches are properly set before usage.</p>
+ *
+ * @see IMatch
+ * @see ITeam
+ * @see ISchedule
+ *
+ */
 public class Schedule implements ISchedule {
     private IMatch[][] matches;
     private int numberOfRounds;
 
+    /**
+     * Constructs an empty schedule.
+     */
     public Schedule() {
         this.matches = new IMatch[0][];
         this.numberOfRounds = 0;
     }
 
+    /**
+     * Constructs a schedule with predefined rounds and matches.
+     *
+     * @param matches A 2D array where each row is a round containing matches.
+     */
     public Schedule(IMatch[][] matches) {
         if (matches == null) throw new IllegalArgumentException("Matches cannot be null");
         this.matches = matches;
         this.numberOfRounds = matches.length;
     }
 
-
+    /**
+     * Retrieves the matches for a specific round.
+     *
+     * @param round The round number (0-based).
+     * @return An array of matches for that round.
+     * @throws IllegalArgumentException If the round number is invalid.
+     * @throws IllegalStateException    If no matches are set for that round.
+     */
     @Override
     public IMatch[] getMatchesForRound(int round) {
         if (round < 0 || round >= matches.length) {
@@ -42,6 +73,14 @@ public class Schedule implements ISchedule {
         return matches[round];
     }
 
+    /**
+     * Retrieves all matches involving a specific team.
+     *
+     * @param team The team whose matches are to be retrieved.
+     * @return An array of matches involving the team.
+     * @throws IllegalArgumentException If the team is null.
+     * @throws IllegalStateException    If no matches are set.
+     */
     @Override
     public IMatch[] getMatchesForTeam(ITeam team) {
         if (team == null) {
@@ -77,11 +116,22 @@ public class Schedule implements ISchedule {
         return teamMatches;
     }
 
+    /**
+     * Gets the number of rounds in the schedule.
+     *
+     * @return The number of rounds.
+     */
     @Override
     public int getNumberOfRounds() {
         return numberOfRounds;
     }
 
+    /**
+     * Retrieves all matches from all rounds.
+     *
+     * @return A flat array containing all matches in the schedule.
+     * @throws IllegalStateException If matches are not initialized.
+     */
     @Override
     public IMatch[] getAllMatches() {
         if (matches == null) {
@@ -108,7 +158,15 @@ public class Schedule implements ISchedule {
         return allMatches;
     }
 
-
+    /**
+     * Assigns a team object to a scheduled match in a specific round.
+     * Ensures the team is actually participating in that match.
+     *
+     * @param iTeam The team to set.
+     * @param round The round in which the match is located.
+     * @throws IllegalArgumentException If the team or round is invalid.
+     * @throws IllegalStateException    If the match or club relationship is invalid.
+     */
     @Override
     public void setTeam(ITeam iTeam, int round) {
         if (iTeam == null) {
@@ -139,9 +197,14 @@ public class Schedule implements ISchedule {
         }
     }
 
-
+    /**
+     * Exports the schedule to JSON format.
+     * Currently not implemented.
+     *
+     * @throws IOException if an error occurs during export.
+     */
     @Override
     public void exportToJson() throws IOException {
-
+        // Not implemented
     }
 }

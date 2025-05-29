@@ -20,6 +20,10 @@ import match.Match;
 
 import java.util.Random;
 
+/**
+ * Simulates football matches by generating realistic events such as goals, fouls,
+ * cards, injuries, and substitutions based on probabilistic models.
+ */
 public class MatchSimulatorStrat implements MatchSimulatorStrategy {
 
     private final Random rng = new Random();
@@ -33,6 +37,13 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
     private int awaySubstitutions = 0;
     private static final int MAX_SUBSTITUTIONS = 3;
 
+    /**
+     * Simulates a football match by generating events between two teams.
+     *
+     * @param match The match to be simulated
+     * @throws IllegalArgumentException if match is null
+     * @throws IllegalStateException    if match is not initialized, already played, or invalid
+     */
     public void simulate(IMatch match) {
         if (match == null) throw new IllegalArgumentException("Match cannot be null");
         if (!((Match) match).isInitialized()) throw new IllegalStateException("Match is not initialized");
@@ -49,11 +60,18 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
         match.setPlayed();
     }
 
+    /**
+     * Generates match events (shots, goals, fouls, cards, etc.) for a given team.
+     *
+     * @param match      The match being simulated
+     * @param team       The team for which to generate events
+     * @param isHomeTeam Indicates whether the team is the home team
+     */
     private void generateMatchEvents(IMatch match, ITeam team, boolean isHomeTeam) {
         IPlayer[] players = team.getPlayers();
         int playerCount = 0;
-        for(IPlayer player : players){
-            if(player != null){
+        for (IPlayer player : players) {
+            if (player != null) {
                 playerCount++;
             }
         }
@@ -138,6 +156,15 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
         }
     }
 
+    /**
+     * Handles injury and potential substitution of a player during a match.
+     *
+     * @param match      The current match
+     * @param team       The team to which the injured player belongs
+     * @param player     The injured player
+     * @param minute     The minute the injury occurs
+     * @param isHomeTeam Indicates if the player is on the home team
+     */
     private void handleInjuryAndSubstitution(IMatch match, IClub team, IPlayer player, int minute, boolean isHomeTeam) {
         match.addEvent(new InjuryEvent(player, minute));
         if (injuredCount == injuredPlayers.length) expandInjuredPlayersArray();
@@ -156,6 +183,13 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
         }
     }
 
+    /**
+     * Handles the possibility of a goal being scored during a shot on goal.
+     *
+     * @param match  The current match
+     * @param player The player attempting the shot
+     * @param minute The minute of the attempt
+     */
     private void handleGoalChance(IMatch match, IPlayer player, int minute) {
         double goalChance = rng.nextDouble();
         if (player.getShooting() > 50 && goalChance < 0.50) {
@@ -165,24 +199,39 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
         }
     }
 
+    /**
+     * Doubles the size of the red card players array to accommodate more entries.
+     */
     private void expandRedCardPlayersArray() {
         IPlayer[] newArray = new IPlayer[redCardPlayers.length * 2];
         for (int i = 0; i < redCardPlayers.length; i++) newArray[i] = redCardPlayers[i];
         redCardPlayers = newArray;
     }
 
+    /**
+     * Doubles the size of the injured players array to accommodate more entries.
+     */
     private void expandInjuredPlayersArray() {
         IPlayer[] newArray = new IPlayer[injuredPlayers.length * 2];
         for (int i = 0; i < injuredPlayers.length; i++) newArray[i] = injuredPlayers[i];
         injuredPlayers = newArray;
     }
 
+    /**
+     * Doubles the size of the substituted players array to accommodate more entries.
+     */
     private void expandSubstitutedPlayersArray() {
         IPlayer[] newArray = new IPlayer[substitutedPlayers.length * 2];
         for (int i = 0; i < substitutedPlayers.length; i++) newArray[i] = substitutedPlayers[i];
         substitutedPlayers = newArray;
     }
 
+    /**
+     * Checks if a given player is unavailable due to red card, injury, or substitution.
+     *
+     * @param player the player to check
+     * @return true if the player is unavailable, false otherwise
+     */
     private boolean isPlayerUnavailable(IPlayer player) {
         for (int i = 0; i < redCardCount; i++)
             if (redCardPlayers[i] != null && redCardPlayers[i].equals(player)) return true;
@@ -193,6 +242,15 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
         return false;
     }
 
+    /**
+     * Finds a substitute player for the given team and position.
+     * The method looks at players beyond the starting eleven who match the given position
+     * and are not marked as unavailable.
+     *
+     * @param team     the club to search for a substitute
+     * @param position the position to match
+     * @return a valid substitute player or null if none is found
+     */
     private IPlayer findSubstitute(IClub team, String position) {
         IPlayer[] players = team.getPlayers();
         if (players.length <= 11) return null;
@@ -206,6 +264,15 @@ public class MatchSimulatorStrat implements MatchSimulatorStrategy {
         return null;
     }
 
+
+    /**
+     * Finds the first available opponent player from the opposing club
+     * that has not been marked as unavailable (e.g., due to red card, injury, or substitution).
+     *
+     * @param match      the match from which to identify the opponent club
+     * @param isHomeTeam true if the current club is the home team, false if it's the away team
+     * @return the first available opponent player, or null if none are available
+     */
     private IPlayer findAvailableOpponent(IMatch match, boolean isHomeTeam) {
         IClub opponent = isHomeTeam ? match.getAwayClub() : match.getHomeClub();
         IPlayer[] players = opponent.getPlayers();

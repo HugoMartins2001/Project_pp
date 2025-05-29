@@ -18,24 +18,47 @@ import player.Player;
 
 import java.io.IOException;
 
+/**
+ * Represents a football team, encapsulating its club, formation, and players.
+ * Implements the {@link ITeam} interface.
+ *
+ * <p>This class provides methods to manage players, check positions, and calculate team strength.</p>
+ *
+ * @author Rúben Tiago Martins Pereira
+ * @author Hugo Leite Martins
+ */
 public class Team implements ITeam {
 
     private IClub club;
     private IFormation formation;
     private IPlayer[] playersTeam;
 
+    /**
+     * Constructs a new Team with the specified club, formation, and players.
+     *
+     * @param club        The club associated with the team.
+     * @param formation   The formation of the team.
+     * @param playersTeam An array of players in the team.
+     */
     public Team(IClub club, IFormation formation, IPlayer[] playersTeam) {
         this.club = club;
         this.formation = formation;
         this.playersTeam = new IPlayer[playersTeam.length];
         int playerCount = 0;
-        for(int i = 0; i < playersTeam.length; i++) {
+        for (int i = 0; i < playersTeam.length; i++) {
             if (playersTeam[i] != null) {
                 this.playersTeam[playerCount++] = playersTeam[i];
             }
         }
     }
 
+    /**
+     * Constructs a new Team with the specified club.
+     * The formation and players are initialized to null or empty.
+     *
+     * @param club The club associated with the team.
+     * @throws IllegalArgumentException If the club is null.
+     */
     public Team(IClub club) {
         if (club == null) {
             throw new IllegalArgumentException("The club is not defined!");
@@ -45,29 +68,39 @@ public class Team implements ITeam {
         this.playersTeam = new IPlayer[1];
     }
 
-
+    /**
+     * @return The club the team belongs to.
+     */
     @Override
     public IClub getClub() {
         return club;
     }
 
+
+    /**
+     * @return The tactical formation of the team.
+     * @throws IllegalStateException if the formation is not set.
+     */
     @Override
     public IFormation getFormation() {
-        if(formation == null){
+        if (formation == null) {
             throw new IllegalStateException("The formation is not setted!");
         }
         return formation;
     }
 
+    /**
+     * @return A clone of the array of players in the team.
+     */
     @Override
     public IPlayer[] getPlayers() {
-        if(playersTeam == null){
+        if (playersTeam == null) {
             throw new IllegalStateException("There are no players in the team!");
         }
         IPlayer[] playersClone = new IPlayer[playersTeam.length];
         try {
             for (int i = 0; i < playersTeam.length; i++) {
-                if(playersTeam[i] != null){
+                if (playersTeam[i] != null) {
                     playersClone[i] = ((Player) playersTeam[i]).clone();
                 }
             }
@@ -78,120 +111,142 @@ public class Team implements ITeam {
         return playersClone;
     }
 
+    /**
+     * Adds a player to the team, ensuring formation limits and club membership.
+     *
+     * @param player The player to add.
+     */
     @Override
     public void addPlayer(IPlayer player) {
         if (!isValidPositionForFormation(player.getPosition())) {
             throw new IllegalStateException("Too many players for position ");
         }
-        if(player == null) {
+        if (player == null) {
             throw new IllegalArgumentException("The player is not selected!");
         }
-        for(IPlayer p : playersTeam) {
-            if(p != null && p.equals(player)){
+        for (IPlayer p : playersTeam) {
+            if (p != null && p.equals(player)) {
                 throw new IllegalStateException("The player is already in the team!");
             }
         }
         boolean hasSpace = false;
-        for(IPlayer p : playersTeam) {
-            if(p == null){
+        for (IPlayer p : playersTeam) {
+            if (p == null) {
                 hasSpace = true;
                 break;
             }
         }
-        if(!hasSpace) {
+        if (!hasSpace) {
             throw new IllegalStateException("The team is already full!");
         }
-        if(!club.isPlayer(player)) {
+        if (!club.isPlayer(player)) {
             throw new IllegalStateException("The player is not in the club!");
         }
-        if(formation == null) {
+        if (formation == null) {
             throw new IllegalStateException("The formation is not setted!");
         }
-        for(int i = 0; i < playersTeam.length; i++) {
-            if(playersTeam[i] == null){
+        for (int i = 0; i < playersTeam.length; i++) {
+            if (playersTeam[i] == null) {
                 playersTeam[i] = player;
                 break;
             }
         }
     }
 
+    /**
+     * Returns the count of players in the team for a given position.
+     *
+     * @param position The position to count.
+     * @return The number of players in that position.
+     */
     @Override
     public int getPositionCount(IPlayerPosition position) {
-        if(position == null){
+        if (position == null) {
             throw new IllegalArgumentException("The position is not defined!");
         }
         int counter = 0;
-        for( IPlayer p : playersTeam ){
-            if(p != null && p.getPosition().equals(position)){
+        for (IPlayer p : playersTeam) {
+            if (p != null && p.getPosition().equals(position)) {
                 counter++;
             }
         }
         return counter;
     }
 
+    /**
+     * Checks if a new player can be added to a specific position according to formation.
+     *
+     * @param position The player's position.
+     * @return True if allowed, false otherwise.
+     */
     @Override
     public boolean isValidPositionForFormation(IPlayerPosition position) {
-        if(position == null){
+        if (position == null) {
             throw new IllegalArgumentException("The position is not defined!");
         }
-        if(formation == null){
+        if (formation == null) {
             throw new IllegalStateException("The formation is not setted!");
         }
-        if(((Formation)this.formation).getPositionFormation(position) >= getPositionCount(position)){
-            return true;
-        }
-        return false;
+        return ((Formation) this.formation).getPositionFormation(position) >= getPositionCount(position);
     }
 
+    /**
+     * Calculates the average strength of the team based on player attributes.
+     *
+     * @return The team strength.
+     */
     @Override
     public int getTeamStrength() {
-        if(playersTeam == null){
+        if (playersTeam == null) {
             throw new IllegalStateException("There is no player in the team!");
         }
         int teamStrength = 0;
         int playerCount = 0;
         for (IPlayer p : playersTeam) {
-            if(p != null){
+            if (p != null) {
                 int playerAverage = (p.getShooting() + p.getPassing() + p.getStamina() + p.getSpeed()) / 4;
                 teamStrength += playerAverage;
                 playerCount++;
             }
         }
-        if(playerCount == 0){
+        if (playerCount == 0) {
             throw new IllegalStateException("There is no player in the team!");
         }
         return teamStrength / playerCount;
     }
 
+    /**
+     * Sets the team's formation and resets the players array to fit.
+     *
+     * @param formation The new formation.
+     */
     @Override
     public void setFormation(IFormation formation) {
-        if(formation == null) {
+        if (formation == null) {
             throw new IllegalArgumentException("The formation is not setted!");
         }
         this.formation = formation;
         this.playersTeam = new IPlayer[11];
     }
 
+    /**
+     * Automatically sets a valid team from a list of players using the given formation.
+     *
+     * @param players   List of players.
+     * @param formation Desired formation.
+     */
     public void setAutomaticTeam(IPlayer[] players, Formation formation) {
-        if(players == null || formation == null) {
+        if (players == null || formation == null) {
             throw new IllegalArgumentException("Players and formation must be set!");
         }
-        int keepercount = 0;
-        int defcount = 0;
-        int midcount = 0;
-        int forcount = 0;
-
+        int keepercount = 0, defcount = 0, midcount = 0, forcount = 0;
         for (IPlayer player : players) {
-            if (player == null || player.getPosition() == null) {
-                continue;
-            }
-
+            if (player == null || player.getPosition() == null) continue;
             String pos = player.getPosition().getDescription();
             if (pos.equals("Goalkeeper") && keepercount < 1) {
                 addPlayer(player);
                 keepercount++;
-            }
-            else if (pos.equals("Defender") && defcount < formation.getDefenders()) {
+            } else if (pos.equals("Defender") && defcount < formation.getDefenders()) {
                 addPlayer(player);
                 defcount++;
             } else if (pos.equals("Midfielder") && midcount < formation.getMidfielders()) {
@@ -201,36 +256,41 @@ public class Team implements ITeam {
                 addPlayer(player);
                 forcount++;
             }
-
         }
     }
 
+    /**
+     * Sets the team manually with a fixed list of 11 players.
+     *
+     * @param playersTeam The fixed team.
+     */
     public void setManualTeam(IPlayer[] playersTeam) {
-        if(playersTeam == null || playersTeam.length != 11) {
+        if (playersTeam == null || playersTeam.length != 11) {
             throw new IllegalArgumentException("The players team must have 11 players!");
         }
         this.playersTeam = playersTeam;
     }
 
+    /**
+     * Checks if another team is the same based on the club.
+     *
+     * @param obj Another object.
+     * @return True if both teams belong to the same club.
+     */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof Team)) {
-            return false;
-        }
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof Team)) return false;
         Team team = (Team) obj;
         return club.equals(team.club);
     }
 
-    //TODO FALTA FAZER
+    /**
+     * Placeholder for JSON export logic.
+     */
     @Override
     public void exportToJson() throws IOException {
-
+        // TODO implement export logic
     }
-
 }

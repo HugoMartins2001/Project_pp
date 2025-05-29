@@ -7,15 +7,33 @@
  * Number: <8230273>
  * Class: <LsircT2>
  */
-
 package event;
 
+/**
+ * Represents the start of a football match.
+ * This event indicates that the match has officially begun and includes the starting minute.
+ * Inherits from {@link Event}.
+ *
+ * <p>The event description is fixed as "-> Match started".</p>
+ *
+ * <p>The {@code exportToJson()} method is left empty and can be implemented later if needed.</p>
+ *
+ */
 public class StartEvent extends Event {
 
+    /**
+     * Constructs a new StartEvent.
+     *
+     * @param minute The minute the match started.
+     */
     public StartEvent(int minute) {
         super("-> Match started", minute);
     }
 
+    /**
+     * Exports the event to JSON format.
+     * Currently not implemented. You may override this if needed for output.
+     */
     @Override
     public void exportToJson() {
         // Implement JSON export logic here if needed

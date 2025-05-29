@@ -33,23 +33,52 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Utility class that provides various core functionalities
+ * for managing leagues, seasons, matches, clubs, and players
+ * within the football management system.
+ * <p>
+ * This class acts as a static manager, storing and manipulating
+ * global objects such as leagues and facilitating actions such as
+ * league creation, match simulation, and data retrieval.
+ * <p>
+ *
+ */
 public class Functions {
 
     private static ILeague[] leagues = new ILeague[10];
     private static int leagueCount = 0;
 
+    /**
+     * Returns the internal array of leagues.
+     * This method provides access to the leagues stored in the application.
+     *
+     * @return An array of ILeague objects representing the leagues.
+     */
     public static ILeague[] getLeagues() {
         return leagues;
     }
 
+    /**
+     * Sets the internal array of leagues with the provided leagues.
+     * It replaces the existing leagues in the array.
+     *
+     * @param leagues1 An array of ILeague objects to set.
+     */
     public static void setLeagues(ILeague[] leagues1) {
-        for(int i = 0; i < leagues1.length; i++) {
-            if(leagues1[i] != null) {
+        for (int i = 0; i < leagues1.length; i++) {
+            if (leagues1[i] != null) {
                 leagues[leagueCount++] = leagues1[i];
             }
         }
     }
 
+    /**
+     * Adds a league to the internal array of leagues.
+     * If the array is full, it prints an error message.
+     *
+     * @param league The league to be added.
+     */
     public static void addLeague(ILeague league) {
         if (leagueCount < leagues.length) {
             leagues[leagueCount++] = league;
@@ -58,10 +87,17 @@ public class Functions {
         }
     }
 
-    public static League loadLeague(Scanner input){
-        for(int i = 0; i < leagues.length; i++) {
+    /**
+     * Loads a league from the internal array of leagues.
+     * It prompts the user to select a league by number and returns the selected league.
+     *
+     * @param input The Scanner object for user input.
+     * @return The selected League object, or null if no valid league is selected.
+     */
+    public static League loadLeague(Scanner input) {
+        for (int i = 0; i < leagues.length; i++) {
 
-            if(leagues[i] != null) {
+            if (leagues[i] != null) {
                 System.out.println("League " + (i + 1) + ": " + leagues[i].getName());
             }
 
@@ -72,7 +108,7 @@ public class Functions {
         int currentTry = 0;
         boolean validInput = false;
         while (!validInput) {
-            if(currentTry >= maxTries) {
+            if (currentTry >= maxTries) {
                 System.out.println("Maximum attempts reached. Exiting...");
                 return null;
             }
@@ -90,9 +126,16 @@ public class Functions {
             }
         }
         ILeague selectedLeague = leagues[leagueNumber - 1];
-        return (League)selectedLeague;
+        return (League) selectedLeague;
     }
 
+    /**
+     * Creates a new season based on user input.
+     * It prompts the user for the season name, year, maximum number of teams, and whether they want to be the manager.
+     *
+     * @param input The Scanner object for user input.
+     * @return A new Season object with the provided details.
+     */
     public static Season createSeason(Scanner input) {
         System.out.println("");
         System.out.println("Enter the name of the season: ");
@@ -119,7 +162,7 @@ public class Functions {
 
                 do {
                     managerInput = input.next();
-                }while(!managerInput.equalsIgnoreCase("Y") && !managerInput.equalsIgnoreCase("N"));
+                } while (!managerInput.equalsIgnoreCase("Y") && !managerInput.equalsIgnoreCase("N"));
 
                 isManager = managerInput.equalsIgnoreCase("Y");
 
@@ -133,6 +176,14 @@ public class Functions {
         return new Season(seasonName, year, maxTeams, isManager);
     }
 
+    /**
+     * Loads a season from the specified league.
+     * It prompts the user to enter the year of the season they want to load.
+     *
+     * @param input  The Scanner object for user input.
+     * @param league The League object from which to load the season.
+     * @return The selected ISeason object, or null if no valid season is found.
+     */
     public static ISeason loadSeason(Scanner input, League league) {
         ISeason[] seasons = league.getSeasons();
         if (seasons.length == 0) {
@@ -167,6 +218,12 @@ public class Functions {
         return league.getSeason(year);
     }
 
+    /**
+     * Adds all clubs from a JSON file to the specified season.
+     * It imports clubs and adds them to the season, handling exceptions if the maximum number of clubs is reached.
+     *
+     * @param season The Season object to which clubs will be added.
+     */
     public static void addAllClubsToSeason(Season season) {
         Importer importer = new Importer();
         try {
@@ -184,6 +241,12 @@ public class Functions {
         }
     }
 
+    /**
+     * Removes all clubs from the specified season.
+     * It iterates through the current clubs in the season and removes each one.
+     *
+     * @param season The Season object from which clubs will be removed.
+     */
     public static void removeAllClubsToSeason(Season season) {
         IClub[] clubs = season.getCurrentClubs();
         if (clubs.length == 0) {
@@ -201,6 +264,13 @@ public class Functions {
         System.out.println("All clubs have been removed from the season: " + season.getName());
     }
 
+    /**
+     * Adds a club to the specified season based on user input.
+     * It imports clubs from a JSON file and allows the user to select a club to add.
+     *
+     * @param input  The Scanner object for user input.
+     * @param season The Season object to which the club will be added.
+     */
     public static void addClub(Scanner input, Season season) {
         try {
             Importer importer = new Importer();
@@ -233,6 +303,13 @@ public class Functions {
         }
     }
 
+    /**
+     * Removes a club from the specified season based on user input.
+     * It lists the current clubs in the season and allows the user to select a club to remove.
+     *
+     * @param input  The Scanner object for user input.
+     * @param season The Season object from which the club will be removed.
+     */
     public static void removeClub(Scanner input, Season season) {
         try {
             IClub[] seasonClubs = season.getCurrentClubs();
@@ -272,6 +349,13 @@ public class Functions {
         }
     }
 
+    /**
+     * Starts a friendly match between two clubs in the specified season.
+     * It prompts the user to select home and away clubs, sets their formations, and simulates the match.
+     *
+     * @param input  The Scanner object for user input.
+     * @param season The Season object in which the friendly match will be played.
+     */
     public static void startFriendlyMatch(Scanner input, Season season) {
         IClub[] seasonClubs = season.getCurrentClubs();
         int clubCounter = 0;
@@ -353,6 +437,15 @@ public class Functions {
         }
     }
 
+    /**
+     * Reads the formation details for a team from user input.
+     * It prompts the user for the display name, number of defenders, midfielders, and forwards,
+     * ensuring that the total number of outfield players is 10.
+     *
+     * @param input     The Scanner object for user input.
+     * @param teamLabel The label for the team (e.g., "home" or "away").
+     * @return A Formation object with the specified details.
+     */
     private static Formation readFormation(Scanner input, String teamLabel) {
         String displayName;
         int defenders = -1, midfielders = -1, forwards = -1;
@@ -389,6 +482,12 @@ public class Functions {
         return new Formation(displayName, defenders, midfielders, forwards);
     }
 
+    /**
+     * Lists the current clubs in the specified season.
+     * It prints the name, country, and stadium of each club in the season.
+     *
+     * @param season The Season object containing the clubs to list.
+     */
     public static void listSeasonClubs(Season season) {
         if (season == null) {
             throw new IllegalArgumentException("Season cannot be null.");
@@ -412,6 +511,10 @@ public class Functions {
         System.out.println("=======================================");
     }
 
+    /**
+     * Displays all available clubs in the system.
+     * It imports clubs from a JSON file and prints their details.
+     */
     public static void viewAllClubs() {
         System.out.println("=======================================");
         System.out.println("PPFootballManager v1.0 - Season 24/25");
@@ -439,6 +542,12 @@ public class Functions {
         }
     }
 
+    /**
+     * Views the details of a specific club based on user input.
+     * It lists all clubs and allows the user to enter a club code or name to view its details.
+     *
+     * @throws IOException If an error occurs while importing clubs.
+     */
     public static void viewClub() throws IOException {
         int option;
         Scanner input = new Scanner(System.in);
@@ -496,6 +605,12 @@ public class Functions {
         } while (option == 1);
     }
 
+    /**
+     * Views all players from a specific club based on user input.
+     * It lists available clubs and allows the user to enter a club code to view its players.
+     *
+     * @throws IOException If an error occurs while importing clubs or players.
+     */
     public static void viewAllPlayers() {
         Scanner input = new Scanner(System.in);
         System.out.println("=======================================");
@@ -547,6 +662,12 @@ public class Functions {
         }
     }
 
+    /**
+     * Views the details of a specific player from a club based on user input.
+     * It lists available clubs and allows the user to enter a club code to view its players and their details.
+     *
+     * @throws IOException If an error occurs while importing clubs or players.
+     */
     public static void viewPlayer() {
         int option;
         Scanner input = new Scanner(System.in);
@@ -654,6 +775,13 @@ public class Functions {
         } while (option == 1);
     }
 
+    /**
+     * Starts the season by generating the schedule and simulating matches.
+     * It lists available clubs, generates the schedule, simulates matches, and prints final standings.
+     *
+     * @param input  The Scanner object for user input.
+     * @param season The Season object to start.
+     */
     public static void startSeason(Scanner input, Season season) {
 
         if (season == null) {
@@ -776,6 +904,12 @@ public class Functions {
 
     }
 
+    /**
+     * Generates a random football formation.
+     * It randomly selects a formation from a predefined list and returns a Formation object.
+     *
+     * @return A Formation object with a random formation.
+     */
     public static Formation generateRandomFormation() {
         String[] formations = {"4-4-2", "4-3-3", "3-5-2", "5-3-2", "4-2-3-1", "3-4-3"};
         int index = (int) (Math.random() * formations.length);
@@ -790,8 +924,7 @@ public class Functions {
         if (parts.length == 3) {
             midfielders = Integer.parseInt(parts[1]);
             forwards = Integer.parseInt(parts[2]);
-        }
-        else if (parts.length == 4) {
+        } else if (parts.length == 4) {
             midfielders = Integer.parseInt(parts[1]) + Integer.parseInt(parts[2]);
             forwards = Integer.parseInt(parts[3]);
         } else {
@@ -801,6 +934,12 @@ public class Functions {
         return new Formation(formationStr, defenders, midfielders, forwards);
     }
 
+    /**
+     * Views the standings of a specific season.
+     * It sorts the standings based on points and prints the details of each club in the standings.
+     *
+     * @param season The Season object containing the standings to view.
+     */
     public static void viewSeasonStandings(Season season) {
         if (season == null) {
             throw new IllegalArgumentException("Season cannot be null.");
@@ -851,6 +990,13 @@ public class Functions {
         System.out.println("==================================================================================\n");
     }
 
+    /**
+     * Lists events from a specific match in the given season.
+     * It allows the user to select a match and view events of a specific type or all events.
+     *
+     * @param input  The Scanner object for user input.
+     * @param season The Season object containing the matches.
+     */
     public static void ListEventFromAMatch(Scanner input, Season season) {
         if (input == null || season == null) {
             throw new IllegalArgumentException("Input or Season cannot be null.");
@@ -985,6 +1131,12 @@ public class Functions {
         System.out.println("======================\n");
     }
 
+    /**
+     * Resets the current season by calling the resetSeason method on the Season object.
+     * It prints a confirmation message after resetting the season.
+     *
+     * @param season The Season object to reset.
+     */
     public static void ResetSeason(Season season) {
         if (season == null) {
             throw new IllegalArgumentException("Season cannot be null.");
@@ -993,9 +1145,16 @@ public class Functions {
         System.out.println("Season " + season.getName() + " has been reset successfully.");
     }
 
+    /**
+     * Prompts the user to select a player from a club and retrieves their statistics.
+     * It lists all clubs in the season, allows the user to select a club, and then select a player by number.
+     *
+     * @param input  The Scanner object for user input.
+     * @param season The Season object containing the clubs and players.
+     */
     public static void inputPlayerToGetStats(Scanner input, Season season) {
         System.out.println("Choose the player club that you want to check stats:");
-        for(IClub club : season.getCurrentClubs()) {
+        for (IClub club : season.getCurrentClubs()) {
             if (club != null) {
                 System.out.println("Club: " + club.getName());
             }
@@ -1003,7 +1162,7 @@ public class Functions {
         input.nextLine();
         String selectedClub = input.nextLine();
         System.out.println("Enter the number of the player you want to get stats for:");
-        for(IClub club : season.getCurrentClubs()) {
+        for (IClub club : season.getCurrentClubs()) {
             if (club != null && club.getName().equalsIgnoreCase(selectedClub) || club.getCode().equalsIgnoreCase(selectedClub)) {
                 for (IPlayer player : club.getPlayers()) {
                     if (player != null) {
@@ -1013,7 +1172,7 @@ public class Functions {
             }
         }
         int selectedPlayer = input.nextInt();
-        for(IClub club : season.getCurrentClubs()) {
+        for (IClub club : season.getCurrentClubs()) {
             if (club != null && club.getName().equalsIgnoreCase(selectedClub) || club.getCode().equalsIgnoreCase(selectedClub)) {
                 for (IPlayer player : club.getPlayers()) {
                     if (player != null && player.getNumber() == selectedPlayer) {
@@ -1024,6 +1183,12 @@ public class Functions {
         }
     }
 
+    /**
+     * Views all player statistics for each club in the specified season.
+     * It iterates through all clubs and players, printing their statistics.
+     *
+     * @param season The Season object containing the clubs and players.
+     */
     public static void viewAllPlayerStats(Season season) {
         if (season == null) {
             throw new IllegalArgumentException("Season cannot be null.");
@@ -1045,6 +1210,13 @@ public class Functions {
         }
     }
 
+    /**
+     * Starts the season manager by allowing the user to select a club and set up their team.
+     * It prompts the user to choose a club, sets up the team formation, and allows player selection.
+     *
+     * @param input  The Scanner object for user input.
+     * @param season The Season object containing the clubs.
+     */
     public static void startSeasonManager(Scanner input, Season season) {
 
         if (season == null) {
@@ -1103,9 +1275,9 @@ public class Functions {
 
         int gkCount = 0, defCount = 0, midCount = 0, fwdCount = 0;
 
-        int numDefs = ((Formation)userTeam.getFormation()).getDefenders();
-        int numMids = ((Formation)userTeam.getFormation()).getMidfielders();
-        int numFwds = ((Formation)userTeam.getFormation()).getForwards();
+        int numDefs = ((Formation) userTeam.getFormation()).getDefenders();
+        int numMids = ((Formation) userTeam.getFormation()).getMidfielders();
+        int numFwds = ((Formation) userTeam.getFormation()).getForwards();
         int numGKs = 1;
 
         while (count < 11) {
@@ -1193,8 +1365,7 @@ public class Functions {
 
         MatchSimulatorStrat matchSimulator = new MatchSimulatorStrat();
 
-        for(int i = 0; i < season.getMaxRounds(); i++) {
-
+        for (int i = 0; i < season.getMaxRounds(); i++) {
 
 
             int choice;
@@ -1215,100 +1386,100 @@ public class Functions {
                         System.out.println("Do you want to reselect the team players for the new formation? (Y/N): ");
                         String resp = input.nextLine();
                         if (resp.equalsIgnoreCase("Y")) {
-                                IPlayer[] availablePlayers1 = selectedClub.getPlayers();
+                            IPlayer[] availablePlayers1 = selectedClub.getPlayers();
+                            for (IPlayer p : availablePlayers1) {
+                                if (p != null) {
+                                    System.out.printf("Name: %-20s | Number: %d | Position: %s%n",
+                                            p.getName(), p.getNumber(), p.getPosition().getDescription());
+                                }
+                            }
+
+                            IPlayer[] selectedPlayers1 = new IPlayer[11];
+                            int[] selectedNumbers1 = new int[11];
+                            int count1 = 0;
+
+                            int gkCount1 = 0, defCount1 = 0, midCount1 = 0, fwdCount1 = 0;
+
+                            int numDefs1 = ((Formation) userTeam.getFormation()).getDefenders();
+                            int numMids1 = ((Formation) userTeam.getFormation()).getMidfielders();
+                            int numFwds1 = ((Formation) userTeam.getFormation()).getForwards();
+                            int numGKs1 = 1;
+
+                            while (count1 < 11) {
+                                System.out.print("Enter player number #" + (count1 + 1) + ": ");
+                                int number = input.nextInt();
+
+                                boolean alreadySelected = false;
+                                for (int n = 0; n < count1; n++) {
+                                    if (selectedNumbers1[n] == number) {
+                                        alreadySelected = true;
+                                        break;
+                                    }
+                                }
+                                if (alreadySelected) {
+                                    System.out.println("This player has already been selected. Choose another.");
+                                    continue;
+                                }
+
+                                boolean found = false;
                                 for (IPlayer p : availablePlayers1) {
-                                    if (p != null) {
-                                        System.out.printf("Name: %-20s | Number: %d | Position: %s%n",
-                                                p.getName(), p.getNumber(), p.getPosition().getDescription());
-                                    }
-                                }
+                                    if (p != null && p.getNumber() == number) {
+                                        String pos = p.getPosition().getDescription().toLowerCase();
 
-                                IPlayer[] selectedPlayers1 = new IPlayer[11];
-                                int[] selectedNumbers1 = new int[11];
-                                int count1 = 0;
-
-                                int gkCount1 = 0, defCount1 = 0, midCount1 = 0, fwdCount1 = 0;
-
-                                int numDefs1 = ((Formation) userTeam.getFormation()).getDefenders();
-                                int numMids1 = ((Formation) userTeam.getFormation()).getMidfielders();
-                                int numFwds1 = ((Formation) userTeam.getFormation()).getForwards();
-                                int numGKs1 = 1;
-
-                                while (count1 < 11) {
-                                    System.out.print("Enter player number #" + (count1 + 1) + ": ");
-                                    int number = input.nextInt();
-
-                                    boolean alreadySelected = false;
-                                    for (int n = 0; n < count1; n++) {
-                                        if (selectedNumbers1[n] == number) {
-                                            alreadySelected = true;
-                                            break;
-                                        }
-                                    }
-                                    if (alreadySelected) {
-                                        System.out.println("This player has already been selected. Choose another.");
-                                        continue;
-                                    }
-
-                                    boolean found = false;
-                                    for (IPlayer p : availablePlayers1) {
-                                        if (p != null && p.getNumber() == number) {
-                                            String pos = p.getPosition().getDescription().toLowerCase();
-
-                                            if (pos.contains("goalkeeper")) {
-                                                if (gkCount1 < numGKs1) {
-                                                    selectedPlayers1[count1] = p;
-                                                    selectedNumbers1[count1] = number;
-                                                    gkCount1++;
-                                                    count1++;
-                                                    found = true;
-                                                } else {
-                                                    System.out.println("Only one goalkeeper allowed.");
-                                                }
-                                            } else if (pos.contains("defender")) {
-                                                if (defCount1 < numDefs1) {
-                                                    selectedPlayers1[count1] = p;
-                                                    selectedNumbers1[count1] = number;
-                                                    defCount1++;
-                                                    count1++;
-                                                    found = true;
-                                                } else {
-                                                    System.out.println("Defender limit reached (" + numDefs1 + ").");
-                                                }
-                                            } else if (pos.contains("midfielder")) {
-                                                if (midCount1 < numMids1) {
-                                                    selectedPlayers1[count1] = p;
-                                                    selectedNumbers1[count1] = number;
-                                                    midCount1++;
-                                                    count1++;
-                                                    found = true;
-                                                } else {
-                                                    System.out.println("Midfielder limit reached (" + numMids1 + ").");
-                                                }
-                                            } else if (pos.contains("forward")) {
-                                                if (fwdCount1 < numFwds1) {
-                                                    selectedPlayers1[count1] = p;
-                                                    selectedNumbers1[count1] = number;
-                                                    fwdCount1++;
-                                                    count1++;
-                                                    found = true;
-                                                } else {
-                                                    System.out.println("Forward limit reached (" + numFwds1 + ").");
-                                                }
+                                        if (pos.contains("goalkeeper")) {
+                                            if (gkCount1 < numGKs1) {
+                                                selectedPlayers1[count1] = p;
+                                                selectedNumbers1[count1] = number;
+                                                gkCount1++;
+                                                count1++;
+                                                found = true;
                                             } else {
-                                                System.out.println("Unknown position: " + pos);
+                                                System.out.println("Only one goalkeeper allowed.");
                                             }
-
-                                            break;
+                                        } else if (pos.contains("defender")) {
+                                            if (defCount1 < numDefs1) {
+                                                selectedPlayers1[count1] = p;
+                                                selectedNumbers1[count1] = number;
+                                                defCount1++;
+                                                count1++;
+                                                found = true;
+                                            } else {
+                                                System.out.println("Defender limit reached (" + numDefs1 + ").");
+                                            }
+                                        } else if (pos.contains("midfielder")) {
+                                            if (midCount1 < numMids1) {
+                                                selectedPlayers1[count1] = p;
+                                                selectedNumbers1[count1] = number;
+                                                midCount1++;
+                                                count1++;
+                                                found = true;
+                                            } else {
+                                                System.out.println("Midfielder limit reached (" + numMids1 + ").");
+                                            }
+                                        } else if (pos.contains("forward")) {
+                                            if (fwdCount1 < numFwds1) {
+                                                selectedPlayers1[count1] = p;
+                                                selectedNumbers1[count1] = number;
+                                                fwdCount1++;
+                                                count1++;
+                                                found = true;
+                                            } else {
+                                                System.out.println("Forward limit reached (" + numFwds1 + ").");
+                                            }
+                                        } else {
+                                            System.out.println("Unknown position: " + pos);
                                         }
-                                    }
 
-                                    if (!found) {
-                                        System.out.println("Player not found, invalid number, or position quota full. Try again.");
+                                        break;
                                     }
                                 }
 
-                                userTeam.setManualTeam(selectedPlayers1);
+                                if (!found) {
+                                    System.out.println("Player not found, invalid number, or position quota full. Try again.");
+                                }
+                            }
+
+                            userTeam.setManualTeam(selectedPlayers1);
                         }
 
                     } else if (choice == 2) {

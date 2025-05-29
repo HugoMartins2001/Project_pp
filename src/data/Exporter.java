@@ -37,8 +37,26 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Exporter class responsible for exporting league data.
+ * Implements the IExporter interface and provides functionality
+ * to export league-related information to JSON files.
+ * <p>
+ * Authors:
+ * - Rúben Tiago Martins Pereira (8230162, LsircT2)
+ * - Hugo Leite Martins (8230273, LsircT2)
+ */
 public class Exporter implements IExporter {
 
+    /**
+     * Exports all loaded leagues to a JSON file.
+     * <p>
+     * The method retrieves the list of leagues using the {@code Functions.getLeagues()}
+     * utility method, converts them into a JSON array, and writes the result to
+     * {@code ./files/leagues.json}.
+     * <p>
+     * If an I/O error occurs during file writing, it logs an error message to the console.
+     */
     @Override
     public void exportToJson() {
         JSONArray leaguesJson = leaguesToJsonArray(Functions.getLeagues());
@@ -52,6 +70,12 @@ public class Exporter implements IExporter {
         }
     }
 
+    /**
+     * Converts an array of ILeague objects into a JSON array.
+     *
+     * @param leagues An array of leagues to convert.
+     * @return A JSONArray representing the list of leagues.
+     */
     private JSONArray leaguesToJsonArray(ILeague[] leagues) {
         JSONArray leaguesArray = new JSONArray();
         for (ILeague league : leagues) {
@@ -62,6 +86,12 @@ public class Exporter implements IExporter {
         return leaguesArray;
     }
 
+    /**
+     * Converts a single ILeague object into a JSONObject.
+     *
+     * @param league The league to convert.
+     * @return A JSONObject representing the league with its name and seasons.
+     */
     private JSONObject leagueToJsonObject(ILeague league) {
         JSONObject leagueJson = new JSONObject();
         leagueJson.put("name", league.getName());
@@ -69,6 +99,12 @@ public class Exporter implements IExporter {
         return leagueJson;
     }
 
+    /**
+     * Converts an array of ISeason objects into a JSON array.
+     *
+     * @param seasons An array of seasons to convert.
+     * @return A JSONArray representing the list of seasons.
+     */
     private JSONArray seasonToJsonArray(ISeason[] seasons) {
         JSONArray seasonsArray = new JSONArray();
         for (ISeason season : seasons) {
@@ -78,7 +114,15 @@ public class Exporter implements IExporter {
         }
         return seasonsArray;
     }
-
+    /**
+     * Converts an ISeason object into a JSONObject.
+     * <p>
+     * Includes details such as name, year, current round, maximum teams,
+     * list of clubs, matches, schedule, standings, and manager status.
+     *
+     * @param season The season to convert.
+     * @return A JSONObject representing the season with all its properties.
+     */
     private JSONObject seasonToJsonObject(ISeason season) {
         JSONObject seasonJson = new JSONObject();
         seasonJson.put("name", season.getName());
@@ -94,6 +138,12 @@ public class Exporter implements IExporter {
         return seasonJson;
     }
 
+    /**
+     * Converts an array of IStanding objects into a JSON array.
+     *
+     * @param standings An array of league standings to convert.
+     * @return A JSONArray representing the standings of a league.
+     */
     private JSONArray standingsToJsonArray(IStanding[] standings) {
         JSONArray standingsArray = new JSONArray();
         for (IStanding standing : standings) {
@@ -104,6 +154,15 @@ public class Exporter implements IExporter {
         return standingsArray;
     }
 
+    /**
+     * Converts an IStanding object into a JSONObject.
+     * <p>
+     * Includes team information and statistics such as points, wins,
+     * draws, losses, total matches, goals scored, and goals conceded.
+     *
+     * @param standing The standing object to convert.
+     * @return A JSONObject representing the team's standing.
+     */
     private JSONObject standingToJsonObject(IStanding standing) {
         JSONObject standingJson = new JSONObject();
         standingJson.put("team", teamToJsonObject(standing.getTeam()));
@@ -118,6 +177,12 @@ public class Exporter implements IExporter {
         return standingJson;
     }
 
+    /**
+     * Converts an array of IMatch objects into a JSON array.
+     *
+     * @param matches The list of matches to convert.
+     * @return A JSONArray containing all the match data.
+     */
     private JSONArray matchesToJsonArray(IMatch[] matches) {
         JSONArray matchesJsonArray = new JSONArray();
         for (IMatch match : matches) {
@@ -128,6 +193,15 @@ public class Exporter implements IExporter {
         return matchesJsonArray;
     }
 
+    /**
+     * Converts a single IMatch object into a JSONObject.
+     * <p>
+     * Includes home and away clubs/teams, round number, match events,
+     * and whether the match was played.
+     *
+     * @param match The match to convert.
+     * @return A JSONObject representing the match details.
+     */
     private JSONObject matchToJsonObject(IMatch match) {
         JSONObject matchJsonObject = new JSONObject();
         matchJsonObject.put("home_club", clubToJsonObject((Club) match.getHomeClub()));
@@ -140,12 +214,29 @@ public class Exporter implements IExporter {
         return matchJsonObject;
     }
 
+    /**
+     * Converts an ISchedule object into a JSONObject.
+     * <p>
+     * Includes all scheduled matches within the season.
+     *
+     * @param schedule The schedule to convert.
+     * @return A JSONObject containing the list of matches in the schedule.
+     */
     private Object scheduleToJsonObject(ISchedule schedule) {
         JSONObject scheduleJson = new JSONObject();
         scheduleJson.put("matches", matchesToJsonArray(schedule.getAllMatches()));
         return scheduleJson;
     }
 
+    /**
+     * Converts an ITeam object into a JSONObject.
+     * <p>
+     * Includes team formation, associated club, and list of players.
+     * If the formation is not properly initialized, a default "4-4-2" is used.
+     *
+     * @param team The team to convert.
+     * @return A JSONObject representing the team's structure and players.
+     */
     private JSONObject teamToJsonObject(ITeam team) {
         JSONObject teamJson = new JSONObject();
         String formation;
@@ -162,6 +253,12 @@ public class Exporter implements IExporter {
         return teamJson;
     }
 
+    /**
+     * Converts an array of IClub objects into a JSON array.
+     *
+     * @param clubs An array of clubs to convert.
+     * @return A JSONArray containing all club data.
+     */
     private JSONArray clubsToJsonArray(IClub[] clubs) {
         JSONArray clubsJson = new JSONArray();
 
@@ -173,6 +270,15 @@ public class Exporter implements IExporter {
         return clubsJson;
     }
 
+    /**
+     * Converts a Club object into a JSONObject.
+     * <p>
+     * Includes club metadata such as name, code, stadium, logo, country,
+     * foundation year, and associated players.
+     *
+     * @param club The club to convert.
+     * @return A JSONObject representing the club.
+     */
     private JSONObject clubToJsonObject(Club club) {
         JSONObject clubJson = new JSONObject();
         clubJson.put("name", club.getName());
@@ -187,6 +293,12 @@ public class Exporter implements IExporter {
         return clubJson;
     }
 
+    /**
+     * Converts an array of IPlayer objects into a JSON array.
+     *
+     * @param players An array of players to convert.
+     * @return A JSONArray containing all player data.
+     */
     private JSONArray playersToJsonArray(IPlayer[] players) {
         JSONArray playersJson = new JSONArray();
 
@@ -197,6 +309,16 @@ public class Exporter implements IExporter {
         return playersJson;
     }
 
+    /**
+     * Converts a Player object into a JSONObject.
+     * <p>
+     * Includes personal and performance attributes such as name, club, position,
+     * age, number, shooting, passing, stamina, speed, height, weight, nationality,
+     * preferred foot, photo, birth date, and club code.
+     *
+     * @param player The player to convert.
+     * @return A JSONObject representing the player.
+     */
     private JSONObject playerToJsonObject(Player player) {
         JSONObject playerJson = new JSONObject();
         playerJson.put("name", player.getName());
@@ -219,6 +341,14 @@ public class Exporter implements IExporter {
         return playerJson;
     }
 
+    /**
+     * Converts an array of IEvent objects into a JSON array.
+     * <p>
+     * Each event is cast to a concrete Event type and processed individually.
+     *
+     * @param events An array of events to convert.
+     * @return A JSONArray containing all event data.
+     */
     public JSONArray eventsToJsonArray(IEvent[] events) {
         JSONArray eventsJson = new JSONArray();
         for (IEvent event : events) {
@@ -229,19 +359,41 @@ public class Exporter implements IExporter {
         return eventsJson;
     }
 
+    /**
+     * Converts a single Event object into a JSONObject.
+     * <p>
+     * Identifies the event type, minute, and associated players (if applicable).
+     * Handles different event subtypes such as PlayerEvent and SubstitutionEvent.
+     *
+     * @param event The event to convert.
+     * @return A JSONObject representing the event details.
+     */
     private JSONObject eventToJsonObject(Event event) {
         JSONObject eventJson = new JSONObject();
         eventJson.put("type", event.getClass().getSimpleName());
         eventJson.put("minute", event.getMinute());
+
         if (event instanceof PlayerEvent) {
             eventJson.put("player", playerToJsonObject((Player) ((PlayerEvent) event).getPlayer()));
         } else if (event instanceof SubstitutionEvent) {
             eventJson.put("player", playerToJsonObject((Player) ((SubstitutionEvent) event).getPlayerOut()));
             eventJson.put("player_in", playerToJsonObject((Player) ((SubstitutionEvent) event).getPlayerIn()));
         }
+
         return eventJson;
     }
 
+    /**
+     * Exports HTML reports for all loaded leagues, including individual seasons and clubs.
+     * <p>
+     * Generates output files in the directories:
+     * <ul>
+     *   <li>{@code output/html/seasons/} - for season reports</li>
+     *   <li>{@code output/html/clubs/} - for club reports</li>
+     * </ul>
+     * If no leagues are loaded, the method will log a message and stop execution.
+     * Errors during the generation process are logged individually.
+     */
     public void exportHtmlReports() {
         ILeague[] leagues = Functions.getLeagues();
 
@@ -285,4 +437,5 @@ public class Exporter implements IExporter {
 
         System.out.println("Exportation HTML concluded successfully.");
     }
+
 }

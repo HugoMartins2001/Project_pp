@@ -19,6 +19,10 @@ import player.Player;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Represents a football club, containing information such as its name,
+ * code, nationality, stadium, logo, date of foundation, and a list of players.
+ */
 public class Club implements IClub {
 
     private String name;
@@ -31,6 +35,16 @@ public class Club implements IClub {
     private int playerCount;
     private boolean isvalid;
 
+    /**
+     * Constructs a new Club instance with basic information and an empty player list.
+     *
+     * @param name             the name of the club
+     * @param code             the unique code identifying the club
+     * @param clubNationality  the nationality of the club
+     * @param stadiumName      the name of the club's stadium
+     * @param clubLogo         the path or identifier of the club's logo
+     * @param dateOfFoundation the year the club was founded
+     */
     public Club(String name, String code, String clubNationality, String stadiumName,
                 String clubLogo, int dateOfFoundation) {
         this.name = name;
@@ -43,6 +57,18 @@ public class Club implements IClub {
         this.playerCount = 0;
     }
 
+    /**
+     * Constructs a new Club instance with basic information and an initial list of players.
+     *
+     * @param name             the name of the club
+     * @param code             the unique code identifying the club
+     * @param clubNationality  the nationality of the club
+     * @param stadiumName      the name of the club's stadium
+     * @param clubLogo         the path or identifier of the club's logo
+     * @param dateOfFoundation the year the club was founded
+     * @param players          the array of players initially assigned to the club
+     */
+
     public Club(String name, String code, String clubNationality, String stadiumName,
                 String clubLogo, int dateOfFoundation, IPlayer[] players) {
         this.name = name;
@@ -52,24 +78,35 @@ public class Club implements IClub {
         this.clubLogo = clubLogo;
         this.dateOfFoundation = dateOfFoundation;
         this.players = new IPlayer[players.length];
-        for(int i = 0; i < players.length; i++) {
+        for (int i = 0; i < players.length; i++) {
             if (players[i] != null) {
                 this.players[playerCount++] = players[i];
             }
         }
     }
 
+    /**
+     * Returns the name of the club.
+     *
+     * @return the club's name
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns a clone of the array of players registered to the club.
+     * Each player is cloned individually to ensure the array is a deep copy.
+     *
+     * @return a cloned array of IPlayer objects, or an empty array if cloning fails
+     */
     @Override
     public IPlayer[] getPlayers() {
         IPlayer[] playersClone = new IPlayer[players.length];
         try {
             for (int i = 0; i < players.length; i++) {
-                if(players[i] != null) {
+                if (players[i] != null) {
                     playersClone[i] = ((Player) players[i]).clone();
                 }
             }
@@ -80,32 +117,70 @@ public class Club implements IClub {
         return playersClone;
     }
 
+    /**
+     * Returns the club's unique code.
+     *
+     * @return the club's code
+     */
     @Override
     public String getCode() {
         return code;
     }
 
-
+    /**
+     * Returns the nationality of the club.
+     *
+     * @return the club's country
+     */
     @Override
     public String getCountry() {
         return clubNationality;
     }
 
+    /**
+     * Returns the year the club was founded.
+     *
+     * @return the foundation year
+     */
     @Override
     public int getFoundedYear() {
         return dateOfFoundation;
     }
 
+    /**
+     * Returns the name of the club's stadium.
+     *
+     * @return the stadium name
+     */
     @Override
     public String getStadiumName() {
         return stadiumName;
     }
 
+    /**
+     * Returns the logo associated with the club.
+     *
+     * @return the logo path or identifier
+     */
     @Override
     public String getLogo() {
         return clubLogo;
     }
 
+    /**
+     * Adds a player to the club's roster.
+     * <p>
+     * This method checks for:
+     * <ul>
+     *   <li>If the player is null</li>
+     *   <li>If the player is already in the club</li>
+     *   <li>If the club has space for new players</li>
+     * </ul>
+     *
+     * @param player the player to be added
+     * @throws IllegalArgumentException if the player is null or already exists in the club
+     * @throws IllegalStateException    if the club is full
+     */
     @Override
     public void addPlayer(IPlayer player) {
         if (player == null) {
@@ -134,6 +209,15 @@ public class Club implements IClub {
         }
     }
 
+    /**
+     * Checks if a given player is registered in the club.
+     * <p>
+     * A player is considered valid if it has a non-null name and position.
+     *
+     * @param player the player to be checked
+     * @return true if the player belongs to the club, false otherwise
+     * @throws IllegalArgumentException if the player is null or has invalid data
+     */
     @Override
     public boolean isPlayer(IPlayer player) {
         if (player == null) {
@@ -150,6 +234,14 @@ public class Club implements IClub {
         return false;
     }
 
+    /**
+     * Removes a player from the club's roster.
+     * <p>
+     * This method looks for the player in the array and sets its slot to null if found.
+     *
+     * @param player the player to be removed
+     * @throws IllegalArgumentException if the player is null or not found in the club
+     */
     @Override
     public void removePlayer(IPlayer player) {
         if (player == null) {
@@ -168,6 +260,11 @@ public class Club implements IClub {
         }
     }
 
+    /**
+     * Returns the total number of players currently in the club.
+     *
+     * @return the number of non-null players
+     */
     @Override
     public int getPlayerCount() {
         int count = 0;
@@ -179,6 +276,17 @@ public class Club implements IClub {
         return count;
     }
 
+    /**
+     * Selects a player from the club using a given selector strategy and position.
+     * <p>
+     * The selector is used to find the best player for the provided position.
+     *
+     * @param selector the selection strategy to use
+     * @param position the required player position
+     * @return the selected player
+     * @throws IllegalArgumentException if the position is null
+     * @throws IllegalStateException    if the club has no players
+     */
     @Override
     public IPlayer selectPlayer(IPlayerSelector selector, IPlayerPosition position) {
         if (position == null) {
@@ -190,6 +298,11 @@ public class Club implements IClub {
         return selector.selectPlayer(this, position);
     }
 
+    /**
+     * Sets the list of players for the club and updates the player count accordingly.
+     *
+     * @param players an array of Player objects to assign to the club
+     */
     public void setPlayers(Player[] players) {
         this.players = players;
         int count = 0;
@@ -199,6 +312,16 @@ public class Club implements IClub {
         this.playerCount = count;
     }
 
+    /**
+     * Validates whether the club is correctly initialized.
+     * <p>
+     * Checks that required fields are set, the club has at least 16 players,
+     * and that it includes players in each of the main positions: Goalkeeper, Defender,
+     * Midfielder, and Forward.
+     *
+     * @return true if the club is valid
+     * @throws IllegalStateException if any required attribute is missing or if position constraints are not met
+     */
     @Override
     public boolean isValid() {
         if (name == null || code == null || clubNationality == null || stadiumName == null || clubLogo == null || dateOfFoundation == 0) {
@@ -208,7 +331,7 @@ public class Club implements IClub {
             throw new IllegalStateException("The club has no players!");
         }
         if (getPlayerCount() < 16) {
-            throw new IllegalStateException("The club has no players in a specific position!");
+            throw new IllegalStateException("The club must have at least 16 players!");
         }
 
         boolean hasGoalkeeper = false;
@@ -217,6 +340,7 @@ public class Club implements IClub {
         boolean hasForward = false;
 
         for (IPlayer p : players) {
+            if (p == null || p.getPosition() == null) continue;
             switch (p.getPosition().getDescription()) {
                 case "Goalkeeper":
                     hasGoalkeeper = true;
@@ -231,16 +355,26 @@ public class Club implements IClub {
                     hasForward = true;
                     break;
             }
-            if (hasGoalkeeper != true) {
-                throw new IllegalStateException("The club has no goalkeepers!");
-            }
-            if (hasGoalkeeper != true || hasDefender != true || hasMidfielder != true || hasForward != true) {
-                throw new IllegalStateException("The club doesn't have enought players for each position!");
-            }
         }
+
+        if (!hasGoalkeeper) {
+            throw new IllegalStateException("The club has no goalkeepers!");
+        }
+        if (!hasDefender || !hasMidfielder || !hasForward) {
+            throw new IllegalStateException("The club doesn't have enough players for each position!");
+        }
+
         return true;
     }
 
+    /**
+     * Checks whether another object is equal to this club.
+     * <p>
+     * Two clubs are considered equal if they have the same name.
+     *
+     * @param obj the object to compare
+     * @return true if the object is a Club with the same name, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -256,12 +390,24 @@ public class Club implements IClub {
         return this.name.equals(club.name);
     }
 
-    //TODO fazer no final
+    /**
+     * Exports the club's data to a JSON file.
+     * <p>
+     * TODO: Implement JSON export logic.
+     *
+     * @throws IOException if an I/O error occurs during export
+     */
     @Override
     public void exportToJson() throws IOException {
-
+        //TODO fazer no final
     }
 
+    /**
+     * Returns a string representation of the club, including name, code, country, nationality,
+     * stadium name, logo, and date of foundation.
+     *
+     * @return a formatted string describing the club
+     */
     @Override
     public String toString() {
         String s = "Name: " + name + "\n";
@@ -272,7 +418,7 @@ public class Club implements IClub {
         s += "Logo: " + clubLogo + "\n";
         s += "Date of Foundation: " + dateOfFoundation + "\n";
         s += "----------------------------------------\n";
-
         return s;
     }
+
 }

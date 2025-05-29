@@ -7,13 +7,29 @@
  * Number: <8230273>
  * Class: <LsircT2>
  */
-
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
+/**
+ * Represents a shot attempt made by a player during a football match.
+ * This event stores the player who took the shot and the minute it occurred.
+ * Inherits from {@link PlayerEvent}.
+ *
+ * <p>The event description is automatically generated in the format:
+ * "-> [Player Name] shot at [Minute] minutes".</p>
+ *
+ * <p>Useful for tracking offensive actions and match statistics.</p>
+ *
+ */
 public class ShotEvent extends PlayerEvent {
 
+    /**
+     * Constructs a new ShotEvent.
+     *
+     * @param player The player who made the shot.
+     * @param minute The minute the shot occurred.
+     */
     public ShotEvent(IPlayer player, int minute) {
         super(player, minute, "-> " + player.getName() + " shot at " + minute + " minutes");
     }
