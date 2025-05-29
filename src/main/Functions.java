@@ -11,6 +11,7 @@
 package main;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
+import com.ppstudios.footballmanager.api.contracts.league.ILeague;
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
@@ -33,6 +34,64 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Functions {
+
+    private static ILeague[] leagues = new ILeague[10];
+    private static int leagueCount = 0;
+
+    public static ILeague[] getLeagues() {
+        return leagues;
+    }
+
+    public static void setLeagues(ILeague[] leagues1) {
+        for(int i = 0; i < leagues1.length; i++) {
+            if(leagues1[i] != null) {
+                leagues[leagueCount++] = leagues1[i];
+            }
+        }
+    }
+
+    public static void addLeague(ILeague league) {
+        if (leagueCount < leagues.length) {
+            leagues[leagueCount++] = league;
+        } else {
+            System.out.println("League array is full. Cannot add more leagues.");
+        }
+    }
+
+    public static League loadLeague(Scanner input){
+        for(int i = 0; i < leagues.length; i++) {
+
+            if(leagues[i] != null) {
+                System.out.println("League " + (i + 1) + ": " + leagues[i].getName());
+            }
+
+        }
+        System.out.println("Enter the number of the league you want to load (1-" + leagueCount + "): ");
+        int leagueNumber = 0;
+        int maxTries = 5;
+        int currentTry = 0;
+        boolean validInput = false;
+        while (!validInput) {
+            if(currentTry >= maxTries) {
+                System.out.println("Maximum attempts reached. Exiting...");
+                return null;
+            }
+            try {
+                leagueNumber = input.nextInt();
+                if (leagueNumber < 1 || leagueNumber > leagueCount) {
+                    System.out.println("Invalid league number. Please enter a number between 1 and " + leagueCount + ".");
+                    currentTry++;
+                } else {
+                    validInput = true;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a numeric value.");
+                input.next();
+            }
+        }
+        ILeague selectedLeague = leagues[leagueNumber - 1];
+        return (League)selectedLeague;
+    }
 
     public static Season createSeason(Scanner input) {
         System.out.println("");

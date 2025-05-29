@@ -24,13 +24,25 @@ public class Team implements ITeam {
     private IFormation formation;
     private IPlayer[] playersTeam;
 
+    public Team(IClub club, IFormation formation, IPlayer[] playersTeam) {
+        this.club = club;
+        this.formation = formation;
+        this.playersTeam = new IPlayer[playersTeam.length];
+        int playerCount = 0;
+        for(int i = 0; i < playersTeam.length; i++) {
+            if (playersTeam[i] != null) {
+                this.playersTeam[playerCount++] = playersTeam[i];
+            }
+        }
+    }
+
     public Team(IClub club) {
         if (club == null) {
             throw new IllegalArgumentException("The club is not defined!");
         }
         this.club = club;
         this.formation = null;
-        this.playersTeam = null;
+        this.playersTeam = new IPlayer[1];
     }
 
 

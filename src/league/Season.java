@@ -43,9 +43,23 @@ public class Season implements ISeason {
         this.maxTeams = maxTeams;
         this.clubs = new IClub[maxTeams];
         this.leagueStandings = new IStanding[maxTeams];
+        this.schedule = new Schedule();
         this.match = new IMatch[0];
         this.currentRound = 0;
         this.numberOfTeams = 0;
+        this.isManager = isManager;
+    }
+
+    public Season(String name, int year, int currentRound, int maxTeams, IClub[] clubs, IMatch[] match, ISchedule schedule, IStanding[] leagueStandings, int numberOfTeams, boolean isManager) {
+        this.name = name;
+        this.year = year;
+        this.currentRound = currentRound;
+        this.maxTeams = maxTeams;
+        this.clubs = clubs;
+        this.match = match;
+        this.schedule = schedule;
+        this.leagueStandings = leagueStandings;
+        this.numberOfTeams = numberOfTeams;
         this.isManager = isManager;
     }
 

@@ -19,6 +19,11 @@ public class Schedule implements ISchedule {
     private IMatch[][] matches;
     private int numberOfRounds;
 
+    public Schedule() {
+        this.matches = new IMatch[0][];
+        this.numberOfRounds = 0;
+    }
+
     public Schedule(IMatch[][] matches) {
         if (matches == null) throw new IllegalArgumentException("Matches cannot be null");
         this.matches = matches;

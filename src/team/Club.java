@@ -9,6 +9,7 @@
  */
 package team;
 
+import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
@@ -27,7 +28,6 @@ public class Club implements IClub {
     private String clubLogo;
     private int dateOfFoundation;
     private IPlayer[] players;
-    private Player player;
     private int playerCount;
     private boolean isvalid;
 
@@ -43,6 +43,21 @@ public class Club implements IClub {
         this.playerCount = 0;
     }
 
+    public Club(String name, String code, String clubNationality, String stadiumName,
+                String clubLogo, int dateOfFoundation, IPlayer[] players) {
+        this.name = name;
+        this.code = code;
+        this.clubNationality = clubNationality;
+        this.stadiumName = stadiumName;
+        this.clubLogo = clubLogo;
+        this.dateOfFoundation = dateOfFoundation;
+        this.players = new IPlayer[players.length];
+        for(int i = 0; i < players.length; i++) {
+            if (players[i] != null) {
+                this.players[playerCount++] = players[i];
+            }
+        }
+    }
 
     @Override
     public String getName() {

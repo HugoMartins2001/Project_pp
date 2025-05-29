@@ -22,6 +22,9 @@ import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import event.Event;
 import event.PlayerEvent;
+import event.SubstitutionEvent;
+import league.Season;
+import main.Functions;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import player.Player;
@@ -32,16 +35,16 @@ import java.io.IOException;
 
 public class Exporter implements IExporter {
 
-    private ILeague[] leagues;
-
     @Override
-    public void exportToJson() throws IOException {
-        JSONArray leaguesJson = leaguesToJsonArray(leagues);
+    public void exportToJson() {
+        JSONArray leaguesJson = leaguesToJsonArray(Functions.getLeagues());
 
         try (FileWriter file = new FileWriter("./files/leagues.json")) {
             file.write(leaguesJson.toJSONString());
             file.flush();
             System.out.println("League exported successfully to JSON file.");
+        }catch(IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
         }
     }
 
@@ -82,6 +85,7 @@ public class Exporter implements IExporter {
         seasonJson.put("matches", matchesToJsonArray(season.getMatches()));
         seasonJson.put("schedule", scheduleToJsonObject(season.getSchedule()));
         seasonJson.put("standings", standingsToJsonArray(season.getLeagueStandings()));
+        seasonJson.put("is_manager", ((Season)season).isManager());
 
         return seasonJson;
     }
@@ -127,7 +131,7 @@ public class Exporter implements IExporter {
         matchJsonObject.put("home_team", teamToJsonObject(match.getHomeTeam()));
         matchJsonObject.put("away_team", teamToJsonObject(match.getAwayTeam()));
         matchJsonObject.put("round", match.getRound());
-        matchJsonObject.put("events", match.getEvents());
+        matchJsonObject.put("events", eventsToJsonArray(match.getEvents()));
         matchJsonObject.put("is_played", match.isPlayed());
         return matchJsonObject;
     }
@@ -140,7 +144,14 @@ public class Exporter implements IExporter {
 
     private JSONObject teamToJsonObject(ITeam team) {
         JSONObject teamJson = new JSONObject();
-        teamJson.put("formation", team.getFormation().getDisplayName());
+        String formation;
+        try{
+            formation = team.getFormation().getDisplayName();
+        }catch(IllegalStateException e){
+            formation = "4-4-2";
+        }
+
+        teamJson.put("formation", formation);
         teamJson.put("club", clubToJsonObject((Club) team.getClub()));
         teamJson.put("players", playersToJsonArray(team.getPlayers()));
 
@@ -176,6 +187,7 @@ public class Exporter implements IExporter {
         JSONArray playersJson = new JSONArray();
 
         for (IPlayer player : players) {
+            if(player == null) continue;
             playersJson.add(playerToJsonObject((Player) player));
         }
         return playersJson;
@@ -214,13 +226,16 @@ public class Exporter implements IExporter {
 
     private JSONObject eventToJsonObject(Event event) {
         JSONObject eventJson = new JSONObject();
-        eventJson.put("type", event.getClass().toString());
+        eventJson.put("type", event.getClass().getSimpleName());
         eventJson.put("minute", event.getMinute());
-        eventJson.put("description", event.getDescription());
         if(event instanceof PlayerEvent){
             eventJson.put("player", playerToJsonObject((Player)((PlayerEvent) event).getPlayer()));
         }
+
+        else if(event instanceof SubstitutionEvent){
+            eventJson.put("player", playerToJsonObject((Player)((SubstitutionEvent) event).getPlayerOut()));
+            eventJson.put("player_in", playerToJsonObject((Player)((SubstitutionEvent) event).getPlayerIn()));
+        }
         return eventJson;
     }
-
 }

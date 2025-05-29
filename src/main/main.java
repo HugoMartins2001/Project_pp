@@ -9,11 +9,17 @@
  */
 package main;
 
+import data.Exporter;
+import data.Importer;
+
 import java.util.Scanner;
 
 public class main {
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
+        Importer importer = new Importer();
+        importer.importAllLeagues();
         int Options;
 
         do {
@@ -32,6 +38,8 @@ public class main {
                     Menus.creditsMenu(input);
                     break;
                 case 0:
+                    Exporter exporter = new Exporter();
+                    exporter.exportToJson();
                     break;
                 default:
                     System.out.println("Select a valid option!");

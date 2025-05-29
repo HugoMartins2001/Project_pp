@@ -77,12 +77,17 @@ public class Menus {
                         System.out.print("Insert a League Name:  ");
                         String leagueName = input.next();
                         League newLeague = new League(leagueName);
+                        Functions.addLeague(newLeague);
                         leagueMenu(input, newLeague);
                         verifyInput = false;
                         break;
                     case 2:
-                        //TODO FALTA IMPLEMENTAR
-                        //loadGame(input);
+                        League loadedLeague = Functions.loadLeague(input);
+                        if (loadedLeague == null) {
+                            break;
+                        }
+                        leagueMenu(input, loadedLeague);
+                        verifyInput = false;
                         break;
                     case 0:
                         return;

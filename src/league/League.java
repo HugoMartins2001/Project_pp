@@ -26,6 +26,19 @@ public class League implements ILeague {
         this.name = name;
     }
 
+    public League(String name, ISeason[] seasons) {
+        if (name == null || seasons == null) {
+            throw new IllegalArgumentException("League cannot be null or empty");
+        }
+        this.name = name;
+        this.seasons = new ISeason[seasons.length];
+        for(int i = 0; i < seasons.length; i++) {
+            if (seasons[i] != null) {
+                this.seasons[seasonCount++] = seasons[i];
+            }
+        }
+    }
+
     @Override
     public String getName() {
         return this.name;

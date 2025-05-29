@@ -39,6 +39,18 @@ public class Match implements IMatch {
         this.isPlayed = false;
     }
 
+    public Match(IClub homeClub, IClub awayClub, ITeam homeTeam, ITeam awayTeam, int round, IEventManager events, boolean isPlayed) {
+        if (homeClub == null || awayClub == null) throw new IllegalArgumentException("Clubs cannot be null");
+        this.homeClub = homeClub;
+        this.awayClub = awayClub;
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.round = round;
+        this.events = events;
+        this.isPlayed = isPlayed;
+    }
+
+
     @Override
     public IClub getHomeClub() {
         if (homeClub == null) {
