@@ -1,12 +1,3 @@
-/*
- * Name: <Rúben Tiago Martins Pereira>
- * Number: <8230162>
- * Class: <LsircT2>
- *
- * Name: <Hugo Leite Martins>
- * Number: <8230273>
- * Class: <LsircT2>
- */
 package league;
 
 import com.ppstudios.footballmanager.api.contracts.league.IStanding;
@@ -14,6 +5,39 @@ import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import event.GoalEvent;
 
+/**
+ * Represents the league standing for a football team.
+ * <p>
+ * The {@code Standing} class tracks all relevant statistics for a team in a league, including:
+ * <ul>
+ *   <li>Points</li>
+ *   <li>Wins</li>
+ *   <li>Draws</li>
+ *   <li>Losses</li>
+ *   <li>Total matches played</li>
+ *   <li>Goals scored</li>
+ *   <li>Goals conceded</li>
+ *   <li>The associated team</li>
+ * </ul>
+ * It also maintains initialization flags for each field to ensure data integrity and proper initialization.
+ * </p>
+ * <p>
+ * This class implements the {@link IStanding} interface, making it compatible with the Football Manager API.
+ * </p>
+ *
+ * <p>
+ * Authors:
+ * <ul>
+ *   <li>Rúben Tiago Martins Pereira (8230162) - LsircT2</li>
+ *   <li>Hugo Leite Martins (8230273) - LsircT2</li>
+ * </ul>
+ * </p>
+ *
+ * @see IStanding
+ * @see ITeam
+ * @see IMatch
+ * @see GoalEvent
+ */
 public class Standing implements IStanding {
     private int points;
     private int wins;
@@ -32,6 +56,24 @@ public class Standing implements IStanding {
     private boolean goalsConcededInitialized;
     private boolean teamInitialized;
 
+    /**
+     * Constructs a new {@code Standing} object with the specified statistics and associated team.
+     * <p>
+     * All statistical values must be non-negative and the team must not be {@code null}.
+     * If any validation fails, an {@link IllegalArgumentException} is thrown.
+     * All initialization flags are set to {@code true} upon successful construction.
+     * </p>
+     *
+     * @param points        the number of points the team has earned
+     * @param wins          the number of matches won by the team
+     * @param draws         the number of matches drawn by the team
+     * @param losses        the number of matches lost by the team
+     * @param totalMatches  the total number of matches played by the team
+     * @param goalsScored   the total number of goals scored by the team
+     * @param goalsConceded the total number of goals conceded by the team
+     * @param team          the {@link ITeam} associated with this standing
+     * @throws IllegalArgumentException if the team is {@code null} or any statistical value is negative
+     */
     public Standing(int points, int wins, int draws, int losses, int totalMatches, int goalsScored, int goalsConceded, ITeam team) {
         if (team == null) {
             throw new IllegalArgumentException("Team cannot be null");
@@ -57,6 +99,15 @@ public class Standing implements IStanding {
         this.teamInitialized = true;
     }
 
+    /**
+     * Constructs a new {@code Standing} object for the specified team with all statistics initialized to zero.
+     * <p>
+     * The team must not be {@code null}. All initialization flags are set to {@code true} upon successful construction.
+     * </p>
+     *
+     * @param team the {@link ITeam} associated with this standing
+     * @throws IllegalArgumentException if the team is {@code null}
+     */
     public Standing(ITeam team) {
         if (team == null) {
             throw new IllegalArgumentException("Team cannot be null");
@@ -79,7 +130,12 @@ public class Standing implements IStanding {
         this.teamInitialized = true;
     }
 
-
+    /**
+     * Returns the team associated with this standing.
+     *
+     * @return the {@link ITeam} for this standing
+     * @throws IllegalStateException if the team has not been initialized
+     */
     @Override
     public ITeam getTeam() {
         if (!teamInitialized) {
@@ -88,7 +144,12 @@ public class Standing implements IStanding {
         return this.team;
     }
 
-
+    /**
+     * Returns the number of points for this standing.
+     *
+     * @return the current points
+     * @throws IllegalStateException if the points have not been initialized
+     */
     @Override
     public int getPoints() {
         if (!pointsInitialized) {
@@ -97,6 +158,16 @@ public class Standing implements IStanding {
         return this.points;
     }
 
+    /**
+     * Adds the specified number of points to the current total.
+     * <p>
+     * Points must be non-negative. If the value is negative, an exception is thrown.
+     * The {@code pointsInitialized} flag is set to {@code true} after successful addition.
+     * </p>
+     *
+     * @param points the number of points to add
+     * @throws IllegalArgumentException if {@code points} is negative
+     */
     @Override
     public void addPoints(int points) {
         if (points < 0) {
@@ -106,6 +177,16 @@ public class Standing implements IStanding {
         this.pointsInitialized = true;
     }
 
+    /**
+     * Increments the win count, total matches, and adds points for a win.
+     * <p>
+     * The number of points awarded for a win must be non-negative.
+     * All relevant initialization flags are updated after the operation.
+     * </p>
+     *
+     * @param pointsPerWin the number of points to add for a win
+     * @throws IllegalArgumentException if {@code pointsPerWin} is negative
+     */
     @Override
     public void addWin(int pointsPerWin) {
         if (pointsPerWin < 0) {
@@ -119,6 +200,16 @@ public class Standing implements IStanding {
         this.pointsInitialized = true;
     }
 
+    /**
+     * Increments the draw count, total matches, and adds points for a draw.
+     * <p>
+     * The number of points awarded for a draw must be non-negative.
+     * All relevant initialization flags are updated after the operation.
+     * </p>
+     *
+     * @param pointsPerDraw the number of points to add for a draw
+     * @throws IllegalArgumentException if {@code pointsPerDraw} is negative
+     */
     @Override
     public void addDraw(int pointsPerDraw) {
         if (pointsPerDraw < 0) {
@@ -132,6 +223,16 @@ public class Standing implements IStanding {
         this.pointsInitialized = true;
     }
 
+    /**
+     * Increments the loss count, total matches, and adds points for a loss.
+     * <p>
+     * The number of points awarded for a loss must be non-negative.
+     * All relevant initialization flags are updated after the operation.
+     * </p>
+     *
+     * @param pointsPerLoss the number of points to add for a loss
+     * @throws IllegalArgumentException if {@code pointsPerLoss} is negative
+     */
     @Override
     public void addLoss(int pointsPerLoss) {
         if (pointsPerLoss < 0) {
@@ -144,8 +245,14 @@ public class Standing implements IStanding {
         this.totalMatchesInitialized = true;
         this.pointsInitialized = true;
     }
-    
 
+
+    /**
+     * Returns the number of wins for this standing.
+     *
+     * @return the number of wins
+     * @throws IllegalStateException if the wins value has not been initialized
+     */
     @Override
     public int getWins() {
         if (!winsInitialized) {
@@ -154,6 +261,12 @@ public class Standing implements IStanding {
         return this.wins;
     }
 
+    /**
+     * Returns the number of draws for this standing.
+     *
+     * @return the number of draws
+     * @throws IllegalStateException if the draws value has not been initialized
+     */
     @Override
     public int getDraws() {
         if (!drawsInitialized) {
@@ -162,6 +275,12 @@ public class Standing implements IStanding {
         return this.draws;
     }
 
+    /**
+     * Returns the number of losses for this standing.
+     *
+     * @return the number of losses
+     * @throws IllegalStateException if the losses value has not been initialized
+     */
     @Override
     public int getLosses() {
         if (!lossesInitialized) {
@@ -170,6 +289,12 @@ public class Standing implements IStanding {
         return this.losses;
     }
 
+    /**
+     * Returns the total number of matches played for this standing.
+     *
+     * @return the total number of matches played
+     * @throws IllegalStateException if the total matches value has not been initialized
+     */
     @Override
     public int getTotalMatches() {
         if (!totalMatchesInitialized) {
@@ -178,6 +303,12 @@ public class Standing implements IStanding {
         return this.totalMatches;
     }
 
+    /**
+     * Returns the total number of goals scored for this standing.
+     *
+     * @return the total number of goals scored
+     * @throws IllegalStateException if the goals scored value has not been initialized
+     */
     @Override
     public int getGoalScored() {
         if (!goalsScoredInitialized) {
@@ -186,6 +317,13 @@ public class Standing implements IStanding {
         return this.goalsScored;
     }
 
+
+    /**
+     * Returns the total number of goals conceded for this standing.
+     *
+     * @return the total number of goals conceded
+     * @throws IllegalStateException if the goals conceded value has not been initialized
+     */
     @Override
     public int getGoalsConceded() {
         if (!goalsConcededInitialized) {
@@ -194,6 +332,12 @@ public class Standing implements IStanding {
         return this.goalsConceded;
     }
 
+    /**
+     * Returns the goal difference (goals scored minus goals conceded) for this standing.
+     *
+     * @return the goal difference
+     * @throws IllegalStateException if either the goals scored or goals conceded value has not been initialized
+     */
     @Override
     public int getGoalDifference() {
         if (!goalsScoredInitialized || !goalsConcededInitialized) {
@@ -202,7 +346,19 @@ public class Standing implements IStanding {
         return this.goalsScored - this.goalsConceded;
     }
 
-    public void updateStandings(IMatch match){
+    /**
+     * Updates the team's standing based on the result of the specified match.
+     * <p>
+     * This method updates goals scored, goals conceded, and match results (win, draw, loss)
+     * for the team associated with this standing. It determines whether the team was the
+     * home or away team and applies the appropriate updates.
+     * </p>
+     *
+     * @param match the {@link IMatch} whose result is used to update the standings
+     * @throws IllegalArgumentException if {@code match} is {@code null}
+     * @throws IllegalStateException    if the match has not been played yet
+     */
+    public void updateStandings(IMatch match) {
         if (match == null) {
             throw new IllegalArgumentException("Match cannot be null");
         }
@@ -237,6 +393,6 @@ public class Standing implements IStanding {
                 addDraw(1);
             }
         }
-
     }
+
 }

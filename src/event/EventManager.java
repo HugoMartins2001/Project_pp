@@ -1,62 +1,99 @@
-/*
- * Name: <Rúben Tiago Martins Pereira>
- * Number: <8230162>
- * Class: <LsircT2>
- *
- * Name: <Hugo Leite Martins>
- * Number: <8230273>
- * Class: <LsircT2>
- */
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.event.IEventManager;
 
+/**
+ * Manages football match events.
+ * <p>
+ * Stores events dynamically in an internal array, ensures no duplicate events,
+ * and allows access to events in their insertion order or sorted by match minute.
+ * </p>
+ *
+ * <p>
+ * This class implements {@link IEventManager}.
+ * </p>
+ *
+ * <p>
+ * Authors:
+ * <ul>
+ *   <li>Rúben Tiago Martins Pereira (8230162) - LsircT2</li>
+ *   <li>Hugo Leite Martins (8230273) - LsircT2</li>
+ * </ul>
+ * </p>
+ *
+ * @see IEvent
+ * @see IEventManager
+ */
 public class EventManager implements IEventManager {
 
     private IEvent[] events = new IEvent[1];
     private int eventCount = 0;
 
+    /**
+     * Adds a new event to the manager, ensuring no duplicates.
+     *
+     * @param ievent The event to add.
+     * @throws IllegalArgumentException if the event is null.
+     */
     @Override
     public void addEvent(IEvent ievent) {
         if (ievent == null) {
             throw new IllegalArgumentException("Event cannot be null");
         }
-        if(findEvent(ievent) == -1){
-            if(eventCount == events.length) {
+        if (findEvent(ievent) == -1) {
+            if (eventCount == events.length) {
                 expandEvent();
             }
             events[eventCount++] = ievent;
         }
     }
 
-    private int findEvent(IEvent ievent){
-        for(int i = 0 ; i < eventCount; i++){
-            if(events[i].equals(ievent)){
+    /**
+     * Checks if the given event is already stored.
+     *
+     * @param ievent The event to find.
+     * @return The index of the event if found, or -1 otherwise.
+     */
+    private int findEvent(IEvent ievent) {
+        for (int i = 0; i < eventCount; i++) {
+            if (events[i].equals(ievent)) {
                 return i;
             }
         }
-
         return -1;
     }
 
-    private void expandEvent(){
+    /**
+     * Doubles the size of the internal events array.
+     */
+    private void expandEvent() {
         IEvent[] newEvents = new IEvent[events.length * 2];
-        for(int i = 0; i < events.length; i++){
+        for (int i = 0; i < events.length; i++) {
             newEvents[i] = events[i];
         }
         events = newEvents;
     }
 
+    /**
+     * Returns all stored events in insertion order.
+     *
+     * @return An array of stored events.
+     */
     @Override
     public IEvent[] getEvents() {
         IEvent[] result = new IEvent[eventCount];
-        for(int i = 0; i < eventCount; i++){
+        for (int i = 0; i < eventCount; i++) {
             result[i] = events[i];
         }
         return result;
     }
 
+    /**
+     * Returns a copy of the stored events ordered by minute (ascending).
+     *
+     * @return An array of events sorted by match minute.
+     */
     public IEvent[] getEventsOrderedByMinute() {
         IEvent[] result = new IEvent[eventCount];
         for (int i = 0; i < eventCount; i++) {
@@ -74,9 +111,13 @@ public class EventManager implements IEventManager {
         return result;
     }
 
+    /**
+     * Returns the number of stored events.
+     *
+     * @return The total number of events.
+     */
     @Override
     public int getEventCount() {
         return eventCount;
     }
-
 }
