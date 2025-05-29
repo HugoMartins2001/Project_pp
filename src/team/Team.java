@@ -193,6 +193,13 @@ public class Team implements ITeam {
         }
     }
 
+    public void setManualTeam(IPlayer[] playersTeam) {
+        if(playersTeam == null || playersTeam.length != 11) {
+            throw new IllegalArgumentException("The players team must have 11 players!");
+        }
+        this.playersTeam = playersTeam;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

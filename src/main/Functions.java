@@ -50,7 +50,7 @@ public class Functions {
                     managerInput = input.next();
                 }while(!managerInput.equalsIgnoreCase("Y") && !managerInput.equalsIgnoreCase("N"));
 
-                isManager = managerInput.equals("Y");
+                isManager = managerInput.equalsIgnoreCase("Y");
 
                 validInput = true;
             } catch (InputMismatchException e) {
@@ -997,7 +997,106 @@ public class Functions {
         Team userTeam = new Team(selectedClub);
         userTeam.setFormation(readFormation(input, "your"));
 
-        //TODO: pedir os player que ele quer
+        System.out.println("Enter the numbers of the 11 players you want to use for this formation:");
+
+        IPlayer[] availablePlayers = selectedClub.getPlayers();
+        for (IPlayer p : availablePlayers) {
+            if (p != null) {
+                System.out.printf("Name: %-20s | Number: %d | Position: %s%n",
+                        p.getName(), p.getNumber(), p.getPosition().getDescription());
+            }
+        }
+
+        IPlayer[] selectedPlayers = new IPlayer[11];
+        int[] selectedNumbers = new int[11];
+        int count = 0;
+
+        int gkCount = 0, defCount = 0, midCount = 0, fwdCount = 0;
+
+        int numDefs = ((Formation)userTeam.getFormation()).getDefenders();
+        int numMids = ((Formation)userTeam.getFormation()).getMidfielders();
+        int numFwds = ((Formation)userTeam.getFormation()).getForwards();
+        int numGKs = 1;
+
+        while (count < 11) {
+            System.out.print("Enter player number #" + (count + 1) + ": ");
+            int number = input.nextInt();
+
+            // Verifica se o número já foi usado
+            boolean alreadySelected = false;
+            for (int i = 0; i < count; i++) {
+                if (selectedNumbers[i] == number) {
+                    alreadySelected = true;
+                    break;
+                }
+            }
+            if (alreadySelected) {
+                System.out.println("This player has already been selected. Choose another.");
+                continue;
+            }
+
+            boolean found = false;
+
+            for (IPlayer p : availablePlayers) {
+                if (p != null && p.getNumber() == number) {
+                    String pos = p.getPosition().getDescription().toLowerCase();
+
+                    if (pos.contains("goalkeeper")) {
+                        if (gkCount < numGKs) {
+                            selectedPlayers[count] = p;
+                            selectedNumbers[count] = number;
+                            gkCount++;
+                            count++;
+                            found = true;
+                        } else {
+                            System.out.println("Only one goalkeeper allowed.");
+                        }
+                    } else if (pos.contains("defender")) {
+                        if (defCount < numDefs) {
+                            selectedPlayers[count] = p;
+                            selectedNumbers[count] = number;
+                            defCount++;
+                            count++;
+                            found = true;
+                        } else {
+                            System.out.println("Defender limit reached (" + numDefs + ").");
+                        }
+                    } else if (pos.contains("midfielder")) {
+                        if (midCount < numMids) {
+                            selectedPlayers[count] = p;
+                            selectedNumbers[count] = number;
+                            midCount++;
+                            count++;
+                            found = true;
+                        } else {
+                            System.out.println("Midfielder limit reached (" + numMids + ").");
+                        }
+                    } else if (pos.contains("forward")) {
+                        if (fwdCount < numFwds) {
+                            selectedPlayers[count] = p;
+                            selectedNumbers[count] = number;
+                            fwdCount++;
+                            count++;
+                            found = true;
+                        } else {
+                            System.out.println("Forward limit reached (" + numFwds + ").");
+                        }
+                    } else {
+                        System.out.println("Unknown position: " + pos);
+                    }
+
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Player not found, invalid number, or position quota full. Try again.");
+            }
+        }
+
+
+
+        userTeam.setManualTeam(selectedPlayers);
 
         System.out.println("\n=== STARTING SEASON: " + season.getName().toUpperCase() + " (" + season.getYear() + ") ===");
 
@@ -1008,7 +1107,41 @@ public class Functions {
 
         for(int i = 0; i < season.getMaxRounds(); i++) {
 
-            //TODO: MENU COM AS OPCOES DE JOGO (mudar formacao equipa e ver standings atuais)
+            System.out.println("\n=== MANAGER MENU BEFORE ROUND " + (i + 1) + " ===");
+            System.out.println("1 - Change formation");
+            System.out.println("2 - View current standings");
+            System.out.println("0 - Continue to matches");
+
+            int choice;
+            while (true) {
+                System.out.print("Select an option: ");
+                if (input.hasNextInt()) {
+                    choice = input.nextInt();
+                    input.nextLine();
+                    if (choice == 1) {
+                        Formation newFormation = readFormation(input, "your (new)");
+                        userTeam.setFormation(newFormation);
+
+                        System.out.println("Do you want to reselect the team players for the new formation? (Y/N): ");
+                        String resp = input.nextLine();
+                        if (resp.equalsIgnoreCase("Y")) {
+                            // Reutiliza o mesmo bloco de código para escolher jogadores (podes transformá-lo numa função reutilizável)
+                            // ...
+                        }
+
+                    } else if (choice == 2) {
+                        viewSeasonStandings(season);
+                    } else if (choice == 0) {
+                        break;
+                    } else {
+                        System.out.println("Invalid choice.");
+                    }
+                } else {
+                    System.out.println("Invalid input.");
+                    input.next();
+                }
+            }
+
             System.out.println("Round " + (i + 1) + ":");
             for (IMatch match : season.getMatches(i)) {
                 if (match == null) continue;
