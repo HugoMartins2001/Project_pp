@@ -15,7 +15,6 @@ import league.League;
 import league.Season;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

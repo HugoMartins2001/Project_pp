@@ -12,8 +12,6 @@ package player;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.player.PreferredFoot;
-import com.ppstudios.footballmanager.api.contracts.team.IClub;
-import event.PlayerEvent;
 
 import java.io.IOException;
 import java.time.LocalDate;

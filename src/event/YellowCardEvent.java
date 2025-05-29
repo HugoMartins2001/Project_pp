@@ -11,8 +11,6 @@ package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
-import java.io.IOException;
-
 public class YellowCardEvent extends PlayerEvent {
 
     public YellowCardEvent(IPlayer player, int minute) {

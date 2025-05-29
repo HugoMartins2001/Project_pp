@@ -1,3 +1,13 @@
+/*
+ * Name: <Rúben Tiago Martins Pereira>
+ * Number: <8230162>
+ * Class: <LsircT2>
+ *
+ * Name: <Hugo Leite Martins>
+ * Number: <8230273>
+ * Class: <LsircT2>
+ */
+
 package main;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
@@ -6,7 +16,6 @@ import com.ppstudios.footballmanager.api.contracts.league.IStanding;
 import com.ppstudios.footballmanager.api.contracts.match.IMatch;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 import com.ppstudios.footballmanager.api.contracts.team.IClub;
-import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import data.Importer;
 import event.*;
 import league.League;
@@ -20,7 +29,6 @@ import team.Formation;
 import team.Team;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

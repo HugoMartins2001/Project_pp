@@ -10,9 +10,6 @@
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
-import com.ppstudios.footballmanager.api.contracts.team.ITeam;
-
-import java.io.IOException;
 
 public class FreeKickEvent extends PlayerEvent {
 
