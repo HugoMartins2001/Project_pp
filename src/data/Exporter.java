@@ -276,13 +276,13 @@ public class Exporter implements IExporter {
                     try {
                         ClubHtmlGenerator.generate(club, clubPath);
                     } catch (Exception e) {
-                        System.out.println("Error generating HTML for club:: " + club.getName());
+                        System.out.println("Error generating HTML for club: " + club.getName());
                         e.printStackTrace();
                     }
                 }
             }
         }
 
-        System.out.println("Exportação HTML concluída.");
+        System.out.println("Exportation HTML concluded successfully.");
     }
 }

@@ -381,7 +381,9 @@ public class Season implements ISeason {
         for (int i = 0; i < schedule.getNumberOfRounds(); i++) {
             System.out.println("Round " + i);
             for (IMatch iMatch : schedule.getMatchesForRound(i)) {
-                System.out.println(iMatch.getHomeClub().getName() + " vs " + iMatch.getAwayClub().getName() + " - Round: " + iMatch.getRound());
+                if (iMatch != null) {
+                    System.out.println(iMatch.getHomeClub().getName() + " vs " + iMatch.getAwayClub().getName() + " - Round: " + iMatch.getRound());
+                }
             }
         }
     }

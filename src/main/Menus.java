@@ -215,6 +215,8 @@ public class Menus {
             } catch (InputMismatchException exception) {
                 System.out.println("Select a valid option!");
                 input.next();
+            } catch (IllegalStateException error) {
+                System.out.println(error.getMessage());
             }
         } while (!verifyInput);
 
