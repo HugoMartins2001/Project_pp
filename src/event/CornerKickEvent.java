@@ -1,11 +1,6 @@
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
-import com.ppstudios.footballmanager.api.contracts.team.ITeam;
-import data.Exporter;
-import player.Player;
-
-import java.io.IOException;
 
 /**
  * Represents a corner kick event in a football match.

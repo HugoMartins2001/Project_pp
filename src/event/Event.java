@@ -1,7 +1,6 @@
 package event;
 
 import com.ppstudios.footballmanager.api.contracts.event.IEvent;
-import player.Player;
 
 import java.io.IOException;
 
