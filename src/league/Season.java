@@ -112,7 +112,6 @@ public class Season implements ISeason {
 
         clubs[numberOfTeams++] = club;
         leagueStandings[numberOfTeams - 1] = new Standing(new Team(club));
-        System.out.println("Club added: " + club.getName());
         return true;
     }
 
