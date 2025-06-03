@@ -12,12 +12,12 @@ package event;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
 /**
- * Represents a free kick event taken by a player during a football match.
- * This event includes the player involved and the minute it occurred.
- * Inherits from {@link PlayerEvent}.
+ * Represents a free kick event taken by a player during a football match. This
+ * event includes the player involved and the minute it occurred. Inherits from
+ * {@link PlayerEvent}.
  *
- * <p>The event description is automatically generated in the format:
- * "-> Free kick by [Player Name] at [Minute] minutes".</p>
+ * The event description is automatically generated in the format: "-> Free kick
+ * by [Player Name] at [Minute] minutes".
  *
  */
 public class FreeKickEvent extends PlayerEvent {

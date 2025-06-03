@@ -12,14 +12,14 @@ package event;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
 /**
- * Represents a yellow card given to a player during a football match.
- * This event stores the player who received the card and the minute it occurred.
+ * Represents a yellow card given to a player during a football match. This
+ * event stores the player who received the card and the minute it occurred.
  * Inherits from {@link PlayerEvent}.
  *
- * <p>The event description is automatically generated in the format:
- * "-> Yellow card to [Player Name] at [Minute] minutes".</p>
+ * The event description is automatically generated in the format: "-> Yellow
+ * card to [Player Name] at [Minute] minutes".
  *
- * <p>This is used for tracking disciplinary actions and in-game consequences.</p>
+ * This is used for tracking disciplinary actions and in-game consequences.
  *
  */
 public class YellowCardEvent extends PlayerEvent {

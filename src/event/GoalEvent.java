@@ -13,13 +13,13 @@ import com.ppstudios.footballmanager.api.contracts.event.IGoalEvent;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
 /**
- * Represents a goal scored by a player during a football match.
- * Implements the {@link IGoalEvent} interface and extends {@link PlayerEvent}.
+ * Represents a goal scored by a player during a football match. Implements the
+ * {@link IGoalEvent} interface and extends {@link PlayerEvent}.
  *
- * <p>The event description is automatically generated in the format:
- * "-> Goal by [Player Name] at [Minute] minutes".</p>
+ * The event description is automatically generated in the format: "-> Goal by
+ * [Player Name] at [Minute] minutes".
  *
- * <p>This class stores the player who scored the goal and the minute it occurred.</p>
+ * This class stores the player who scored the goal and the minute it occurred.
  *
  */
 public class GoalEvent extends PlayerEvent implements IGoalEvent {

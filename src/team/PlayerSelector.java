@@ -15,19 +15,22 @@ import com.ppstudios.footballmanager.api.contracts.team.IClub;
 import com.ppstudios.footballmanager.api.contracts.team.IPlayerSelector;
 
 /**
- * PlayerSelector is a strategy class that selects a player
- * from a given club based on a specific position.
+ * PlayerSelector is a strategy class that selects a player from a given club
+ * based on a specific position.
  */
 public class PlayerSelector implements IPlayerSelector {
 
     /**
-     * Selects the first available player in the club that matches the given position.
+     * Selects the first available player in the club that matches the given
+     * position.
      *
-     * @param club     The club from which the player is to be selected.
+     * @param club The club from which the player is to be selected.
      * @param position The required position of the player.
      * @return The first player found matching the position.
-     * @throws IllegalArgumentException if the club, position, or players are invalid.
-     * @throws IllegalStateException if no player is found for the specified position.
+     * @throws IllegalArgumentException if the club, position, or players are
+     * invalid.
+     * @throws IllegalStateException if no player is found for the specified
+     * position.
      */
     @Override
     public IPlayer selectPlayer(IClub club, IPlayerPosition position) {

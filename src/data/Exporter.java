@@ -7,7 +7,6 @@
  * Number: <8230273>
  * Class: <LsircT2>
  */
-
 package data;
 
 import com.ppstudios.footballmanager.api.contracts.data.IExporter;
@@ -38,24 +37,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Exporter class responsible for exporting league data.
- * Implements the IExporter interface and provides functionality
- * to export league-related information to JSON files.
- * <p>
- * Authors:
- * - Rúben Tiago Martins Pereira (8230162, LsircT2)
- * - Hugo Leite Martins (8230273, LsircT2)
+ * Exporter class responsible for exporting league data. Implements the
+ * IExporter interface and provides functionality to export league-related
+ * information to JSON files.
+ *
+ * Authors: - Rúben Tiago Martins Pereira (8230162, LsircT2) - Hugo Leite
+ * Martins (8230273, LsircT2)
  */
 public class Exporter implements IExporter {
 
     /**
      * Exports all loaded leagues to a JSON file.
-     * <p>
-     * The method retrieves the list of leagues using the {@code Functions.getLeagues()}
-     * utility method, converts them into a JSON array, and writes the result to
-     * {@code ./files/leagues.json}.
-     * <p>
-     * If an I/O error occurs during file writing, it logs an error message to the console.
+     *
+     * The method retrieves the list of leagues using the
+     * {@code Functions.getLeagues()} utility method, converts them into a JSON
+     * array, and writes the result to {@code ./files/leagues.json}.
+     *
+     * If an I/O error occurs during file writing, it logs an error message to
+     * the console.
      */
     @Override
     public void exportToJson() {
@@ -114,11 +113,12 @@ public class Exporter implements IExporter {
         }
         return seasonsArray;
     }
+
     /**
      * Converts an ISeason object into a JSONObject.
-     * <p>
-     * Includes details such as name, year, current round, maximum teams,
-     * list of clubs, matches, schedule, standings, and manager status.
+     *
+     * Includes details such as name, year, current round, maximum teams, list
+     * of clubs, matches, schedule, standings, and manager status.
      *
      * @param season The season to convert.
      * @return A JSONObject representing the season with all its properties.
@@ -156,9 +156,9 @@ public class Exporter implements IExporter {
 
     /**
      * Converts an IStanding object into a JSONObject.
-     * <p>
-     * Includes team information and statistics such as points, wins,
-     * draws, losses, total matches, goals scored, and goals conceded.
+     *
+     * Includes team information and statistics such as points, wins, draws,
+     * losses, total matches, goals scored, and goals conceded.
      *
      * @param standing The standing object to convert.
      * @return A JSONObject representing the team's standing.
@@ -195,9 +195,9 @@ public class Exporter implements IExporter {
 
     /**
      * Converts a single IMatch object into a JSONObject.
-     * <p>
-     * Includes home and away clubs/teams, round number, match events,
-     * and whether the match was played.
+     *
+     * Includes home and away clubs/teams, round number, match events, and
+     * whether the match was played.
      *
      * @param match The match to convert.
      * @return A JSONObject representing the match details.
@@ -216,7 +216,7 @@ public class Exporter implements IExporter {
 
     /**
      * Converts an ISchedule object into a JSONObject.
-     * <p>
+     *
      * Includes all scheduled matches within the season.
      *
      * @param schedule The schedule to convert.
@@ -230,9 +230,9 @@ public class Exporter implements IExporter {
 
     /**
      * Converts an ITeam object into a JSONObject.
-     * <p>
-     * Includes team formation, associated club, and list of players.
-     * If the formation is not properly initialized, a default "4-4-2" is used.
+     *
+     * Includes team formation, associated club, and list of players. If the
+     * formation is not properly initialized, a default "4-4-2" is used.
      *
      * @param team The team to convert.
      * @return A JSONObject representing the team's structure and players.
@@ -272,7 +272,7 @@ public class Exporter implements IExporter {
 
     /**
      * Converts a Club object into a JSONObject.
-     * <p>
+     *
      * Includes club metadata such as name, code, stadium, logo, country,
      * foundation year, and associated players.
      *
@@ -288,7 +288,7 @@ public class Exporter implements IExporter {
         clubJson.put("country", club.getCountry());
         clubJson.put("foundedYear", club.getFoundedYear());
         clubJson.put("players", playersToJsonArray(club.getPlayers()));
-        clubJson.put("playerCount", club.getPlayers().length);
+        clubJson.put("playerCount", club.getPlayerCount());
 
         return clubJson;
     }
@@ -303,7 +303,9 @@ public class Exporter implements IExporter {
         JSONArray playersJson = new JSONArray();
 
         for (IPlayer player : players) {
-            if (player == null) continue;
+            if (player == null) {
+                continue;
+            }
             playersJson.add(playerToJsonObject((Player) player));
         }
         return playersJson;
@@ -311,10 +313,10 @@ public class Exporter implements IExporter {
 
     /**
      * Converts a Player object into a JSONObject.
-     * <p>
-     * Includes personal and performance attributes such as name, club, position,
-     * age, number, shooting, passing, stamina, speed, height, weight, nationality,
-     * preferred foot, photo, birth date, and club code.
+     *
+     * Includes personal and performance attributes such as name, club,
+     * position, age, number, shooting, passing, stamina, speed, height, weight,
+     * nationality, preferred foot, photo, birth date, and club code.
      *
      * @param player The player to convert.
      * @return A JSONObject representing the player.
@@ -343,7 +345,7 @@ public class Exporter implements IExporter {
 
     /**
      * Converts an array of IEvent objects into a JSON array.
-     * <p>
+     *
      * Each event is cast to a concrete Event type and processed individually.
      *
      * @param events An array of events to convert.
@@ -361,9 +363,10 @@ public class Exporter implements IExporter {
 
     /**
      * Converts a single Event object into a JSONObject.
-     * <p>
-     * Identifies the event type, minute, and associated players (if applicable).
-     * Handles different event subtypes such as PlayerEvent and SubstitutionEvent.
+     *
+     * Identifies the event type, minute, and associated players (if
+     * applicable). Handles different event subtypes such as PlayerEvent and
+     * SubstitutionEvent.
      *
      * @param event The event to convert.
      * @return A JSONObject representing the event details.
@@ -384,15 +387,16 @@ public class Exporter implements IExporter {
     }
 
     /**
-     * Exports HTML reports for all loaded leagues, including individual seasons and clubs.
-     * <p>
+     * Exports HTML reports for all loaded leagues, including individual seasons
+     * and clubs.
+     *
      * Generates output files in the directories:
      * <ul>
-     *   <li>{@code output/html/seasons/} - for season reports</li>
-     *   <li>{@code output/html/clubs/} - for club reports</li>
+     * <li>{@code output/html/seasons/} - for season reports</li>
+     * <li>{@code output/html/clubs/} - for club reports</li>
      * </ul>
-     * If no leagues are loaded, the method will log a message and stop execution.
-     * Errors during the generation process are logged individually.
+     * If no leagues are loaded, the method will log a message and stop
+     * execution. Errors during the generation process are logged individually.
      */
     public void exportHtmlReports() {
         ILeague[] leagues = Functions.getLeagues();
@@ -404,14 +408,22 @@ public class Exporter implements IExporter {
 
         File seasonDir = new File("output/html/seasons/");
         File clubDir = new File("output/html/clubs/");
-        if (!seasonDir.exists()) seasonDir.mkdirs();
-        if (!clubDir.exists()) clubDir.mkdirs();
+        if (!seasonDir.exists()) {
+            seasonDir.mkdirs();
+        }
+        if (!clubDir.exists()) {
+            clubDir.mkdirs();
+        }
 
         for (ILeague league : leagues) {
-            if (league == null) continue;
+            if (league == null) {
+                continue;
+            }
 
             for (ISeason season : league.getSeasons()) {
-                if (season == null) continue;
+                if (season == null) {
+                    continue;
+                }
 
                 String seasonPath = "output/html/seasons/" + season.getName().replace(" ", "_") + "_" + season.getYear() + ".html";
                 try {
@@ -422,7 +434,9 @@ public class Exporter implements IExporter {
                 }
 
                 for (IClub club : season.getCurrentClubs()) {
-                    if (club == null) continue;
+                    if (club == null) {
+                        continue;
+                    }
 
                     String clubPath = "output/html/clubs/" + club.getName().replace(" ", "_") + ".html";
                     try {

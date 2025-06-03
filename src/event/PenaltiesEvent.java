@@ -13,13 +13,13 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
 /**
  * Represents a penalty kick event taken by a player during a football match.
- * This event includes the player involved and the minute it occurred.
- * Inherits from {@link PlayerEvent}.
+ * This event includes the player involved and the minute it occurred. Inherits
+ * from {@link PlayerEvent}.
  *
- * <p>The event description is automatically generated in the format:
- * "-> Penalty by [Player Name] at [Minute] minutes".</p>
+ * The event description is automatically generated in the format: "-> Penalty
+ * by [Player Name] at [Minute] minutes".
  *
- * <p>Useful for tracking key match moments and statistics involving penalties.</p>
+ * Useful for tracking key match moments and statistics involving penalties.
  *
  */
 public class PenaltiesEvent extends PlayerEvent {

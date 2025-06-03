@@ -12,12 +12,12 @@ package event;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
 /**
- * Represents a foul event committed by a player during a football match.
- * This event stores the player responsible and the minute in which the foul occurred.
- * Inherits from {@link PlayerEvent}.
+ * Represents a foul event committed by a player during a football match. This
+ * event stores the player responsible and the minute in which the foul
+ * occurred. Inherits from {@link PlayerEvent}.
  *
- * <p>The event description is automatically generated in the format:
- * "-> Foul commited by [Player Name] at [Minute] minutes".</p>
+ * The event description is automatically generated in the format: "-> Foul
+ * commited by [Player Name] at [Minute] minutes".
  *
  */
 public class FoulEvent extends PlayerEvent {

@@ -25,14 +25,15 @@ import team.Team;
 import java.io.IOException;
 
 /**
- * Represents a football season within a league.
- * A season consists of multiple clubs, a match schedule, and associated league standings.
- * Supports manager-controlled seasons, simulation of matches, and player statistics.
+ * Represents a football season within a league. A season consists of multiple
+ * clubs, a match schedule, and associated league standings. Supports
+ * manager-controlled seasons, simulation of matches, and player statistics.
  * Implements the {@link ISeason} interface.
  *
- * <p>Each season tracks the current round, supports schedule generation,
- * and allows integration with a match simulation strategy.</p>
- * <p>
+ *
+ * Each season tracks the current round, supports schedule generation, and
+ * allows integration with a match simulation strategy.
+ *
  *
  */
 public class Season implements ISeason {
@@ -51,10 +52,11 @@ public class Season implements ISeason {
     /**
      * Constructs a new Season with the given parameters.
      *
-     * @param name      The name of the season.
-     * @param year      The year of the season.
-     * @param maxTeams  The maximum number of teams allowed.
-     * @param isManager True if the season is controlled by a manager, false otherwise.
+     * @param name The name of the season.
+     * @param year The year of the season.
+     * @param maxTeams The maximum number of teams allowed.
+     * @param isManager True if the season is controlled by a manager, false
+     * otherwise.
      */
     public Season(String name, int year, int maxTeams, boolean isManager) {
         this.name = name;
@@ -88,13 +90,14 @@ public class Season implements ISeason {
     }
 
     /**
-     * Adds a club to the current season.
-     * Ensures the club is unique and that the maximum number of teams is not exceeded.
-     * Also initializes the club's standing in the league table.
+     * Adds a club to the current season. Ensures the club is unique and that
+     * the maximum number of teams is not exceeded. Also initializes the club's
+     * standing in the league table.
      *
      * @param club The club to be added.
      * @return true if the club was successfully added.
-     * @throws IllegalArgumentException if the club is null, already exists, or capacity is full.
+     * @throws IllegalArgumentException if the club is null, already exists, or
+     * capacity is full.
      */
     @Override
     public boolean addClub(IClub club) {
@@ -112,18 +115,17 @@ public class Season implements ISeason {
 
         clubs[numberOfTeams++] = club;
         leagueStandings[numberOfTeams - 1] = new Standing(new Team(club));
-        System.out.println("Club added: " + club.getName());
         return true;
     }
 
     /**
-     * Removes a club from the current season.
-     * Shifts all remaining clubs one position forward and updates the team count.
+     * Removes a club from the current season. Shifts all remaining clubs one
+     * position forward and updates the team count.
      *
      * @param iClub The club to be removed.
      * @return true if the club was found and removed.
      * @throws IllegalArgumentException if the provided club is null.
-     * @throws IllegalStateException    if the club does not exist.
+     * @throws IllegalStateException if the club does not exist.
      */
     @Override
     public boolean removeClub(IClub iClub) {
@@ -148,7 +150,8 @@ public class Season implements ISeason {
     /**
      * Retrieves all matches scheduled in the season.
      *
-     * @return An array of all matches, or an empty array if the schedule is not set.
+     * @return An array of all matches, or an empty array if the schedule is not
+     * set.
      */
     @Override
     public IMatch[] getMatches() {
@@ -159,7 +162,8 @@ public class Season implements ISeason {
      * Retrieves the matches scheduled for a specific round.
      *
      * @param round The round number (0-based index).
-     * @return An array of matches for the specified round, or an empty array if the schedule is not set.
+     * @return An array of matches for the specified round, or an empty array if
+     * the schedule is not set.
      */
     @Override
     public IMatch[] getMatches(int round) {
@@ -169,14 +173,18 @@ public class Season implements ISeason {
     /**
      * Generates a round-robin schedule for the season.
      *
-     * <p>The schedule includes two legs (home and away) and supports odd numbers of teams
-     * by inserting a dummy null team. Throws an exception if a schedule already contains
-     * played matches or if there are not enough teams.</p>
      *
-     * <p>Each round contains (N / 2) matches, where N is the number of clubs (or N+1 if odd).
-     * Clubs rotate each round to produce unique pairings.</p>
+     * The schedule includes two legs (home and away) and supports odd numbers
+     * of teams by inserting a dummy null team. Throws an exception if a
+     * schedule already contains played matches or if there are not enough
+     * teams.
      *
-     * @throws IllegalStateException if less than 2 teams are registered or if any match was already played.
+     *
+     * Each round contains (N / 2) matches, where N is the number of clubs (or
+     * N+1 if odd). Clubs rotate each round to produce unique pairings.
+     *
+     * @throws IllegalStateException if less than 2 teams are registered or if
+     * any match was already played.
      */
     @Override
     public void generateSchedule() {
@@ -221,7 +229,9 @@ public class Season implements ISeason {
                 int homeIndex = (round + game) % (teamCount - 1);
                 int awayIndex = (teamCount - 1 - game + round) % (teamCount - 1);
 
-                if (game == 0) awayIndex = teamCount - 1;
+                if (game == 0) {
+                    awayIndex = teamCount - 1;
+                }
 
                 Club home = scheduleTeams[homeIndex];
                 Club away = scheduleTeams[awayIndex];
@@ -237,11 +247,15 @@ public class Season implements ISeason {
     }
 
     /**
-     * Simulates the current round of matches using the defined simulation strategy.
+     * Simulates the current round of matches using the defined simulation
+     * strategy.
      *
-     * <p>Only unplayed matches are simulated. After simulation, the current round counter is incremented.</p>
      *
-     * @throws IllegalStateException if no match simulator is defined or the maximum number of rounds is reached.
+     * Only unplayed matches are simulated. After simulation, the current round
+     * counter is incremented.
+     *
+     * @throws IllegalStateException if no match simulator is defined or the
+     * maximum number of rounds is reached.
      */
     @Override
     public void simulateRound() {
@@ -266,7 +280,9 @@ public class Season implements ISeason {
     /**
      * Simulates all remaining rounds in the season until completion.
      *
-     * <p>This method repeatedly calls {@code simulateRound()} until all matches are played.</p>
+     *
+     * This method repeatedly calls {@code simulateRound()} until all matches
+     * are played.
      */
     @Override
     public void simulateSeason() {
@@ -301,9 +317,11 @@ public class Season implements ISeason {
     }
 
     /**
-     * Resets the season by resetting all matches and setting the current round to zero.
+     * Resets the season by resetting all matches and setting the current round
+     * to zero.
      *
-     * <p>Only matches that have been played will be reset.</p>
+     *
+     * Only matches that have been played will be reset.
      */
     @Override
     public void resetSeason() {
@@ -422,16 +440,22 @@ public class Season implements ISeason {
     }
 
     /**
-     * Returns the number of matches remaining to be played in the current round.
+     * Returns the number of matches remaining to be played in the current
+     * round.
      *
      * @return The count of unplayed matches in the current round.
      */
     @Override
     public int getCurrentMatches() {
         int count = 0;
+        if (schedule.getNumberOfRounds() == 0 || currentRound >= schedule.getNumberOfRounds()) {
+            return count;
+        }
         IMatch[] roundMatches = schedule.getMatchesForRound(currentRound);
         for (IMatch match : roundMatches) {
-            if (!match.isPlayed()) count++;
+            if (!match.isPlayed()) {
+                count++;
+            }
         }
         return count;
     }
@@ -461,9 +485,10 @@ public class Season implements ISeason {
     }
 
     /**
-     * Displays detailed statistics of a given player based on all played matches.
+     * Displays detailed statistics of a given player based on all played
+     * matches.
      *
-     * <p>Includes goals, fouls, cards, shots, penalties, injuries, and substitutions.</p>
+     * <b>Note:</b> This method is not part of the ISeason interface.
      *
      * @param player The player for whom statistics are requested.
      * @throws IllegalArgumentException if the player is null.
@@ -524,14 +549,14 @@ public class Season implements ISeason {
         }
 
         String playerStats = String.format(
-                "Player: %-20s%n" +
-                        "Number: %-10d%n" +
-                        "Goals: %-10d Corner Kicks: %-10d%n" +
-                        "Fouls: %-10d Yellow Cards: %-10d%n" +
-                        "Red Cards: %-10d Substitutions: %-10d%n" +
-                        "Shots on Goal: %-10d Shots: %-10d%n" +
-                        "Penalties: %-10d Offside: %-10d%n" +
-                        "Injuries: %-10d Free Kicks: %-10d",
+                "Player: %-20s%n"
+                + "Number: %-10d%n"
+                + "Goals: %-10d Corner Kicks: %-10d%n"
+                + "Fouls: %-10d Yellow Cards: %-10d%n"
+                + "Red Cards: %-10d Substitutions: %-10d%n"
+                + "Shots on Goal: %-10d Shots: %-10d%n"
+                + "Penalties: %-10d Offside: %-10d%n"
+                + "Injuries: %-10d Free Kicks: %-10d",
                 player.getName(), player.getNumber(),
                 goals, cornerKicks,
                 foul, yellowCards,
@@ -546,7 +571,8 @@ public class Season implements ISeason {
     /**
      * Prints the schedule of matches to the console, grouped by round.
      *
-     * <p>If no schedule is available, a warning is shown.</p>
+     *
+     * If no schedule is available, a warning is shown.
      */
     public void printSchedule() {
         if (schedule == null) {
@@ -565,13 +591,23 @@ public class Season implements ISeason {
     }
 
     /**
-     * Placeholder method for exporting the season to JSON format.
      *
-     * @throws IOException If an error occurs during export.
+     * {@inheritDoc}
+     *
+     *
+     * <b>Note:</b> This method is intentionally left unimplemented in this
+     * class, as JSON export is handled centrally by a component responsible for
+     * exporting, the complete state of the application.
+     *
+     * This implementation exists solely to satisfy the requirements of the,
+     * {@code Exportable} interface and has no practical use in this specific
+     * class.
+     *
+     * @throws IOException Not applicable in this implementation
      */
     @Override
-    public void exportToJson() throws IOException {
-        //TODO implementar exportToJson
+    public void exportToJson() throws IOException {// Not applicable in this class}
+        // Not implemented
     }
 
     /**
@@ -579,7 +615,7 @@ public class Season implements ISeason {
      *
      * @param schedule The schedule to assign.
      */
-    public void setShedule(ISchedule schedule) {
+    public void setSchedule(ISchedule schedule) {
         this.schedule = schedule;
     }
 
@@ -590,6 +626,15 @@ public class Season implements ISeason {
      */
     public void setStandings(IStanding[] standings) {
         this.leagueStandings = standings;
+    }
+
+    /**
+     * Sets the current round index of the season.
+     *
+     * @param round The round (0-based) to set as current.
+     */
+    public void setCurrentRound(int round) {
+        this.currentRound = round;
     }
 
 }

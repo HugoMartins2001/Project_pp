@@ -7,7 +7,6 @@
  * Number: <8230273>
  * Class: <LsircT2>
  */
-
 package data;
 
 import com.ppstudios.footballmanager.api.contracts.data.htmlgenerators.ClubHtmlGenerator;
@@ -49,9 +48,10 @@ import java.time.LocalDate;
 
 /**
  * Importer class responsible for loading player data from JSON files.
- * <p>
- * This class reads player attributes from structured JSON and converts them into
- * Player objects with fallbacks for missing or invalid fields using random generators.
+ *
+ * This class reads player attributes from structured JSON and converts them
+ * into Player objects with fallbacks for missing or invalid fields using random
+ * generators.
  */
 public class Importer {
 
@@ -59,10 +59,11 @@ public class Importer {
 
     /**
      * Imports a list of players from a JSON file.
-     * <p>
-     * The JSON file is expected to have a "squad" array containing player details.
-     * If certain attributes are missing or not valid (e.g., height, weight, stats),
-     * the method assigns them with random but contextually appropriate values.
+     *
+     * The JSON file is expected to have a "squad" array containing player
+     * details. If certain attributes are missing or not valid (e.g., height,
+     * weight, stats), the method assigns them with random but contextually
+     * appropriate values.
      *
      * @param filePath The path to the JSON file containing player data.
      * @return An array of {@link Player} objects parsed from the file.
@@ -154,7 +155,7 @@ public class Importer {
 
     /**
      * Generates a random height for a player.
-     * <p>
+     *
      * The height will be a float value between 1.50m and 2.00m.
      *
      * @return A randomly generated height in meters.
@@ -165,7 +166,7 @@ public class Importer {
 
     /**
      * Generates a random weight for a player.
-     * <p>
+     *
      * The weight will be a float value between 60kg and 100kg.
      *
      * @return A randomly generated weight in kilograms.
@@ -176,11 +177,13 @@ public class Importer {
 
     /**
      * Generates a random speed value for a player, based on position.
-     * <p>
-     * Goalkeepers tend to have lower speed values, while forwards can reach the highest.
+     *
+     * Goalkeepers tend to have lower speed values, while forwards can reach the
+     * highest.
      *
      * @param position The player's position.
-     * @return A randomly generated speed value appropriate to the player's position.
+     * @return A randomly generated speed value appropriate to the player's
+     * position.
      */
     private static int generateRandomSpeed(PlayerPosition position) {
         switch (position.getDescription().toUpperCase()) {
@@ -199,11 +202,13 @@ public class Importer {
 
     /**
      * Generates a random stamina value for a player, based on position.
-     * <p>
-     * Stamina values are tailored to position, with midfielders and forwards typically having higher ranges.
+     *
+     * Stamina values are tailored to position, with midfielders and forwards
+     * typically having higher ranges.
      *
      * @param position The player's position.
-     * @return A randomly generated stamina value appropriate to the player's position.
+     * @return A randomly generated stamina value appropriate to the player's
+     * position.
      */
     private static int generateRandomStamina(PlayerPosition position) {
         switch (position.getDescription().toUpperCase()) {
@@ -222,9 +227,9 @@ public class Importer {
 
     /**
      * Generates a random shooting value for a player, based on position.
-     * <p>
-     * Forwards and midfielders tend to have higher shooting capabilities,
-     * while defenders and goalkeepers have lower values.
+     *
+     * Forwards and midfielders tend to have higher shooting capabilities, while
+     * defenders and goalkeepers have lower values.
      *
      * @param position The player's position.
      * @return A randomly generated shooting stat appropriate to the position.
@@ -246,9 +251,9 @@ public class Importer {
 
     /**
      * Generates a random passing value for a player, based on position.
-     * <p>
-     * Passing stats are moderately high across all positions except goalkeepers,
-     * who may have slightly less accurate passing abilities.
+     *
+     * Passing stats are moderately high across all positions except
+     * goalkeepers, who may have slightly less accurate passing abilities.
      *
      * @param position The player's position.
      * @return A randomly generated passing stat appropriate to the position.
@@ -270,12 +275,12 @@ public class Importer {
 
     /**
      * Generates a random preferred foot for a player.
-     * <p>
+     *
      * Uses a weighted probability:
      * <ul>
-     *   <li>20% chance of being both-footed</li>
-     *   <li>30% chance of being left-footed</li>
-     *   <li>50% chance of being right-footed</li>
+     * <li>20% chance of being both-footed</li>
+     * <li>30% chance of being left-footed</li>
+     * <li>50% chance of being right-footed</li>
      * </ul>
      *
      * @return A randomly selected {@link PreferredFoot}.
@@ -294,12 +299,13 @@ public class Importer {
 
     /**
      * Imports an array of Club objects from a JSON file.
-     * <p>
-     * For each club in the JSON array, this method also loads its players
-     * from a corresponding file in the path: {@code ./files/players/{code}.json}.
+     *
+     * For each club in the JSON array, this method also loads its players from
+     * a corresponding file in the path: {@code ./files/players/{code}.json}.
      *
      * @param filePath The path to the JSON file containing the list of clubs.
-     * @return An array of {@link Club} objects fully populated with player data.
+     * @return An array of {@link Club} objects fully populated with player
+     * data.
      * @throws IOException If the file cannot be read or parsed.
      */
     public Club[] importClubs(String filePath) throws IOException {
@@ -338,11 +344,12 @@ public class Importer {
     }
 
     /**
-     * Imports all leagues from a predefined JSON file and registers them
-     * into the system using the {@link Functions#setLeagues(ILeague[])} method.
-     * <p>
-     * This method expects the file {@code ./files/leagues.json} to exist and be correctly formatted.
-     * If an error occurs during parsing, it prints the stack trace and an error message.
+     * Imports all leagues from a predefined JSON file and registers them into
+     * the system using the {@link Functions#setLeagues(ILeague[])} method.
+     *
+     * This method expects the file {@code ./files/leagues.json} to exist and be
+     * correctly formatted. If an error occurs during parsing, it prints the
+     * stack trace and an error message.
      */
     public void importAllLeagues() {
         try {
@@ -359,7 +366,8 @@ public class Importer {
     }
 
     /**
-     * Converts a JSON array of leagues into an array of {@link ILeague} objects.
+     * Converts a JSON array of leagues into an array of {@link ILeague}
+     * objects.
      *
      * @param jsonArray The JSON array containing league data.
      * @return An array of {@link ILeague} instances created from the JSON.
@@ -377,7 +385,7 @@ public class Importer {
 
     /**
      * Converts a single JSON object into an {@link ILeague} instance.
-     * <p>
+     *
      * Includes the league name and an array of associated seasons.
      *
      * @param jsonObject The JSON object representing a league.
@@ -391,7 +399,8 @@ public class Importer {
     }
 
     /**
-     * Converts a JSON array of seasons into an array of {@link ISeason} objects.
+     * Converts a JSON array of seasons into an array of {@link ISeason}
+     * objects.
      *
      * @param jsonArray The JSON array containing season data.
      * @return An array of {@link ISeason} instances.
@@ -408,10 +417,10 @@ public class Importer {
 
     /**
      * Converts a JSON object into an {@link ISeason} instance.
-     * <p>
+     *
      * Includes season name, year, current round, max teams, club list,
-     * schedule, standings, and manager mode flag. After creation,
-     * the season simulates rounds to reach the stored round number.
+     * schedule, standings, and manager mode flag. After creation, the season
+     * simulates rounds to reach the stored round number.
      *
      * @param jsonObject The JSON object representing a season.
      * @return A fully constructed {@link ISeason} object.
@@ -432,7 +441,7 @@ public class Importer {
             season.addClub(club);
         }
 
-        season.setShedule(schedule);
+        season.setSchedule(schedule);
         season.setStandings(standings);
 
         while (season.getCurrentRound() < currentRound) {
@@ -459,9 +468,9 @@ public class Importer {
 
     /**
      * Converts a JSON object into an {@link IClub} instance.
-     * <p>
-     * Includes name, code, stadium, logo, country, foundation year,
-     * and an array of players.
+     *
+     * Includes name, code, stadium, logo, country, foundation year, and an
+     * array of players.
      *
      * @param jsonObject The JSON object representing a club.
      * @return A fully populated {@link IClub} object.
@@ -495,9 +504,9 @@ public class Importer {
 
     /**
      * Converts a JSON object into an {@link IMatch} instance.
-     * <p>
-     * Includes information about home and away clubs/teams, the round,
-     * whether the match was played, and its events.
+     *
+     * Includes information about home and away clubs/teams, the round, whether
+     * the match was played, and its events.
      *
      * @param jsonObject The JSON object representing a match.
      * @return A fully constructed {@link IMatch} object.
@@ -532,7 +541,7 @@ public class Importer {
 
     /**
      * Converts a JSON object into an {@link ITeam} instance.
-     * <p>
+     *
      * Includes team formation, associated club, and player list.
      *
      * @param jsonObject The JSON object representing a team.
@@ -547,7 +556,8 @@ public class Importer {
     }
 
     /**
-     * Converts a JSON array of players into an array of {@link IPlayer} objects.
+     * Converts a JSON array of players into an array of {@link IPlayer}
+     * objects.
      *
      * @param jsonArray The JSON array representing player data.
      * @return An array of {@link IPlayer} instances.
@@ -563,7 +573,7 @@ public class Importer {
 
     /**
      * Converts a JSON object into an {@link IPlayer} instance.
-     * <p>
+     *
      * Includes player attributes such as name, number, stats, nationality,
      * preferred foot, photo, birth date, and club code.
      *
@@ -591,14 +601,17 @@ public class Importer {
     }
 
     /**
-     * Converts a string representation of a formation into an {@link IFormation} object.
-     * <p>
-     * The format must follow the pattern "X-X-X", where each part represents the
-     * number of defenders, midfielders, and forwards respectively.
+     * Converts a string representation of a formation into an
+     * {@link IFormation} object.
      *
-     * @param formation The string representation of the formation (e.g. "4-4-2").
+     * The format must follow the pattern "X-X-X", where each part represents
+     * the number of defenders, midfielders, and forwards respectively.
+     *
+     * @param formation The string representation of the formation (e.g.
+     * "4-4-2").
      * @return A new {@link IFormation} object based on the parsed values.
-     * @throws IllegalArgumentException If the format is invalid or values are not integers.
+     * @throws IllegalArgumentException If the format is invalid or values are
+     * not integers.
      */
     private IFormation IFormationStringToObject(String formation) {
         String[] parts = formation.split("-");
@@ -620,9 +633,9 @@ public class Importer {
 
     /**
      * Converts a JSON object into an {@link ISchedule} instance.
-     * <p>
-     * Extracts the list of matches, organizes them by round, and returns
-     * a structured {@link Schedule} object.
+     *
+     * Extracts the list of matches, organizes them by round, and returns a
+     * structured {@link Schedule} object.
      *
      * @param jsonObject The JSON object representing a schedule.
      * @return An {@link ISchedule} instance with matches grouped by round.
@@ -632,7 +645,6 @@ public class Importer {
         IMatch[][] matches = organizeMatchesByRound(matchesArray);
         return new Schedule(matches);
     }
-
 
     /**
      * Organizes matches into a 2D array [round][matchIndex] using only arrays.
@@ -690,9 +702,9 @@ public class Importer {
 
     /**
      * Converts a JSON object into an {@link IStanding} instance.
-     * <p>
-     * Includes team statistics such as points, wins, draws, losses,
-     * total matches, goals scored, and goals conceded.
+     *
+     * Includes team statistics such as points, wins, draws, losses, total
+     * matches, goals scored, and goals conceded.
      *
      * @param jsonObject The JSON object representing a standing.
      * @return A {@link IStanding} object populated with the given data.
@@ -712,7 +724,7 @@ public class Importer {
 
     /**
      * Converts a JSON array of events into an {@link IEventManager}.
-     * <p>
+     *
      * Each event is parsed and added to the event manager.
      *
      * @param jsonArray The JSON array representing match events.
@@ -731,11 +743,13 @@ public class Importer {
     }
 
     /**
-     * Converts a JSON object into an {@link IEvent} instance based on the event type.
-     * <p>
-     * Supports all predefined football match events such as goals, fouls, injuries,
-     * and substitutions. Each event is mapped from its "type" string to the corresponding class.
-     * If the event type is unknown, an exception is thrown.
+     * Converts a JSON object into an {@link IEvent} instance based on the event
+     * type.
+     *
+     * Supports all predefined football match events such as goals, fouls,
+     * injuries, and substitutions. Each event is mapped from its "type" string
+     * to the corresponding class. If the event type is unknown, an exception is
+     * thrown.
      *
      * @param eventJson The JSON object representing an event.
      * @return A concrete {@link IEvent} instance.
@@ -785,11 +799,13 @@ public class Importer {
     }
 
     /**
-     * Converts a string representation of a player position into a {@link PlayerPosition} enum.
+     * Converts a string representation of a player position into a
+     * {@link PlayerPosition} enum.
      *
      * @param position The string representing the position (e.g. "GOALKEEPER").
      * @return The corresponding {@link PlayerPosition} enum value.
-     * @throws IllegalArgumentException If the string does not match a known position.
+     * @throws IllegalArgumentException If the string does not match a known
+     * position.
      */
     private PlayerPosition stringToPlayerPosition(String position) {
         switch (position.toUpperCase()) {

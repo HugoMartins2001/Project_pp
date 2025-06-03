@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/lib/apicontracts-1.0-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/apicontracts-1.0-SNAPSHOT.jar!/" />
+    </SOURCES>
   </library>
 </component>

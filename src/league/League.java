@@ -15,17 +15,20 @@ import com.ppstudios.footballmanager.api.contracts.league.ISeason;
 import java.io.IOException;
 
 /**
- * Represents a football league composed of multiple seasons.
- * Implements the {@link ILeague} interface.
+ * Represents a football league composed of multiple seasons. Implements the
+ * {@link ILeague} interface.
  *
- * <p>This class supports creating, retrieving, and removing seasons,
- * as well as dynamically resizing the internal storage of seasons.</p>
  *
- * <p>Ensures no duplicate or null seasons can be added.</p>
+ * This class supports creating, retrieving, and removing seasons, as well as
+ * dynamically resizing the internal storage of seasons.
+ *
+ *
+ * Ensures no duplicate or null seasons can be added.
  *
  *
  */
 public class League implements ILeague {
+
     private String name;
     private ISeason[] seasons = new ISeason[1];
     private int seasonCount = 0;
@@ -46,7 +49,7 @@ public class League implements ILeague {
     /**
      * Constructs a League with a name and an initial list of seasons.
      *
-     * @param name    The name of the league.
+     * @param name The name of the league.
      * @param seasons An array of seasons to initialize the league with.
      * @throws IllegalArgumentException If name or seasons are null.
      */
@@ -150,10 +153,10 @@ public class League implements ILeague {
     }
 
     /**
-     * Finds the index of a season in the array.
+     * Searches for a season in the internal array.
      *
-     * @param iSeason The season to find.
-     * @return The index if found, -1 otherwise.
+     * @param iSeason The season to search.
+     * @return The index if found; -1 otherwise.
      */
     private int findSeason(ISeason iSeason) {
         for (int i = 0; i < seasonCount; i++) {
@@ -176,13 +179,22 @@ public class League implements ILeague {
     }
 
     /**
-     * Exports the league data to JSON format.
-     * (Currently not implemented.)
      *
-     * @throws IOException If export fails.
+     * {@inheritDoc}
+     *
+     *
+     * <b>Note:</b> This method is intentionally left unimplemented in this
+     * class, as JSON export is handled centrally by a component responsible for
+     * exporting, the complete state of the application.
+     *
+     * This implementation exists solely to satisfy the requirements of the,
+     * {@code Exportable} interface and has no practical use in this specific
+     * class.
+     *
+     * @throws IOException Not applicable in this implementation
      */
     @Override
-    public void exportToJson() throws IOException {
+    public void exportToJson() throws IOException {// Not applicable in this class}
         // Not implemented
     }
 

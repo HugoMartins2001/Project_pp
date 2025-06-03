@@ -22,7 +22,9 @@ import java.io.IOException;
  * Represents a football team, encapsulating its club, formation, and players.
  * Implements the {@link ITeam} interface.
  *
- * <p>This class provides methods to manage players, check positions, and calculate team strength.</p>
+ *
+ * This class provides methods to manage players, check positions, and calculate
+ * team strength.
  *
  * @author Rúben Tiago Martins Pereira
  * @author Hugo Leite Martins
@@ -32,29 +34,29 @@ public class Team implements ITeam {
     private IClub club;
     private IFormation formation;
     private IPlayer[] playersTeam;
+    private int currentPlayers = 0;
 
     /**
      * Constructs a new Team with the specified club, formation, and players.
      *
-     * @param club        The club associated with the team.
-     * @param formation   The formation of the team.
+     * @param club The club associated with the team.
+     * @param formation The formation of the team.
      * @param playersTeam An array of players in the team.
      */
     public Team(IClub club, IFormation formation, IPlayer[] playersTeam) {
         this.club = club;
         this.formation = formation;
-        this.playersTeam = new IPlayer[playersTeam.length];
-        int playerCount = 0;
+        this.playersTeam = new IPlayer[0];
         for (int i = 0; i < playersTeam.length; i++) {
             if (playersTeam[i] != null) {
-                this.playersTeam[playerCount++] = playersTeam[i];
+                this.addPlayer(playersTeam[i]);
             }
         }
     }
 
     /**
-     * Constructs a new Team with the specified club.
-     * The formation and players are initialized to null or empty.
+     * Constructs a new Team with the specified club. The formation and players
+     * are initialized to null or empty.
      *
      * @param club The club associated with the team.
      * @throws IllegalArgumentException If the club is null.
@@ -65,7 +67,7 @@ public class Team implements ITeam {
         }
         this.club = club;
         this.formation = null;
-        this.playersTeam = new IPlayer[1];
+        this.playersTeam = new IPlayer[0];
     }
 
     /**
@@ -75,7 +77,6 @@ public class Team implements ITeam {
     public IClub getClub() {
         return club;
     }
-
 
     /**
      * @return The tactical formation of the team.
@@ -129,28 +130,15 @@ public class Team implements ITeam {
                 throw new IllegalStateException("The player is already in the team!");
             }
         }
-        boolean hasSpace = false;
-        for (IPlayer p : playersTeam) {
-            if (p == null) {
-                hasSpace = true;
-                break;
-            }
-        }
-        if (!hasSpace) {
-            throw new IllegalStateException("The team is already full!");
-        }
+
         if (!club.isPlayer(player)) {
             throw new IllegalStateException("The player is not in the club!");
         }
         if (formation == null) {
             throw new IllegalStateException("The formation is not setted!");
         }
-        for (int i = 0; i < playersTeam.length; i++) {
-            if (playersTeam[i] == null) {
-                playersTeam[i] = player;
-                break;
-            }
-        }
+        expandArray();
+        this.playersTeam[currentPlayers++] = player;
     }
 
     /**
@@ -174,7 +162,8 @@ public class Team implements ITeam {
     }
 
     /**
-     * Checks if a new player can be added to a specific position according to formation.
+     * Checks if a new player can be added to a specific position according to
+     * formation.
      *
      * @param position The player's position.
      * @return True if allowed, false otherwise.
@@ -230,9 +219,10 @@ public class Team implements ITeam {
     }
 
     /**
-     * Automatically sets a valid team from a list of players using the given formation.
+     * Automatically sets a valid team from a list of players using the given
+     * formation.
      *
-     * @param players   List of players.
+     * @param players List of players.
      * @param formation Desired formation.
      */
     public void setAutomaticTeam(IPlayer[] players, Formation formation) {
@@ -241,7 +231,9 @@ public class Team implements ITeam {
         }
         int keepercount = 0, defcount = 0, midcount = 0, forcount = 0;
         for (IPlayer player : players) {
-            if (player == null || player.getPosition() == null) continue;
+            if (player == null || player.getPosition() == null) {
+                continue;
+            }
             String pos = player.getPosition().getDescription();
             if (pos.equals("Goalkeeper") && keepercount < 1) {
                 addPlayer(player);
@@ -271,6 +263,13 @@ public class Team implements ITeam {
         this.playersTeam = playersTeam;
     }
 
+    private void expandArray() {
+        IPlayer[] newArray = new IPlayer[playersTeam.length + 1];
+        System.arraycopy(playersTeam, 0, newArray, 0, playersTeam.length);
+        playersTeam = newArray;
+    }
+
+
     /**
      * Checks if another team is the same based on the club.
      *
@@ -279,18 +278,37 @@ public class Team implements ITeam {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (obj == this) return true;
-        if (!(obj instanceof Team)) return false;
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Team)) {
+            return false;
+        }
         Team team = (Team) obj;
         return club.equals(team.club);
     }
 
+
     /**
-     * Placeholder for JSON export logic.
+     *
+     * {@inheritDoc}
+     *
+     *
+     * <b>Note:</b> This method is intentionally left unimplemented in this
+     * class, as JSON export is handled centrally by a component responsible for
+     * exporting, the complete state of the application.
+     *
+     * This implementation exists solely to satisfy the requirements of the,
+     * {@code Exportable} interface and has no practical use in this specific
+     * class.
+     *
+     * @throws IOException Not applicable in this implementation
      */
     @Override
-    public void exportToJson() throws IOException {
-        // TODO implement export logic
+    public void exportToJson() throws IOException {// Not applicable in this class}
+        // Not implemented
     }
 }

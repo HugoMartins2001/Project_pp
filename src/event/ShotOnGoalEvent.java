@@ -13,13 +13,13 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
 /**
  * Represents a shot on goal attempt made by a player during a football match.
- * This event stores the player who attempted the shot and the minute it occurred.
- * Inherits from {@link PlayerEvent}.
+ * This event stores the player who attempted the shot and the minute it
+ * occurred. Inherits from {@link PlayerEvent}.
  *
- * <p>The event description is automatically generated in the format:
- * "-> [Player Name] shot on goal at [Minute] minutes".</p>
+ * The event description is automatically generated in the format: "-> [Player
+ * Name] shot on goal at [Minute] minutes".
  *
- * <p>Useful for match statistics, analytics, or live commentary systems.</p>
+ * Useful for match statistics, analytics, or live commentary systems.
  *
  */
 public class ShotOnGoalEvent extends PlayerEvent {

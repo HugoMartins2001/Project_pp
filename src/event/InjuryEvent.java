@@ -12,14 +12,15 @@ package event;
 import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
 
 /**
- * Represents an injury event involving a player during a football match.
- * This event records the player who got injured and the minute it occurred.
- * Inherits from {@link PlayerEvent}.
+ * Represents an injury event involving a player during a football match. This
+ * event records the player who got injured and the minute it occurred. Inherits
+ * from {@link PlayerEvent}.
  *
- * <p>The event description is automatically generated in the format:
- * "-> [Player Name] got injured at [Minute] minutes".</p>
+ * The event description is automatically generated in the format: "-> [Player
+ * Name] got injured at [Minute] minutes".
  *
- * <p>Useful for tracking match incidents and affecting game logic or player status.</p>
+ * Useful for tracking match incidents and affecting game logic or player
+ * status.
  *
  */
 public class InjuryEvent extends PlayerEvent {

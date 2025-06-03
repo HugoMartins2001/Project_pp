@@ -7,7 +7,6 @@
  * Number: <8230273>
  * Class: <LsircT2>
  */
-
 package main;
 
 import com.ppstudios.footballmanager.api.contracts.league.ISeason;
@@ -19,8 +18,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * Class containing all menu-related methods for user interaction.
- * Handles navigation and input for league, season, clubs, and players.
+ * Class containing all menu-related methods for user interaction. Handles
+ * navigation and input for league, season, clubs, and players.
  */
 public class Menus {
 
@@ -62,7 +61,8 @@ public class Menus {
     }
 
     /**
-     * Displays the Start League Menu and processes user input to create or load a league.
+     * Displays the Start League Menu and processes user input to create or load
+     * a league.
      *
      * @param input Scanner object for user input.
      */
@@ -117,9 +117,10 @@ public class Menus {
     }
 
     /**
-     * Displays the League Menu for a specific league. Allows creating or loading seasons.
+     * Displays the League Menu for a specific league. Allows creating or
+     * loading seasons.
      *
-     * @param input  Scanner for input.
+     * @param input Scanner for input.
      * @param league League to be managed.
      */
     public static void leagueMenu(Scanner input, League league) {
@@ -136,6 +137,8 @@ public class Menus {
             System.out.println("|-------------------------------------|");
             System.out.println("|  Option 1 - New Season              |");
             System.out.println("|  Option 2 - Load Season             |");
+            System.out.println("|  Option 3 - Create season with existing clubs |");
+            System.out.println("|  option 4 - Remove a team           |");
             System.out.println("|  option 0 - Back                    |");
             System.out.println("|-------------------------------------|");
             try {
@@ -159,6 +162,22 @@ public class Menus {
                         seasonMenu(input, (Season) loadedSeason);
                         verifyInput = false;
                         break;
+                    case 3:
+                        Season newSeason1 = Functions.createSeasonFromExisting(input, league);
+                        if (newSeason1 != null) {
+                            try {
+                                league.createSeason(newSeason1);
+                                seasonMenu(input, newSeason1);
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Erro ao criar temporada: " + e.getMessage());
+                            }
+                        }
+                        verifyInput = false;
+                        break;
+                    case 4:
+                        league.removeTeamFromSeason(year, teamName);
+                        verifyInput = false;
+                        break;
                     default:
                         System.out.println("Select a valid option!");
                 }
@@ -170,9 +189,10 @@ public class Menus {
     }
 
     /**
-     * Displays the Season Menu for a specific season. Allows starting seasons, viewing stats, etc.
+     * Displays the Season Menu for a specific season. Allows starting seasons,
+     * viewing stats, etc.
      *
-     * @param input  Scanner for input.
+     * @param input Scanner for input.
      * @param season Season to be managed.
      */
     public static void seasonMenu(Scanner input, Season season) {
@@ -202,7 +222,7 @@ public class Menus {
                 verifyInput = true;
                 switch (option) {
                     case 1:
-                        if(season.isManager()){
+                        if (season.isManager()) {
                             Functions.startSeasonManager(input, season);
                         }
                         Functions.startSeason(input, season);
@@ -246,6 +266,7 @@ public class Menus {
         } while (!verifyInput);
 
     }
+
     /**
      * Displays the credits screen with project and authorship information.
      *
@@ -263,8 +284,8 @@ public class Menus {
             System.out.println("##--------------Credits--------------##");
             System.out.println("|-------------------------------------|");
             System.out.println("|  This game was create by:           |");
-            System.out.println("|  Rúben Pereira nº8230162            |");
-            System.out.println("|  Hugo Martins nº8230273             |");
+            System.out.println("|  Ruben Pereira n 8230162            |");
+            System.out.println("|  Hugo Martins n 8230273             |");
             System.out.println("|                                     |");
             System.out.println("|  This project is an OOP work        |");
             System.out.println("|  carried out at IPP/ESTG in         |");
@@ -289,7 +310,8 @@ public class Menus {
     }
 
     /**
-     * Displays the Club Menu to allow users to view all clubs or a specific club.
+     * Displays the Club Menu to allow users to view all clubs or a specific
+     * club.
      */
     public static void clubMenu() {
         int option;
@@ -335,7 +357,8 @@ public class Menus {
     }
 
     /**
-     * Displays the Player Menu to allow users to view all players or a specific player.
+     * Displays the Player Menu to allow users to view all players or a specific
+     * player.
      */
     public static void playerMenu() {
         int option;
@@ -379,9 +402,10 @@ public class Menus {
     }
 
     /**
-     * Displays the statistics menu and allows viewing individual or all players' stats.
+     * Displays the statistics menu and allows viewing individual or all
+     * players' stats.
      *
-     * @param input  Scanner object for user input.
+     * @param input Scanner object for user input.
      * @param season The season from which to gather player statistics.
      */
     public static void getStatsMenu(Scanner input, Season season) {
@@ -425,9 +449,10 @@ public class Menus {
     }
 
     /**
-     * Displays the Add/Remove Clubs menu to manually or automatically modify the clubs in a season.
+     * Displays the Add/Remove Clubs menu to manually or automatically modify
+     * the clubs in a season.
      *
-     * @param input  Scanner for user input.
+     * @param input Scanner for user input.
      * @param season Season to modify.
      */
     public static void addRemoveClubsMenu(Scanner input, Season season) {

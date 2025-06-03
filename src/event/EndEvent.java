@@ -10,17 +10,18 @@
 package event;
 
 /**
- * Represents the end of a football match.
- * This event indicates that the match has concluded and includes the minute it occurred.
- * Inherits from {@link Event}.
+ * Represents the end of a football match. This event indicates that the match
+ * has concluded and includes the minute it occurred. Inherits from
+ * {@link Event}.
  *
- * <p>The description is fixed as "-> Match ended".</p>
+ * The description is fixed as "-> Match ended".
  *
  */
 public class EndEvent extends Event {
 
     /**
-     * Constructs an EndEvent indicating the match has ended at a specific minute.
+     * Constructs an EndEvent indicating the match has ended at a specific
+     * minute.
      *
      * @param minute The minute the match ended.
      */

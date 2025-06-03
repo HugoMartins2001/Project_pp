@@ -16,11 +16,11 @@ import java.util.Scanner;
 
 /**
  * Entry point for the Football Manager application.
- * <p>
- * This class initializes data by importing all leagues and then displays
- * a menu interface for the user to interact with various features such as
- * managing leagues, clubs, and players.
- * </p>
+ *
+ * This class initializes data by importing all leagues and then displays a menu
+ * interface for the user to interact with various features such as managing
+ * leagues, clubs, and players.
+ *
  */
 public class main {
 

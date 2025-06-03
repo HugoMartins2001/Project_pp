@@ -17,10 +17,10 @@ import com.ppstudios.footballmanager.api.contracts.player.IPlayer;
  * along with the minute the substitution took place.
  * Inherits from {@link Event}.
  *
- * <p>The event description is automatically generated in the format:
- * "-> Substitution: [PlayerOut Name] out, [PlayerIn Name] in".</p>
+ * The event description is automatically generated in the format:
+ * "-> Substitution: [PlayerOut Name] out, [PlayerIn Name] in".
  *
- * <p>Useful for updating lineups, tracking fatigue, and managing team strategies.</p>
+ * Useful for updating lineups, tracking fatigue, and managing team strategies.
  *
  */
 public class SubstitutionEvent extends Event {

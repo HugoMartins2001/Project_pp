@@ -15,18 +15,21 @@ import com.ppstudios.footballmanager.api.contracts.team.ITeam;
 import event.GoalEvent;
 
 /**
- * Represents the league standing (classification) data for a team.
- * Implements the {@link IStanding} interface.
+ * Represents the league standing (classification) data for a team. Implements
+ * the {@link IStanding} interface.
  *
- * <p>This class tracks points, match outcomes (wins, draws, losses),
- * goals scored/conceded, and the team to which the standing belongs.</p>
  *
- * <p>All fields include flags to check whether they were properly initialized,
- * providing safer access with runtime validation.</p>
+ * This class tracks points, match outcomes (wins, draws, losses), goals
+ * scored/conceded, and the team to which the standing belongs.
+ *
+ *
+ * All fields include flags to check whether they were properly initialized,
+ * providing safer access with runtime validation.
  *
  *
  */
 public class Standing implements IStanding {
+
     private int points;
     private int wins;
     private int draws;
@@ -47,15 +50,16 @@ public class Standing implements IStanding {
     /**
      * Constructs a fully initialized Standing object with statistics.
      *
-     * @param points        Total points of the team.
-     * @param wins          Number of wins.
-     * @param draws         Number of draws.
-     * @param losses        Number of losses.
-     * @param totalMatches  Total number of matches played.
-     * @param goalsScored   Goals scored by the team.
+     * @param points Total points of the team.
+     * @param wins Number of wins.
+     * @param draws Number of draws.
+     * @param losses Number of losses.
+     * @param totalMatches Total number of matches played.
+     * @param goalsScored Goals scored by the team.
      * @param goalsConceded Goals conceded by the team.
-     * @param team          The team associated with this standing.
-     * @throws IllegalArgumentException if team is null or any numeric value is negative.
+     * @param team The team associated with this standing.
+     * @throws IllegalArgumentException if team is null or any numeric value is
+     * negative.
      */
     public Standing(int points, int wins, int draws, int losses, int totalMatches, int goalsScored, int goalsConceded, ITeam team) {
         if (team == null) {
@@ -88,7 +92,6 @@ public class Standing implements IStanding {
      * @param team The team to associate with this standing.
      * @throws IllegalArgumentException if team is null.
      */
-
     public Standing(ITeam team) {
         if (team == null) {
             throw new IllegalArgumentException("Team cannot be null");
@@ -155,7 +158,8 @@ public class Standing implements IStanding {
     }
 
     /**
-     * Registers a win for the team and updates the points and match statistics accordingly.
+     * Registers a win for the team and updates the points and match statistics
+     * accordingly.
      *
      * @param pointsPerWin the number of points awarded for a win
      * @throws IllegalArgumentException if the pointsPerWin value is negative
@@ -174,7 +178,8 @@ public class Standing implements IStanding {
     }
 
     /**
-     * Registers a draw for the team and updates the points and match statistics accordingly.
+     * Registers a draw for the team and updates the points and match statistics
+     * accordingly.
      *
      * @param pointsPerDraw the number of points awarded for a draw
      * @throws IllegalArgumentException if the pointsPerDraw value is negative
@@ -193,8 +198,9 @@ public class Standing implements IStanding {
     }
 
     /**
-     * Registers a loss for the team and updates the match statistics accordingly.
-     * Losses typically do not award points, but the logic allows for customization.
+     * Registers a loss for the team and updates the match statistics
+     * accordingly. Losses typically do not award points, but the logic allows
+     * for customization.
      *
      * @param pointsPerLoss the number of points awarded for a loss
      * @throws IllegalArgumentException if the pointsPerLoss value is negative
@@ -272,7 +278,8 @@ public class Standing implements IStanding {
      * Returns the total number of goals scored by the team.
      *
      * @return the number of goals scored
-     * @throws IllegalStateException if the goals scored count has not been initialized
+     * @throws IllegalStateException if the goals scored count has not been
+     * initialized
      */
     @Override
     public int getGoalScored() {
@@ -286,7 +293,8 @@ public class Standing implements IStanding {
      * Returns the total number of goals conceded by the team.
      *
      * @return the number of goals conceded
-     * @throws IllegalStateException if the goals conceded count has not been initialized
+     * @throws IllegalStateException if the goals conceded count has not been
+     * initialized
      */
     @Override
     public int getGoalsConceded() {
@@ -297,10 +305,12 @@ public class Standing implements IStanding {
     }
 
     /**
-     * Calculates and returns the goal difference (goals scored minus goals conceded).
+     * Calculates and returns the goal difference (goals scored minus goals
+     * conceded).
      *
      * @return the goal difference
-     * @throws IllegalStateException if either the goals scored or goals conceded count has not been initialized
+     * @throws IllegalStateException if either the goals scored or goals
+     * conceded count has not been initialized
      */
     @Override
     public int getGoalDifference() {
@@ -311,17 +321,18 @@ public class Standing implements IStanding {
     }
 
     /**
-     * Updates the standing statistics of this team based on the result of a given match.
+     * Updates the standing statistics of this team based on the result of a
+     * given match.
      *
-     * <p>This method increments goals scored and conceded, and updates the number of
-     * wins, draws, or losses depending on the result. It assumes:
-     * - 3 points are awarded for a win.
-     * - 1 point is awarded for a draw.
-     * - 0 points are awarded for a loss.</p>
+     *
+     * This method increments goals scored and conceded, and updates the number
+     * of wins, draws, or losses depending on the result. It assumes: - 3 points
+     * are awarded for a win. - 1 point is awarded for a draw. - 0 points are
+     * awarded for a loss.
      *
      * @param match the match to use for updating the standings
      * @throws IllegalArgumentException if the match is null
-     * @throws IllegalStateException    if the match has not been played yet
+     * @throws IllegalStateException if the match has not been played yet
      */
     public void updateStandings(IMatch match) {
         if (match == null) {

@@ -10,13 +10,14 @@
 package event;
 
 /**
- * Represents the start of a football match.
- * This event indicates that the match has officially begun and includes the starting minute.
- * Inherits from {@link Event}.
+ * Represents the start of a football match. This event indicates that the match
+ * has officially begun and includes the starting minute. Inherits from
+ * {@link Event}.
  *
- * <p>The event description is fixed as "-> Match started".</p>
+ * The event description is fixed as "-> Match started".
  *
- * <p>The {@code exportToJson()} method is left empty and can be implemented later if needed.</p>
+ * The {@code exportToJson()} method is left empty and can be implemented later
+ * if needed.
  *
  */
 public class StartEvent extends Event {
@@ -31,8 +32,8 @@ public class StartEvent extends Event {
     }
 
     /**
-     * Exports the event to JSON format.
-     * Currently not implemented. You may override this if needed for output.
+     * Exports the event to JSON format. Currently not implemented. You may
+     * override this if needed for output.
      */
     @Override
     public void exportToJson() {

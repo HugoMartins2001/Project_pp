@@ -13,11 +13,11 @@ import com.ppstudios.footballmanager.api.contracts.event.IEvent;
 import com.ppstudios.footballmanager.api.contracts.event.IEventManager;
 
 /**
- * Manages a collection of football match events.
- * Implements the {@link IEventManager} interface.
+ * Manages a collection of football match events. Implements the
+ * {@link IEventManager} interface.
  *
- * <p>This class allows adding, retrieving, and ordering events by the minute in which they occurred.</p>
- * <p>Duplicate events are ignored (based on {@code equals}).</p>
+ * This class allows adding, retrieving, and ordering events by the minute in
+ * which they occurred. Duplicate events are ignored (based on {@code equals}).
  *
  */
 public class EventManager implements IEventManager {

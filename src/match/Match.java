@@ -21,8 +21,8 @@ import event.PlayerEvent;
 import java.io.IOException;
 
 /**
- * Class that represents a football match between two clubs.
- * Manages events, teams, and match state (played, winner, etc.).
+ * Class that represents a football match between two clubs. Manages events,
+ * teams, and match state (played, winner, etc.).
  */
 public class Match implements IMatch {
 
@@ -39,10 +39,12 @@ public class Match implements IMatch {
      *
      * @param homeClub Home club
      * @param awayClub Away club
-     * @param round    Round number of the match
+     * @param round Round number of the match
      */
     public Match(IClub homeClub, IClub awayClub, int round) {
-        if (homeClub == null || awayClub == null) throw new IllegalArgumentException("Clubs cannot be null");
+        if (homeClub == null || awayClub == null) {
+            throw new IllegalArgumentException("Clubs cannot be null");
+        }
         this.homeClub = homeClub;
         this.awayClub = awayClub;
         this.round = round;
@@ -57,12 +59,14 @@ public class Match implements IMatch {
      * @param awayClub Away club
      * @param homeTeam Home team
      * @param awayTeam Away team
-     * @param round    Match round
-     * @param events   Event manager instance
+     * @param round Match round
+     * @param events Event manager instance
      * @param isPlayed Match played state
      */
     public Match(IClub homeClub, IClub awayClub, ITeam homeTeam, ITeam awayTeam, int round, IEventManager events, boolean isPlayed) {
-        if (homeClub == null || awayClub == null) throw new IllegalArgumentException("Clubs cannot be null");
+        if (homeClub == null || awayClub == null) {
+            throw new IllegalArgumentException("Clubs cannot be null");
+        }
         this.homeClub = homeClub;
         this.awayClub = awayClub;
         this.homeTeam = homeTeam;
@@ -81,7 +85,7 @@ public class Match implements IMatch {
     @Override
     public IClub getHomeClub() {
         if (homeClub == null) {
-            throw new IllegalStateException("Home Club is not inicialized!");
+            throw new IllegalStateException("Home Club is not initialized!");
         }
         return homeClub;
     }
@@ -95,7 +99,7 @@ public class Match implements IMatch {
     @Override
     public IClub getAwayClub() {
         if (awayClub == null) {
-            throw new IllegalStateException("Away Club is not inicialized");
+            throw new IllegalStateException("Away Club is not initialized");
         }
         return awayClub;
     }
@@ -119,7 +123,7 @@ public class Match implements IMatch {
     @Override
     public ITeam getHomeTeam() {
         if (homeTeam == null) {
-            throw new IllegalStateException("Home Team is not inicialized");
+            throw new IllegalStateException("Home Team is not initialized");
         }
         return homeTeam;
     }
@@ -139,8 +143,8 @@ public class Match implements IMatch {
     }
 
     /**
-     * Sets the match as played.
-     * Once set, no further changes to teams or events are allowed.
+     * Sets the match as played. Once set, no further changes to teams or events
+     * are allowed.
      *
      * @throws IllegalStateException if the match has already been played
      */
@@ -153,7 +157,7 @@ public class Match implements IMatch {
      * Gets the total number of events of a specific class for a given team.
      *
      * @param eventClass The class of the event to count
-     * @param team       The team for which to count events
+     * @param team The team for which to count events
      * @return Total number of events of the specified class for the team
      * @throws NullPointerException if eventClass or team is null
      */
@@ -184,8 +188,8 @@ public class Match implements IMatch {
     }
 
     /**
-     * Checks if the match is valid.
-     * A match is valid if both teams are set and they are not the same team.
+     * Checks if the match is valid. A match is valid if both teams are set and
+     * they are not the same team.
      *
      * @return true if the match is valid, false otherwise
      */
@@ -197,13 +201,13 @@ public class Match implements IMatch {
         return true;
     }
 
-
     /**
-     * Gets the winner of the match.
-     * If the match has not been played or is invalid, an exception is thrown.
+     * Gets the winner of the match. If the match has not been played or is
+     * invalid, an exception is thrown.
      *
      * @return The winning team, or null if it's a draw
-     * @throws IllegalStateException if the match has not been played or is invalid
+     * @throws IllegalStateException if the match has not been played or is
+     * invalid
      */
     @Override
     public ITeam getWinner() {
@@ -240,12 +244,13 @@ public class Match implements IMatch {
     }
 
     /**
-     * Sets the team for the match.
-     * The team must belong to either the home or away club.
+     * Sets the team for the match. The team must belong to either the home or
+     * away club.
      *
      * @param team The team to set
      * @throws IllegalArgumentException if the team is null or not selected
-     * @throws IllegalStateException    if the match has already been played or the team does not belong to the match
+     * @throws IllegalStateException if the match has already been played or the
+     * team does not belong to the match
      */
     @Override
     public void setTeam(ITeam team) {
@@ -265,19 +270,27 @@ public class Match implements IMatch {
     }
 
     /**
-     * Exports the match details to a JSON-like format.
-     * Currently, this method does not implement any functionality.
      *
-     * @throws IOException If any I/O error occurs (not used here).
+     * {@inheritDoc}
+     *
+     *
+     * <b>Note:</b> This method is intentionally left unimplemented in this
+     * class, as JSON export is handled centrally by a component responsible for
+     * exporting, the complete state of the application.
+     *
+     * This implementation exists solely to satisfy the requirements of the,
+     * {@code Exportable} interface and has no practical use in this specific
+     * class.
+     *
+     * @throws IOException Not applicable in this implementation
      */
     @Override
-    public void exportToJson() throws IOException {
-
+    public void exportToJson() throws IOException {// Not applicable in this class}
+        // Not implemented
     }
 
     /**
-     * Adds an event to the match.
-     * The event must be of type IEvent.
+     * Adds an event to the match. The event must be of type IEvent.
      *
      * @param iEvent The event to add
      * @throws IllegalArgumentException if the event is null
@@ -288,8 +301,8 @@ public class Match implements IMatch {
     }
 
     /**
-     * Gets the events associated with the match.
-     * Returns an array of events ordered by minute.
+     * Gets the events associated with the match. Returns an array of events
+     * ordered by minute.
      *
      * @return An array of IEvent instances
      */
@@ -299,8 +312,8 @@ public class Match implements IMatch {
     }
 
     /**
-     * Gets the total number of events in the match.
-     * This includes all types of events, not just goals.
+     * Gets the total number of events in the match. This includes all types of
+     * events, not just goals.
      *
      * @return The count of events
      */
@@ -310,8 +323,8 @@ public class Match implements IMatch {
     }
 
     /**
-     * Resets the match state, clearing teams and events.
-     * This method is useful for reusing the match object.
+     * Resets the match state, clearing teams and events. This method is useful
+     * for reusing the match object.
      */
     public void reset() {
         awayTeam = null;

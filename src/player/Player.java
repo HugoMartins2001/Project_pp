@@ -18,7 +18,8 @@ import java.time.LocalDate;
 import java.time.Period;
 
 /**
- * Represents a football player with attributes like name, birthdate, nationality, position, and technical stats.
+ * Represents a football player with attributes like name, birthdate,
+ * nationality, position, and technical stats.
  */
 public class Player implements IPlayer, Cloneable {
 
@@ -41,9 +42,9 @@ public class Player implements IPlayer, Cloneable {
      * Constructs a Player with all necessary attributes.
      */
     public Player(String name, LocalDate birthdate, String nationality,
-                  String photo, int number, int specPassing, int specShooting,
-                  int specSpeed, int specStamina, float weight, float height,
-                  PlayerPosition position, PreferredFoot foot, String clubCode) {
+            String photo, int number, int specPassing, int specShooting,
+            int specSpeed, int specStamina, float weight, float height,
+            PlayerPosition position, PreferredFoot foot, String clubCode) {
         this.name = name;
         this.birthdate = birthdate;
         this.nationality = nationality;
@@ -202,22 +203,22 @@ public class Player implements IPlayer, Cloneable {
      */
     @Override
     public void exportToJson() throws IOException {
-        String json = "Player :{\n" +
-                "  \"name\": \"" + name + "\",\n" +
-                "  \"birthdate\": \"" + birthdate.toString() + "\",\n" +
-                "  \"nationality\": \"" + nationality + "\",\n" +
-                "  \"photo\": \"" + photo + "\",\n" +
-                "  \"number\": " + number + ",\n" +
-                "  \"specPassing\": " + specPassing + ",\n" +
-                "  \"specShooting\": " + specShooting + ",\n" +
-                "  \"specSpeed\": " + specSpeed + ",\n" +
-                "  \"specStamina\": " + specStamina + ",\n" +
-                "  \"weight\": " + weight + ",\n" +
-                "  \"height\": " + height + ",\n" +
-                "  \"position\": \"" + position.getDescription() + "\",\n" +
-                "  \"foot\": \"" + foot + "\",\n" +
-                "  \"clubCode\": \"" + clubCode + "\"\n" +
-                "}";
+        String json = "Player :{\n"
+                + "  \"name\": \"" + name + "\",\n"
+                + "  \"birthdate\": \"" + birthdate.toString() + "\",\n"
+                + "  \"nationality\": \"" + nationality + "\",\n"
+                + "  \"photo\": \"" + photo + "\",\n"
+                + "  \"number\": " + number + ",\n"
+                + "  \"specPassing\": " + specPassing + ",\n"
+                + "  \"specShooting\": " + specShooting + ",\n"
+                + "  \"specSpeed\": " + specSpeed + ",\n"
+                + "  \"specStamina\": " + specStamina + ",\n"
+                + "  \"weight\": " + weight + ",\n"
+                + "  \"height\": " + height + ",\n"
+                + "  \"position\": \"" + position.getDescription() + "\",\n"
+                + "  \"foot\": \"" + foot + "\",\n"
+                + "  \"clubCode\": \"" + clubCode + "\"\n"
+                + "}";
 
         System.out.println(json);
     }

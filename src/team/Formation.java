@@ -7,15 +7,14 @@
  * Number: <8230273>
  * Class: <LsircT2>
  */
-
 package team;
 
 import com.ppstudios.footballmanager.api.contracts.player.IPlayerPosition;
 import com.ppstudios.footballmanager.api.contracts.team.IFormation;
 
 /**
- * Represents a football formation used by a team (excluding goalkeeper).
- * A valid formation must have exactly 10 outfield players.
+ * Represents a football formation used by a team (excluding goalkeeper). A
+ * valid formation must have exactly 10 outfield players.
  */
 public class Formation implements IFormation {
 
@@ -27,10 +26,10 @@ public class Formation implements IFormation {
     /**
      * Constructs a Formation with specified roles and display name.
      *
-     * @param displayName  The name of the formation (e.g., "4-3-3")
-     * @param defenders    Number of defenders in the formation
-     * @param midfielders  Number of midfielders in the formation
-     * @param forwards     Number of forwards in the formation
+     * @param displayName The name of the formation (e.g., "4-3-3")
+     * @param defenders Number of defenders in the formation
+     * @param midfielders Number of midfielders in the formation
+     * @param forwards Number of forwards in the formation
      * @throws IllegalArgumentException if the sum is not exactly 10 players
      */
     public Formation(String displayName, int defenders, int midfielders, int forwards) {
@@ -122,8 +121,12 @@ public class Formation implements IFormation {
         int[] awayTeam = {formation.getForwards(), formation.getMidfielders(), formation.getDefenders()};
 
         for (int i = 0; i < 3; i++) {
-            if (homeTeam[i] > awayTeam[i]) return 1;
-            if (homeTeam[i] < awayTeam[i]) return -1;
+            if (homeTeam[i] > awayTeam[i]) {
+                return 1;
+            }
+            if (homeTeam[i] < awayTeam[i]) {
+                return -1;
+            }
         }
         return 0;
     }
