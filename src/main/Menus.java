@@ -138,7 +138,6 @@ public class Menus {
             System.out.println("|  Option 1 - New Season              |");
             System.out.println("|  Option 2 - Load Season             |");
             System.out.println("|  Option 3 - Create season with existing clubs |");
-            System.out.println("|  option 4 - Remove a team           |");
             System.out.println("|  option 0 - Back                    |");
             System.out.println("|-------------------------------------|");
             try {
@@ -172,10 +171,6 @@ public class Menus {
                                 System.out.println("Erro ao criar temporada: " + e.getMessage());
                             }
                         }
-                        verifyInput = false;
-                        break;
-                    case 4:
-                        league.removeTeamFromSeason(year, teamName);
                         verifyInput = false;
                         break;
                     default:

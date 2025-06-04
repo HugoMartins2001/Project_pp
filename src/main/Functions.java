@@ -908,6 +908,11 @@ public class Functions {
         System.out.println("\n=== SEASON " + season.getName().toUpperCase() + " HAS CONCLUDED ===");
         System.out.println("Thank you for playing!");
 
+        season.listHomeClubswithnoVictorys(season.getCurrentClubs(), matches);
+        season.listAwayClubswithnoVictorys(season.getCurrentClubs(), matches);
+        season.gamesWithmoregoals(season.getCurrentClubs(), matches);
+        season.gamesWithmoreThan2goals(season.getCurrentClubs(), matches);
+
     }
 
     /**
@@ -1644,4 +1649,5 @@ public class Functions {
 
         return season;
     }
+
 }

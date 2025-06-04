@@ -29,12 +29,10 @@ import java.io.IOException;
  * clubs, a match schedule, and associated league standings. Supports
  * manager-controlled seasons, simulation of matches, and player statistics.
  * Implements the {@link ISeason} interface.
- *
- *
+ * <p>
+ * <p>
  * Each season tracks the current round, supports schedule generation, and
  * allows integration with a match simulation strategy.
- *
- *
  */
 public class Season implements ISeason {
 
@@ -52,11 +50,11 @@ public class Season implements ISeason {
     /**
      * Constructs a new Season with the given parameters.
      *
-     * @param name The name of the season.
-     * @param year The year of the season.
-     * @param maxTeams The maximum number of teams allowed.
+     * @param name      The name of the season.
+     * @param year      The year of the season.
+     * @param maxTeams  The maximum number of teams allowed.
      * @param isManager True if the season is controlled by a manager, false
-     * otherwise.
+     *                  otherwise.
      */
     public Season(String name, int year, int maxTeams, boolean isManager) {
         this.name = name;
@@ -69,6 +67,63 @@ public class Season implements ISeason {
         this.isManager = isManager;
         this.schedule = new Schedule(new IMatch[0][0]);
     }
+
+    public void listHomeClubswithnoVictorys(IClub[] clubs, IMatch[] matches) {
+        for (IClub club : clubs) {
+            boolean hasHomeVictory = false;
+            for (IMatch match : matches) {
+                if (match != null && match.getHomeClub().equals(club) &&
+                        match.isPlayed() && match.getWinner() == match.getHomeTeam()) {
+                    hasHomeVictory = true;
+                    break;
+                }
+            }
+            if (!hasHomeVictory) {
+                System.out.println("Clubs with no home victories:" + club.getName());
+            }
+        }
+    }
+
+    public void listAwayClubswithnoVictorys(IClub[] clubs, IMatch[] matches) {
+        for (IClub club : clubs) {
+            boolean hasAwayVictory = false;
+            for (IMatch match : matches) {
+                if (match != null && match.getAwayClub().equals(club) &&
+                        match.isPlayed() && match.getWinner() == match.getAwayTeam()) {
+                    hasAwayVictory = true;
+                    break;
+                }
+            }
+            if (!hasAwayVictory) {
+                System.out.println("Clubs with no away victories:" + club.getName());
+            }
+        }
+    }
+
+    public void gamesWithmoregoals(IClub[] clubs, IMatch[] matches) {
+        for (IMatch match : matches) {
+            if (match != null && match.isPlayed()) {
+                int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
+                int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
+                    System.out.println("Match with more than 2 goals: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " - Score: " + homeGoals + ":" + awayGoals);
+            }
+        }
+    }
+
+    public void gamesWithmoreThan2goals(IClub[] clubs, IMatch[] matches) {
+        for (IMatch match : matches) {
+            if (match != null && match.isPlayed()) {
+                int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
+                int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
+                if (homeGoals > 2 || awayGoals > 2) {
+                    System.out.println("Match with more than 2 goals: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " - Score: " + homeGoals + ":" + awayGoals);
+                }
+            }
+        }
+    }
+
+    public void gamesWith
+
 
     /**
      * Checks whether the season is managed by a human manager.
@@ -97,7 +152,7 @@ public class Season implements ISeason {
      * @param club The club to be added.
      * @return true if the club was successfully added.
      * @throws IllegalArgumentException if the club is null, already exists, or
-     * capacity is full.
+     *                                  capacity is full.
      */
     @Override
     public boolean addClub(IClub club) {
@@ -125,7 +180,7 @@ public class Season implements ISeason {
      * @param iClub The club to be removed.
      * @return true if the club was found and removed.
      * @throws IllegalArgumentException if the provided club is null.
-     * @throws IllegalStateException if the club does not exist.
+     * @throws IllegalStateException    if the club does not exist.
      */
     @Override
     public boolean removeClub(IClub iClub) {
@@ -172,19 +227,19 @@ public class Season implements ISeason {
 
     /**
      * Generates a round-robin schedule for the season.
-     *
-     *
+     * <p>
+     * <p>
      * The schedule includes two legs (home and away) and supports odd numbers
      * of teams by inserting a dummy null team. Throws an exception if a
      * schedule already contains played matches or if there are not enough
      * teams.
-     *
-     *
+     * <p>
+     * <p>
      * Each round contains (N / 2) matches, where N is the number of clubs (or
      * N+1 if odd). Clubs rotate each round to produce unique pairings.
      *
      * @throws IllegalStateException if less than 2 teams are registered or if
-     * any match was already played.
+     *                               any match was already played.
      */
     @Override
     public void generateSchedule() {
@@ -249,13 +304,13 @@ public class Season implements ISeason {
     /**
      * Simulates the current round of matches using the defined simulation
      * strategy.
-     *
-     *
+     * <p>
+     * <p>
      * Only unplayed matches are simulated. After simulation, the current round
      * counter is incremented.
      *
      * @throws IllegalStateException if no match simulator is defined or the
-     * maximum number of rounds is reached.
+     *                               maximum number of rounds is reached.
      */
     @Override
     public void simulateRound() {
@@ -279,8 +334,8 @@ public class Season implements ISeason {
 
     /**
      * Simulates all remaining rounds in the season until completion.
-     *
-     *
+     * <p>
+     * <p>
      * This method repeatedly calls {@code simulateRound()} until all matches
      * are played.
      */
@@ -319,8 +374,8 @@ public class Season implements ISeason {
     /**
      * Resets the season by resetting all matches and setting the current round
      * to zero.
-     *
-     *
+     * <p>
+     * <p>
      * Only matches that have been played will be reset.
      */
     @Override
@@ -550,13 +605,13 @@ public class Season implements ISeason {
 
         String playerStats = String.format(
                 "Player: %-20s%n"
-                + "Number: %-10d%n"
-                + "Goals: %-10d Corner Kicks: %-10d%n"
-                + "Fouls: %-10d Yellow Cards: %-10d%n"
-                + "Red Cards: %-10d Substitutions: %-10d%n"
-                + "Shots on Goal: %-10d Shots: %-10d%n"
-                + "Penalties: %-10d Offside: %-10d%n"
-                + "Injuries: %-10d Free Kicks: %-10d",
+                        + "Number: %-10d%n"
+                        + "Goals: %-10d Corner Kicks: %-10d%n"
+                        + "Fouls: %-10d Yellow Cards: %-10d%n"
+                        + "Red Cards: %-10d Substitutions: %-10d%n"
+                        + "Shots on Goal: %-10d Shots: %-10d%n"
+                        + "Penalties: %-10d Offside: %-10d%n"
+                        + "Injuries: %-10d Free Kicks: %-10d",
                 player.getName(), player.getNumber(),
                 goals, cornerKicks,
                 foul, yellowCards,
@@ -570,8 +625,8 @@ public class Season implements ISeason {
 
     /**
      * Prints the schedule of matches to the console, grouped by round.
-     *
-     *
+     * <p>
+     * <p>
      * If no schedule is available, a warning is shown.
      */
     public void printSchedule() {
@@ -591,14 +646,13 @@ public class Season implements ISeason {
     }
 
     /**
-     *
      * {@inheritDoc}
      *
      *
      * <b>Note:</b> This method is intentionally left unimplemented in this
      * class, as JSON export is handled centrally by a component responsible for
      * exporting, the complete state of the application.
-     *
+     * <p>
      * This implementation exists solely to satisfy the requirements of the,
      * {@code Exportable} interface and has no practical use in this specific
      * class.
