@@ -105,7 +105,7 @@ public class Season implements ISeason {
             if (match != null && match.isPlayed()) {
                 int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
                 int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
-                    System.out.println("Match with more than 2 goals: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " - Score: " + homeGoals + ":" + awayGoals);
+                System.out.println("Match with more than 2 goals: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " - Score: " + homeGoals + ":" + awayGoals);
             }
         }
     }
@@ -121,8 +121,6 @@ public class Season implements ISeason {
             }
         }
     }
-
-    public void gamesWith
 
 
     /**
