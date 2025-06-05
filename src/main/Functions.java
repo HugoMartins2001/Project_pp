@@ -908,11 +908,13 @@ public class Functions {
         System.out.println("\n=== SEASON " + season.getName().toUpperCase() + " HAS CONCLUDED ===");
         System.out.println("Thank you for playing!");
 
-        season.listHomeClubswithnoVictorys(season.getCurrentClubs(), matches);
-        season.listAwayClubswithnoVictorys(season.getCurrentClubs(), matches);
-        season.gamesWithmoregoals(matches);
-        season.gamesWithmoreThan2goals(matches);
-
+        season.ListClubsWithOutWinsAtAway(matches);
+        season.ListClubsWithOutWinsAtHome(matches);
+        season.getGameWithLessGoals(matches);
+        season.getFastestGoalInSeasonByPlayer(matches);
+        season.getNumberOfDawsInSeason(matches);
+        season.getGamesWithMoreThanTwoGoals(matches);
+        season.getGameWithMoreGoals(matches);
     }
 
     /**

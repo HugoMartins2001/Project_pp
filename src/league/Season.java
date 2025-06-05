@@ -68,59 +68,260 @@ public class Season implements ISeason {
         this.schedule = new Schedule(new IMatch[0][0]);
     }
 
-    public void listHomeClubswithnoVictorys(IClub[] clubs, IMatch[] matches) {
-        for (IClub club : clubs) {
-            boolean hasHomeVictory = false;
-            for (IMatch match : matches) {
-                if (match != null && match.getHomeClub().equals(club) &&
-                        match.isPlayed() && match.getWinner() == match.getHomeTeam()) {
-                    hasHomeVictory = true;
-                    break;
+    public void ListClubsWithOutWinsAtHome(IMatch[] matches) {
+        boolean found = false;
+        for(int i = 0; i < numberOfTeams; i++) {
+            IClub club = clubs[i];
+            if (club != null) {
+                boolean hasWinAtHome = false;
+                for (IMatch match : matches) {
+                    if (match != null && match.getHomeClub().equals(club) && match.isPlayed()) {
+                        if (match.getTotalByEvent(GoalEvent.class, match.getHomeClub()) > match.getTotalByEvent(GoalEvent.class, match.getAwayClub())) {
+                            hasWinAtHome = true;
+                            break;
+                        }
+                    }
+                }
+                if (!hasWinAtHome) {
+                    System.out.println("Club without wins at home: " + club.getName());
+                    found = true;
                 }
             }
-            if (!hasHomeVictory) {
-                System.out.println("Clubs with no home victories:" + club.getName());
-            }
+        }
+        if (!found) {
+            System.out.println("All clubs have at least one win at home.");
         }
     }
 
-    public void listAwayClubswithnoVictorys(IClub[] clubs, IMatch[] matches) {
-        for (IClub club : clubs) {
-            boolean hasAwayVictory = false;
-            for (IMatch match : matches) {
-                if (match != null && match.getAwayClub().equals(club) &&
-                        match.isPlayed() && match.getWinner() == match.getAwayTeam()) {
-                    hasAwayVictory = true;
-                    break;
+    public void ListClubsWithOutWinsAtAway(IMatch[] matches) {
+        boolean found = false;
+        for(int i = 0; i < numberOfTeams; i++) {
+            IClub club = clubs[i];
+            if (club != null) {
+                boolean hasWinAway = false;
+                for (IMatch match : matches) {
+                    if (match != null && match.getAwayClub().equals(club) && match.isPlayed()) {
+                        if (match.getTotalByEvent(GoalEvent.class, match.getAwayClub()) > match.getTotalByEvent(GoalEvent.class, match.getHomeClub())) {
+                            hasWinAway = true;
+                            break;
+                        }
+                    }
+                }
+                if (!hasWinAway) {
+                    System.out.println("Club without wins away: " + club.getName());
+                    found = true;
                 }
             }
-            if (!hasAwayVictory) {
-                System.out.println("Clubs with no away victories:" + club.getName());
-            }
+        }
+        if (!found) {
+            System.out.println("All clubs have at least one win away.");
         }
     }
 
-    public void gamesWithmoregoals(IMatch[] matches) {
+    public void getGameWithLessGoals(IMatch[] matches) {
+        if (matches == null || matches.length == 0) {
+            System.out.println("No matches available.");
+            return;
+        }
+
+        IMatch lowestScoringMatch = null;
+        int minGoals = Integer.MAX_VALUE;
+
         for (IMatch match : matches) {
             if (match != null && match.isPlayed()) {
                 int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
                 int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
-                System.out.println("Match with more goals: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " - Score: " + homeGoals + ":" + awayGoals);
+                int totalGoals = homeGoals + awayGoals;
+
+                if (totalGoals < minGoals) {
+                    minGoals = totalGoals;
+                    lowestScoringMatch = match;
+                }
             }
+        }
+
+        if (lowestScoringMatch != null) {
+            System.out.println("Game with less goals: " + displayMatchResult(lowestScoringMatch));
+        } else {
+            System.out.println("No played matches found.");
         }
     }
 
-    public void gamesWithmoreThan2goals(IMatch[] matches) {
+    public void getGameWithMoreGoals(IMatch[] matches) {
+        if (matches == null || matches.length == 0) {
+            System.out.println("No matches available.");
+            return;
+        }
+
+        IMatch highestScoringMatch = null;
+        int maxGoals = 0;
+
         for (IMatch match : matches) {
             if (match != null && match.isPlayed()) {
                 int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
                 int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
-                if (homeGoals > 2 || awayGoals > 2) {
-                    System.out.println("Match with more than 2 goals: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " - Score: " + homeGoals + ":" + awayGoals);
+                int totalGoals = homeGoals + awayGoals;
+
+                if (totalGoals > maxGoals) {
+                    maxGoals = totalGoals;
+                    highestScoringMatch = match;
                 }
             }
         }
+
+        if (highestScoringMatch != null) {
+            System.out.println("Game with more goals: " + displayMatchResult(highestScoringMatch));
+        } else {
+            System.out.println("No played matches found.");
+        }
     }
+
+    public void getNumberOfDawsInSeason(IMatch[] matches) {
+        if (matches == null || matches.length == 0) {
+            System.out.println("No matches available.");
+            return;
+        }
+
+        int drawCount = 0;
+
+        for (IMatch match : matches) {
+            if (match != null && match.isPlayed()) {
+                int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
+                int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
+                if (homeGoals == awayGoals) {
+                    drawCount++;
+                }
+            }
+        }
+
+        System.out.println("Number of draws in the season: " + drawCount);
+    }
+
+    public void getNumberOfLosesInSeason(IMatch[] matches) {
+        if (matches == null || matches.length == 0) {
+            System.out.println("No matches available.");
+            return;
+        }
+
+        int lossCount = 0;
+
+        for (IMatch match : matches) {
+            if (match != null && match.isPlayed()) {
+                int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
+                int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
+                if (homeGoals < awayGoals) {
+                    lossCount++;
+                } else if (awayGoals < homeGoals) {
+                    lossCount++;
+                }
+            }
+        }
+
+        System.out.println("Number of losses in the season: " + lossCount);
+    }
+
+    public void getNumberOfWinsInSeason(IMatch[] matches) {
+        if (matches == null || matches.length == 0) {
+            System.out.println("No matches available.");
+            return;
+        }
+
+        int winCount = 0;
+
+        for (IMatch match : matches) {
+            if (match != null && match.isPlayed()) {
+                int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
+                int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
+                if (homeGoals > awayGoals) {
+                    winCount++;
+                } else if (awayGoals > homeGoals) {
+                    winCount++;
+                }
+            }
+        }
+
+        System.out.println("Number of wins in the season: " + winCount);
+    }
+
+    public void getGamesWithMoreThanTwoGoals(IMatch[] matches) {
+        if (matches == null || matches.length == 0) {
+            System.out.println("No matches available.");
+            return;
+        }
+
+        boolean found = false;
+
+        for (IMatch match : matches) {
+            if (match != null && match.isPlayed()) {
+                int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
+                int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
+                if (homeGoals + awayGoals > 2) {
+                    System.out.println("Match with more than two goals: " + displayMatchResult(match));
+                    found = true;
+                }
+            }
+        }
+
+        if (!found) {
+            System.out.println("No matches with more than two goals found.");
+        }
+    }
+
+    public void getGamesWithSocore2x1(IMatch[] matches) {
+        if (matches == null || matches.length == 0) {
+            System.out.println("No matches available.");
+            return;
+        }
+
+        boolean found = false;
+
+        for (IMatch match : matches) {
+            if (match != null && match.isPlayed()) {
+                int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
+                int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
+                if ((homeGoals == 2 && awayGoals == 1) || (homeGoals == 1 && awayGoals == 2)) {
+                    System.out.println("Match with score 2x1: " + displayMatchResult(match));
+                    found = true;
+                }
+            }
+        }
+
+        if (!found) {
+            System.out.println("No matches with score 2x1 found.");
+        }
+    }
+
+    public void getFastestGoalInSeasonByPlayer(IMatch[] matches) {
+        if (matches == null || matches.length == 0) {
+            System.out.println("No matches available.");
+            return;
+        }
+
+        IEvent fastestGoal = null;
+        int fastestTime = Integer.MAX_VALUE;
+
+        for (IMatch match : matches) {
+            if (match != null && match.isPlayed()) {
+                for (IEvent event : match.getEvents()) {
+                    if (event instanceof GoalEvent) {
+                        int eventTime = ((GoalEvent) event).getMinute();
+                        if (eventTime < fastestTime) {
+                            fastestTime = eventTime;
+                            fastestGoal = event;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (fastestGoal != null) {
+            System.out.println("Fastest goal in the season: " + fastestGoal);
+        } else {
+            System.out.println("No goals found in the season.");
+        }
+    }
+
+
 
 
     /**
