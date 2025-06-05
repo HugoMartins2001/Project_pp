@@ -910,8 +910,8 @@ public class Functions {
 
         season.listHomeClubswithnoVictorys(season.getCurrentClubs(), matches);
         season.listAwayClubswithnoVictorys(season.getCurrentClubs(), matches);
-        season.gamesWithmoregoals(season.getCurrentClubs(), matches);
-        season.gamesWithmoreThan2goals(season.getCurrentClubs(), matches);
+        season.gamesWithmoregoals(matches);
+        season.gamesWithmoreThan2goals(matches);
 
     }
 

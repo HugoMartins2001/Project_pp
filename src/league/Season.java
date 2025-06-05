@@ -100,17 +100,17 @@ public class Season implements ISeason {
         }
     }
 
-    public void gamesWithmoregoals(IClub[] clubs, IMatch[] matches) {
+    public void gamesWithmoregoals(IMatch[] matches) {
         for (IMatch match : matches) {
             if (match != null && match.isPlayed()) {
                 int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
                 int awayGoals = match.getTotalByEvent(GoalEvent.class, match.getAwayClub());
-                System.out.println("Match with more than 2 goals: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " - Score: " + homeGoals + ":" + awayGoals);
+                System.out.println("Match with more goals: " + match.getHomeClub().getName() + " vs " + match.getAwayClub().getName() + " - Score: " + homeGoals + ":" + awayGoals);
             }
         }
     }
 
-    public void gamesWithmoreThan2goals(IClub[] clubs, IMatch[] matches) {
+    public void gamesWithmoreThan2goals(IMatch[] matches) {
         for (IMatch match : matches) {
             if (match != null && match.isPlayed()) {
                 int homeGoals = match.getTotalByEvent(GoalEvent.class, match.getHomeClub());
