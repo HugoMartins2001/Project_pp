@@ -907,7 +907,7 @@ public class Functions {
 
         System.out.println("\n=== SEASON " + season.getName().toUpperCase() + " HAS CONCLUDED ===");
         System.out.println("Thank you for playing!");
-        
+
     }
 
     /**
